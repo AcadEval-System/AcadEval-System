@@ -16,9 +16,11 @@ AcademicEval System es un sistema diseñado para optimizar la evaluación acadé
 
 ⚙️ Tecnologías utilizadas:
 
+Contenedor: Docker
+
 Lenguaje de programación: C#
 
-Base de datos: SQL Server
+Base de datos: PostgreSQL
 
 Frameworks: ASP.NET Core, Entity Framework
 

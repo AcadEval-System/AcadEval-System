@@ -1,0 +1,67 @@
+name: "Reporte de Error"
+description: "Informa sobre un problema o bug"
+title: "⚠️ [Error]: "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: "# ⛔️ Descripción\n\nDescribe el problema encontrado."
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+      description: "Explica el error y su impacto."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## ⚡ Pasos para Reproducir"
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Pasos para Reproducir
+      description: "Enumera los pasos para reproducir el problema."
+      value: "1. \n2. \n3. "
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## 🎮 Resultado Esperado"
+
+  - type: textarea
+    id: expected-result
+    attributes:
+      label: Resultado Esperado
+      description: "Describe lo que debería suceder."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## 🔧 Entorno"
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Entorno
+      description: "Indica el sistema operativo, versión del software y configuraciones relevantes."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## 🔍 Prioridad"
+
+  - type: checkboxes
+    id: priority
+    attributes:
+      label: Prioridad
+      options:
+        - label: "Alta"
+        - label: "Media"
+        - label: "Baja"
