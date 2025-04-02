@@ -1,0 +1,67 @@
+---
+name: "Tarea Pendiente"
+description: "Crear una nueva tarea o asignar una existente"
+title: "[Tarea]: "
+labels: ["task"]
+
+body:
+  - type: markdown
+    attributes:
+      value: "# Descripción de la Tarea\n\nDescribe la tarea o trabajo que necesita ser realizado."
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+      description: "Proporciona detalles sobre la tarea o trabajo a realizar."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Prioridad\nIndica la prioridad de esta tarea."
+
+  - type: checkboxes
+    id: priority
+    attributes:
+      label: Prioridad
+      options:
+        - label: "Alta"
+        - label: "Media"
+        - label: "Baja"
+
+  - type: markdown
+    attributes:
+      value: "## Responsable\nIndica a quién se le asignará esta tarea."
+
+  - type: input
+    id: assignee
+    attributes:
+      label: Responsable
+      description: "Asignar la tarea a un colaborador específico."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "## Fecha de Entrega\nIndica la fecha límite para completar esta tarea."
+
+  - type: input
+    id: due-date
+    attributes:
+      label: Fecha de Entrega
+      description: "Fecha límite para completar la tarea (formato: YYYY-MM-DD)."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "## Notas Adicionales\nProporciona cualquier otra información relevante sobre la tarea."
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Notas Adicionales
+      description: "Agrega cualquier detalle adicional sobre la tarea."
+    validations:
+      required: false

@@ -12,7 +12,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AcadEval.DAL\AcadEval.DAL.csproj" />
+    <ProjectReference Include="..\AcadEval.ENTITY\AcadEval.ENTITY.csproj" />
   </ItemGroup>
 
 </Project>
