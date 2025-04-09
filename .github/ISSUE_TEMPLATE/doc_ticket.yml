@@ -1,43 +1,29 @@
 name: "Mejora de Documentación"
-description: "Propuesta de mejora en la documentación"
-title: "📄 [Docs]: "
+description: "Solicitar una mejora o corrección en la documentación"
+title: "[Documentación]: "
 labels: ["documentation"]
 
 body:
   - type: markdown
     attributes:
-      value: "# 📖 Descripción\n\nDescribe la mejora en la documentación."
+      value: "# Descripción de la Mejora\n\nDescribe la mejora o corrección que propones para la documentación."
 
   - type: textarea
     id: description
     attributes:
       label: Descripción
-      description: "Explica los cambios sugeridos y su beneficio."
+      description: "Explica qué parte de la documentación debe mejorarse o corregirse."
     validations:
       required: true
 
   - type: markdown
     attributes:
-      value: "## 🎨 Tipo de Cambio"
-
-  - type: checkboxes
-    id: type-of-change
-    attributes:
-      label: Tipo de Cambio
-      options:
-        - label: "➕ Agregar información faltante"
-        - label: "✏️ Corregir errores existentes"
-        - label: "🔄 Reestructurar el contenido"
-        - label: "🛠 Otro (especificar en la descripción)"
-
-  - type: markdown
-    attributes:
-      value: "## 📃 Recursos Adicionales"
+      value: "## Contexto Adicional\nProporciona cualquier información adicional que pueda ayudar a mejorar la documentación."
 
   - type: textarea
-    id: additional-resources
+    id: additional-context
     attributes:
-      label: Recursos Adicionales
-      description: "Adjunta enlaces o material relevante."
+      label: Contexto Adicional
+      description: "Agrega cualquier información relevante que deba ser considerada."
     validations:
       required: false
