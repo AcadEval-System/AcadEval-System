@@ -29,8 +29,9 @@ try
     app.UseHttpsRedirection();
     app.UseDefaultFiles();
     app.UseStaticFiles();
-    app.UseRouting();
+   
     app.UsePathBase("/api");
+    app.UseRouting();
     
     app.UseAuthentication();
     app.UseAuthorization();
@@ -43,7 +44,14 @@ try
 
     app.MapFallbackToFile("/index.html");
 
+    var serverAddress = app.Urls.FirstOrDefault() ?? "https://localhost:7004";
+    var machineName = Environment.MachineName;
+    var environment = app.Environment.EnvironmentName;
+    Log.Information("Server starting... Target URL: {ServerUrl} on machine {MachineName} ({Environment})",
+        serverAddress, machineName, environment);
+
     app.Run();
+    
 }
 catch (Exception ex)
 {

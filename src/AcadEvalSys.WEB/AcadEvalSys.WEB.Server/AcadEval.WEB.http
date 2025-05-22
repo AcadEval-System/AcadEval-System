@@ -1,6 +1,15 @@
-@AcadEval.WEB.Server_HostAddress = http://localhost:5087
+@host = https://localhost:7004
 
-GET {{AcadEval.WEB.Server_HostAddress}}/api/weatherforecast/
+GET {{host}}/api/identity/login/
 Accept: application/json
 
 ###
+
+POST {{host}}/api/identity/login/
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "tbanchioalumno@itec-elmolino.edu.ar",
+    "password": "Tomasbanchio16_"
+}
