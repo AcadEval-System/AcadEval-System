@@ -1,12 +1,11 @@
 using AcadEvalSys.Application.Users.Commands.AssignRole;
 using AcadEvalSys.Application.Users.Commands.UnassignUserRole;
 using AcadEvalSys.Domain.Constants.Constants;
-
-namespace AcadEval.WEB.Controllers;
-
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+namespace AcadEvalSys.WEB.Server.Controllers;
 
 [Route("identity")]
 [Tags("Identity")]

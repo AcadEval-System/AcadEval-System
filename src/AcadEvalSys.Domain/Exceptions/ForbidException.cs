@@ -1,4 +1,4 @@
-namespace AcadEvalSys.Application.Users.Commands.AssignRole;
+namespace AcadEvalSys.Domain.Exceptions;
 
 public class ForbidException : Exception
 {

@@ -1,4 +1,4 @@
-name: CD - Deploy to Azure (Development)
+name: CD - Deploy AcadEvalSys to Azure (Development)
 
 on:
   push:
@@ -7,9 +7,11 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: restaurant-dev-api
-  AZURE_CONTAINER_REGISTRY: restaurantapiregistry.azurecr.io
-  IMAGE_NAME: restaurant-api
+  AZURE_WEBAPP_NAME: acaditec
+  AZURE_WEBAPP_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP_DEV }}
+  AZURE_CONTAINER_REGISTRY_LOGIN_SERVER: acadevalitecregistry.azurecr.io
+  IMAGE_NAME: acadevalsystem
+  DOCKERFILE_PATH: ./src/AcadEvalSys.WEB/AcadEvalSys.WEB.Server/Dockerfile
 
 jobs:
   build:
@@ -20,22 +22,27 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
 
       - name: Log in to Azure Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.AZURE_CONTAINER_REGISTRY }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+        run: |
+          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./src/Restaurant.API/Dockerfile
+          file: ${{ env.DOCKERFILE_PATH }}
           push: true
-          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: ${{ env.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,19 +51,21 @@ jobs:
       name: Development
 
     steps:
-      - name: Azure Login
+      - name: Log in to Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
 
-      - name: Deploy container image
+      - name: Deploy to Azure Web App
         run: |
           az webapp config container set \
             --name ${{ env.AZURE_WEBAPP_NAME }} \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_DEV }} \
-            --docker-custom-image-name ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-            --docker-registry-server-url https://${{ env.AZURE_CONTAINER_REGISTRY }}
+            --resource-group ${{ env.AZURE_WEBAPP_RESOURCE_GROUP }} \
+            --docker-custom-image-name ${{ env.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --docker-registry-server-url https://${{ env.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
 
+      - name: Restart Azure Web App
+        run: |
           az webapp restart \
             --name ${{ env.AZURE_WEBAPP_NAME }} \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_DEV }}
+            --resource-group ${{ env.AZURE_WEBAPP_RESOURCE_GROUP }}

@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
-using AcadEval.WEB.Middlewares;
+using AcadEvalSys.WEB.Server.Middlewares;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 
-namespace AcadEval.WEB.Extensions;
+namespace AcadEvalSys.WEB.Server.Extensions;
 
 public static class WebApplicationBuilderExtensions
 {

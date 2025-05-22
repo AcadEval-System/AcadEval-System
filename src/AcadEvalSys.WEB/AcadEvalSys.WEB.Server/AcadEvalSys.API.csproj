@@ -5,12 +5,12 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <SpaRoot>../AcadEvalSys.WEB.Client</SpaRoot>
-        <SpaProxyLaunchCommand> npm run dev </SpaProxyLaunchCommand>
+        <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
         <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
         <UserSecretsId>c1357d31-e361-46b4-8d3c-55c23c4df5be</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <DockerfileContext>../..</DockerfileContext>
-        <RootNamespace>AcadEval.WEB</RootNamespace>
+        <DockerfileContext>../../..</DockerfileContext>
+        <RootNamespace>AcadEvalSys.WEB.Server</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -37,9 +37,10 @@
         <ProjectReference Include="../AcadEvalSys.WEB.Client/AcadEvalSys.WEB.Client.esproj">
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
+        <ProjectReference Include="..\..\..\AcadEvalSys.Application\AcadEvalSys.Application.csproj" />
+        <ProjectReference Include="..\..\..\AcadEvalSys.Infrastructure\AcadEvalSys.Infrastructure.csproj" />
         <ProjectReference Include="..\..\AcadEvalSys.Application\AcadEvalSys.Application.csproj" />
         <ProjectReference Include="..\..\AcadEvalSys.Infrastructure\AcadEvalSys.Infrastructure.csproj" />
     </ItemGroup>
-
 
 </Project>

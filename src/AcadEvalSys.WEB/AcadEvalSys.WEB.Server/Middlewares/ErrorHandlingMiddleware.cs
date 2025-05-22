@@ -1,7 +1,6 @@
-using AcadEvalSys.Application.Users.Commands.AssignRole;
 using AcadEvalSys.Domain.Exceptions;
 
-namespace AcadEval.WEB.Middlewares;
+namespace AcadEvalSys.WEB.Server.Middlewares;
 
 public class ErrorHandlingMiddleware(
     ILogger<ErrorHandlingMiddleware> logger,

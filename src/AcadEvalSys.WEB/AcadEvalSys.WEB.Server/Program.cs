@@ -1,8 +1,8 @@
-using AcadEval.WEB.Extensions;
-using AcadEval.WEB.Middlewares;
 using AcadEvalSys.Application.Extensions;
 using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Infrastructure.Extensions;
+using AcadEvalSys.WEB.Server.Extensions;
+using AcadEvalSys.WEB.Server.Middlewares;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
