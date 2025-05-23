@@ -1,0 +1,54 @@
+name: "Solicitud de Característica"
+description: "Solicita una nueva característica o mejora"
+title: "🌟 [Característica]: "
+labels: ["feature"]
+
+body:
+  - type: markdown
+    attributes:
+      value: "# ✨ Descripción\n\nDescribe la característica o cambio que estás proponiendo."
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+      description: "Proporciona detalles sobre la característica que deseas agregar."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## ⚙️ Tipo de Cambio\nMarca la opción correspondiente:"
+
+  - type: checkboxes
+    id: type-of-change
+    attributes:
+      label: Tipo de Cambio
+      options:
+        - label: "🌟 **Característica** - Nueva funcionalidad"
+        - label: "⚙️ **Corrección de error** - Solución de un bug"
+        - label: "🔄 **Refactorización** - Mejora del código sin cambiar funcionalidad"
+        - label: "📄 **Documentación** - Actualizaciones en la documentación"
+        - label: "🛠 **Otro** - Especificar en la descripción"
+
+  - type: markdown
+    attributes:
+      value: "## ✅ ¿Fue probado?\nAsegúrate de que este cambio fue probado correctamente."
+
+  - type: checkboxes
+    id: testing
+    attributes:
+      label: Testing
+      options:
+        - label: "Este cambio fue probado correctamente"
+          required: true
+
+  - type: markdown
+    attributes:
+      value: "## 🛠️ Lista de Verificación"
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Checklist
+      description: "Proporciona información adicional o pasos relacionados con esta solicitud."
