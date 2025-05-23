@@ -1,6 +1,6 @@
 📌 AcademicEval System
 
-AcademicEval System es un sistema diseñado para optimizar la evaluación académica y por competencias dentro de entornos educativos. Permite a docentes, estudiantes y administradores gestionar encuestas académicas y evaluaciones por competencias, generando reportes detallados para mejorar el proceso de aprendizaje.
+AcademicEval System es un sistema diseñado para optimizar la evaluación académica y por competencias dentro de entornos educativos. Permite a docentes, estudiantes y administradores gestionar encuestas académicas y evaluaciones por competencias, generando reportes detallados para mejorar el proceso de aprendizaje. 
 
 🚀 Características principales:
 
