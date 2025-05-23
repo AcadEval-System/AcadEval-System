@@ -6,16 +6,11 @@ on:
       - development
   workflow_dispatch:
 
-env:
-  AZURE_WEBAPP_NAME: acaditec
-  AZURE_WEBAPP_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP_DEV }}
-  AZURE_CONTAINER_REGISTRY_LOGIN_SERVER: acadevalitecregistry.azurecr.io
-  IMAGE_NAME: acadevalsystem
-  DOCKERFILE_PATH: ./src/AcadEvalSys.WEB/AcadEvalSys.WEB.Server/Dockerfile
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: Development
 
     steps:
       - name: Checkout code
@@ -32,15 +27,15 @@ jobs:
 
       - name: Log in to Azure Container Registry
         run: |
-          az acr login --name ${{ env.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
+          az acr login --name ${{ vars.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ${{ env.DOCKERFILE_PATH }}
+          file: ${{ vars.DOCKERFILE_PATH }}
           push: true
-          tags: ${{ env.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: ${{ vars.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ vars.IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -59,13 +54,13 @@ jobs:
       - name: Deploy to Azure Web App
         run: |
           az webapp config container set \
-            --name ${{ env.AZURE_WEBAPP_NAME }} \
-            --resource-group ${{ env.AZURE_WEBAPP_RESOURCE_GROUP }} \
-            --docker-custom-image-name ${{ env.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-            --docker-registry-server-url https://${{ env.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
+            --name ${{ vars.AZURE_WEBAPP_NAME }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_DEV }} \
+            --docker-custom-image-name ${{ vars.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ vars.IMAGE_NAME }}:${{ github.sha }} \
+            --docker-registry-server-url https://${{ vars.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
 
       - name: Restart Azure Web App
         run: |
           az webapp restart \
-            --name ${{ env.AZURE_WEBAPP_NAME }} \
-            --resource-group ${{ env.AZURE_WEBAPP_RESOURCE_GROUP }}
+            --name ${{ vars.AZURE_WEBAPP_NAME }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_DEV }}
