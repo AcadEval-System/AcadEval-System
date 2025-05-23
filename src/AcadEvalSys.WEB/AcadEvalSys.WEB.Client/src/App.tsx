@@ -13,30 +13,18 @@ import { ThemeToggle } from "./components/theme-toggle";
 import { Loader } from "lucide-react";
 
 function App() {
-  const [greeting, setGreeting] = useState<string>("");
+  // const [greeting, setGreeting] = useState<string>(""); // Removed
   const [rickMortData, setRickMortData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     const fetch = async () => {
       await fetchRickMortData();
-      await fetchHelloMessage();
+      // await fetchHelloMessage(); // Removed
     };
     fetch();
   }, []);
 
-  async function fetchHelloMessage() {
-    try {
-      setLoading(true);
-      const response = await fetch("api/Hello");
-      const data = await response.text();
-      setGreeting(data);
-    } catch (error) {
-      console.error("Failed to fetch hello message:", error);
-      setGreeting("Failed to load greeting");
-    } finally {
-      setLoading(false);
-    }
-  }
+  // Removed fetchHelloMessage function
 
   async function fetchRickMortData() {
     try {
@@ -67,7 +55,9 @@ function App() {
         <Card>
           <CardHeader>
             <CardTitle>Cartita</CardTitle>
-            <CardDescription>{greeting}</CardDescription>
+            {/* <CardDescription>{greeting}</CardDescription> */}
+            <CardDescription>Puto el que lo lea</CardDescription>{" "}
+            {/* Or some placeholder if needed */}
           </CardHeader>
           <CardContent>
             {rickMortData ? (
