@@ -3,7 +3,7 @@ name: CD - Deploy AcadEvalSys to Azure (Development)
 on:
   push:
     branches:
-      - development
+      - develop
   workflow_dispatch:
 
 jobs:
