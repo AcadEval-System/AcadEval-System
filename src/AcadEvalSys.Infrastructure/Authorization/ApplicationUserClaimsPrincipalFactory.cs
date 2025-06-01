@@ -6,12 +6,12 @@ using Microsoft.Extensions.Options;
 namespace AcadEvalSys.Infrastructure.Authorization;
 
 public class ApplicationUserClaimsPrincipalFactory(
-UserManager<Usuario> userManager,
+UserManager<User> userManager,
     RoleManager<IdentityRole> roleManager,
 IOptions<IdentityOptions> optionsAccessor)
-    : UserClaimsPrincipalFactory<Usuario, IdentityRole>(userManager, roleManager, optionsAccessor)
+    : UserClaimsPrincipalFactory<User, IdentityRole>(userManager, roleManager, optionsAccessor)
 {
-public override async Task<ClaimsPrincipal> CreateAsync(Usuario user)
+public override async Task<ClaimsPrincipal> CreateAsync(User user)
 {
     var id = await GenerateClaimsAsync(user);
   

@@ -14,8 +14,6 @@
 
     <ItemGroup>
       <Folder Include="Configuration\" />
-      <Folder Include="Repositories\" />
-      <Folder Include="Seeders\" />
       <Folder Include="Storage\" />
     </ItemGroup>
 

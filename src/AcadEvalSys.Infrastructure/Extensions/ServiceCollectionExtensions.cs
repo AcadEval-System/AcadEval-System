@@ -1,6 +1,9 @@
 using AcadEvalSys.Domain.Entities;
+using AcadEvalSys.Domain.Repositories;
 using AcadEvalSys.Infrastructure.Authorization;
 using AcadEvalSys.Infrastructure.Persistence;
+using AcadEvalSys.Infrastructure.Repositories;
+using AcadEvalSys.Infrastructure.Seeders;
 
 namespace AcadEvalSys.Infrastructure.Extensions;
 
@@ -26,9 +29,11 @@ public static class ServiceCollectionExtensions
             options.UseNpgsql(connectionString)
                 .EnableSensitiveDataLogging();
         });
-        services.AddIdentityApiEndpoints<Usuario>()
+        services.AddIdentityApiEndpoints<User>()
             .AddRoles<IdentityRole>()
             .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+        services.AddScoped<IDbSeeder, DbSeeder>();
+        services.AddScoped<ICareerRepository, CareerRepository>();
     }
 }

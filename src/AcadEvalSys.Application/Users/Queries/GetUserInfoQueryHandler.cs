@@ -9,7 +9,7 @@ namespace AcadEvalSys.Application.Users.Queries;
 
 public class GetUserInfoQueryHandler(
     IUserContext userContext,
-    IUserStore<Usuario> userStore,
+    IUserStore<User> userStore,
     IMapper mapper) : IRequestHandler<GetUserInfoQuery, UserInfoDto>
 {
     public async Task<UserInfoDto> Handle(GetUserInfoQuery request, CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ public class GetUserInfoQueryHandler(
 
         if (user is null)
         {
-            throw new NotFoundException(nameof(Usuario), currentUser.Id!);
+            throw new NotFoundException(nameof(User), currentUser.Id!);
         }
 
         return mapper.Map<UserInfoDto>(user);
