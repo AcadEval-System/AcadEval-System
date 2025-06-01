@@ -1,6 +1,7 @@
 using AcadEvalSys.Application.Extensions;
 using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Infrastructure.Extensions;
+using AcadEvalSys.Infrastructure.Seeders;
 using AcadEvalSys.WEB.Server.Extensions;
 using AcadEvalSys.WEB.Server.Middlewares;
 using Microsoft.OpenApi.Models;
@@ -10,15 +11,22 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.AddPresentation();
+    // Presentation layer services, including Serilog, are added here
+    builder.AddPresentation(); 
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
     
     var app = builder.Build();
     
+
+    
     app.UseSerilogRequestLogging();
     app.UseMiddleware<ErrorHandlingMiddleware>();
-    
+
+    var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+
+    await seeder.Seed();
 
     if (app.Environment.IsDevelopment())
     {
@@ -37,7 +45,7 @@ try
     app.UseAuthorization();
 
     app.MapGroup("identity")
-        .MapIdentityApi<Usuario>()
+        .MapIdentityApi<User>()
         .WithTags("Identity"); // Agrupa estos endpoints bajo la etiqueta 'Auth' en Swagger
 
     app.MapControllers();
@@ -55,7 +63,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Error in app startup");
+    Log.Fatal(ex.Message, "Error in app startup");
 }
 finally
 {
