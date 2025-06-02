@@ -4,7 +4,8 @@ namespace AcadEvalSys.Domain.Entities; // Assuming this is your desired namespac
 
 public class User : IdentityUser
 {    
-    public virtual Student? Student { get; set; }
-    public virtual Professor? Professor { get; set; }
-    public virtual Coordinator? Coordinator { get; set; }
+    public virtual Student? Student { get; private set; }
+    public virtual Professor? Professor { get; private set; }
+    public virtual Coordinator? Coordinator { get; private set; }
+    
 }

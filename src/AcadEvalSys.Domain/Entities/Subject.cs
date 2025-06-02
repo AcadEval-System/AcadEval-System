@@ -5,13 +5,13 @@ namespace AcadEvalSys.Domain.Entities
 {
     public class Subject : BaseEntity
     {
-        public string Name { get; set; }
-        public string TechnicalCareerId { get; set; }
+        public string? Name { get; set; }
+        public Guid? TechnicalCareerId { get; set; }
         public int Year { get; set; }
-        public string ProfessorId { get; set; } // References Professor.UserId (which is User.Id)
+        public string? ProfessorId { get; set; }
 
-        public TechnicalCareer TechnicalCareer { get; set; }
-        public Professor Professor { get; set; }
-        public ICollection<StudentSubject> StudentSubjects { get; set; }
+        public virtual TechnicalCareer? TechnicalCareer { get; set; }
+        public virtual Professor? Professor { get; set; }
+        public virtual ICollection<StudentSubject>? StudentSubjects { get; set; } = new List<StudentSubject>();
     }
 }

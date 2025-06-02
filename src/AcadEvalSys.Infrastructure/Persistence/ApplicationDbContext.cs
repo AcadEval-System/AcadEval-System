@@ -31,9 +31,36 @@ public class ApplicationDbContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<Student>().HasKey(s => s.UserId);
-        builder.Entity<Professor>().HasKey(p => p.UserId);
-        builder.Entity<Coordinator>().HasKey(c => c.UserId);
+
+        builder.Entity<Student>(entity =>
+        {
+            entity.HasKey(s => s.UserId);
+
+            entity.HasOne(s => s.User)
+                  .WithOne(u => u.Student)
+                  .HasForeignKey<Student>(s => s.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        builder.Entity<Professor>(entity =>
+        {
+            entity.HasKey(p => p.UserId);
+
+            entity.HasOne(p => p.User)
+                  .WithOne(u => u.Professor)
+                  .HasForeignKey<Professor>(p => p.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        builder.Entity<Coordinator>(entity =>
+        {
+            entity.HasKey(c => c.UserId);
+
+            entity.HasOne(c => c.User)
+                  .WithOne(u => u.Coordinator)
+                  .HasForeignKey<Coordinator>(c => c.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
      
     }
 }

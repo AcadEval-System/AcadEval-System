@@ -1,13 +1,12 @@
 using System;
 
-namespace AcadEvalSys.Domain.Entities
-{
-    public class StudentSubject : BaseEntity
-    {
-        public string StudentId { get; set; } // References Student.UserId (which is User.Id)
-        public string SubjectId { get; set; }
+namespace AcadEvalSys.Domain.Entities;
 
-        public Student Student { get; set; }
-        public Subject Subject { get; set; }
-    }
+public class StudentSubject : BaseEntity
+{
+    public string? StudentId { get; set; } 
+    public Guid? SubjectId { get; set; }
+
+    public virtual Student? Student { get; set; }
+    public virtual Subject? Subject { get; set; }
 }

@@ -5,12 +5,12 @@ namespace AcadEvalSys.Domain.Entities
 {
     public class FormQuestion : BaseEntity
     {
-        public string Text { get; set; }
-        public int Order { get; set; }
+        public string? Text { get; set; }
         public bool IsRequired { get; set; }
-        public string CompetencyId { get; set; }
+        public int Order { get; set; }
+        public Guid? CompetencyId { get; set; }
 
-        public Competency Competency { get; set; }
-        public ICollection<QuestionResponse> QuestionResponses { get; set; }
+        public virtual Competency? Competency { get; set; }
+        public virtual ICollection<QuestionResponse>? QuestionResponses { get; set; } = new List<QuestionResponse>();
     }
 }
