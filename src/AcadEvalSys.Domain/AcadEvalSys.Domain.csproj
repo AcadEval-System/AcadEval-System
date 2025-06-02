@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Interfaces\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <!-- <Reference Include="Microsoft.Extensions.Identity.Stores">
         <HintPath>..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\8.0.15\ref\net8.0\Microsoft.Extensions.Identity.Stores.dll</HintPath>
       </Reference> -->

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcadEvalSys.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250601053551_Initial")]
-    partial class Initial
+    [Migration("20250601224638_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,25 +38,18 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TechnicalCareerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TechnicalCareerId1")
+                    b.Property<Guid?>("TechnicalCareerId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -65,14 +58,11 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Property<string>("UpdatedByUserId")
                         .HasColumnType("text");
 
-                    b.Property<int>("Year")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("TechnicalCareerId1");
+                    b.HasIndex("TechnicalCareerId");
 
                     b.HasIndex("UpdatedByUserId");
 
@@ -84,16 +74,12 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.Property<string>("TechnicalCareerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TechnicalCareerId1")
+                    b.Property<Guid?>("TechnicalCareerId")
                         .HasColumnType("uuid");
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("TechnicalCareerId1");
+                    b.HasIndex("TechnicalCareerId");
 
                     b.ToTable("Coordinators");
                 });
@@ -111,7 +97,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
@@ -130,18 +115,15 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReminderFrequency")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("SendReminders")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -165,11 +147,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CompetencyId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CompetencyId1")
+                    b.Property<Guid?>("CompetencyId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -188,7 +166,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -199,7 +176,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompetencyId1");
+                    b.HasIndex("CompetencyId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -214,7 +191,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("UserId");
@@ -228,15 +204,10 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CompetencyId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CompetencyId1")
+                    b.Property<Guid?>("CompetencyId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("CompetencyName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -245,15 +216,13 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Property<string>("CreatedByUserId")
                         .HasColumnType("text");
 
-                    b.Property<string>("EvaluationId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid?>("EvaluationId")
+                        .HasColumnType("uuid");
 
-                    b.Property<Guid>("EvaluationPeriodId")
+                    b.Property<Guid?>("EvaluationPeriodId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("FormName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
@@ -263,22 +232,15 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ProfessorId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TechnicalCareerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TechnicalCareerId1")
+                    b.Property<Guid?>("TechnicalCareerId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("TechnicalCareerName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -292,7 +254,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompetencyId1");
+                    b.HasIndex("CompetencyId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -300,7 +262,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasIndex("ProfessorId");
 
-                    b.HasIndex("TechnicalCareerId1");
+                    b.HasIndex("TechnicalCareerId");
 
                     b.HasIndex("UpdatedByUserId");
 
@@ -322,21 +284,16 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Property<string>("CreatedByUserId")
                         .HasColumnType("text");
 
-                    b.Property<string>("FormQuestionId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("FormQuestionId1")
+                    b.Property<Guid?>("FormQuestionId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("StudentCompetencyEvaluationId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("ResponseValue")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("StudentCompetencyEvaluationId1")
+                    b.Property<Guid?>("StudentCompetencyEvaluationId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -345,16 +302,13 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Property<string>("UpdatedByUserId")
                         .HasColumnType("text");
 
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("FormQuestionId1");
+                    b.HasIndex("FormQuestionId");
 
-                    b.HasIndex("StudentCompetencyEvaluationId1");
+                    b.HasIndex("StudentCompetencyEvaluationId");
 
                     b.HasIndex("UpdatedByUserId");
 
@@ -378,7 +332,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("CompletedAt")
@@ -396,23 +349,16 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("ProfessorCompetencyAssignmentId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ProfessorCompetencyAssignmentId1")
+                    b.Property<Guid?>("ProfessorCompetencyAssignmentId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("StudentId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("StudentName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -425,7 +371,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("ProfessorCompetencyAssignmentId1");
+                    b.HasIndex("ProfessorCompetencyAssignmentId");
 
                     b.HasIndex("StudentId");
 
@@ -450,14 +396,9 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("StudentId")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("SubjectId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("SubjectId1")
+                    b.Property<Guid?>("SubjectId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -472,7 +413,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.HasIndex("SubjectId1");
+                    b.HasIndex("SubjectId");
 
                     b.HasIndex("UpdatedByUserId");
 
@@ -495,18 +436,12 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ProfessorId")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TechnicalCareerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TechnicalCareerId1")
+                    b.Property<Guid?>("TechnicalCareerId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -524,7 +459,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasIndex("ProfessorId");
 
-                    b.HasIndex("TechnicalCareerId1");
+                    b.HasIndex("TechnicalCareerId");
 
                     b.HasIndex("UpdatedByUserId");
 
@@ -547,7 +482,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -769,9 +703,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
                         .WithMany("Competencies")
-                        .HasForeignKey("TechnicalCareerId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TechnicalCareerId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
                         .WithMany()
@@ -787,10 +719,8 @@ namespace AcadEvalSys.Infrastructure.Migrations
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.Coordinator", b =>
                 {
                     b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
-                        .WithMany()
-                        .HasForeignKey("TechnicalCareerId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Coordinators")
+                        .HasForeignKey("TechnicalCareerId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "User")
                         .WithOne("Coordinator")
@@ -822,9 +752,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
                 {
                     b.HasOne("AcadEvalSys.Domain.Entities.Competency", "Competency")
                         .WithMany("FormQuestions")
-                        .HasForeignKey("CompetencyId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompetencyId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
@@ -856,9 +784,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
                 {
                     b.HasOne("AcadEvalSys.Domain.Entities.Competency", "Competency")
                         .WithMany("ProfessorCompetencyAssignments")
-                        .HasForeignKey("CompetencyId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompetencyId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
@@ -866,21 +792,15 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasOne("AcadEvalSys.Domain.Entities.EvaluationPeriod", "EvaluationPeriod")
                         .WithMany("ProfessorCompetencyAssignments")
-                        .HasForeignKey("EvaluationPeriodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EvaluationPeriodId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.Professor", "Professor")
                         .WithMany("ProfessorCompetencyAssignments")
-                        .HasForeignKey("ProfessorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfessorId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
                         .WithMany("ProfessorCompetencyAssignments")
-                        .HasForeignKey("TechnicalCareerId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TechnicalCareerId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
                         .WithMany()
@@ -907,15 +827,11 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasOne("AcadEvalSys.Domain.Entities.FormQuestion", "FormQuestion")
                         .WithMany("QuestionResponses")
-                        .HasForeignKey("FormQuestionId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FormQuestionId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.StudentCompetencyEvaluation", "StudentCompetencyEvaluation")
                         .WithMany("QuestionResponses")
-                        .HasForeignKey("StudentCompetencyEvaluationId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentCompetencyEvaluationId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
                         .WithMany()
@@ -949,15 +865,11 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasOne("AcadEvalSys.Domain.Entities.ProfessorCompetencyAssignment", "ProfessorCompetencyAssignment")
                         .WithMany("StudentCompetencyEvaluations")
-                        .HasForeignKey("ProfessorCompetencyAssignmentId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfessorCompetencyAssignmentId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.Student", "Student")
                         .WithMany("StudentCompetencyEvaluations")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
                         .WithMany()
@@ -980,15 +892,11 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasOne("AcadEvalSys.Domain.Entities.Student", "Student")
                         .WithMany("StudentSubjects")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.Subject", "Subject")
                         .WithMany("StudentSubjects")
-                        .HasForeignKey("SubjectId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubjectId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
                         .WithMany()
@@ -1011,15 +919,11 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasOne("AcadEvalSys.Domain.Entities.Professor", "Professor")
                         .WithMany("Subjects")
-                        .HasForeignKey("ProfessorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProfessorId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
                         .WithMany("Subjects")
-                        .HasForeignKey("TechnicalCareerId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TechnicalCareerId");
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
                         .WithMany()
@@ -1149,6 +1053,8 @@ namespace AcadEvalSys.Infrastructure.Migrations
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.TechnicalCareer", b =>
                 {
                     b.Navigation("Competencies");
+
+                    b.Navigation("Coordinators");
 
                     b.Navigation("ProfessorCompetencyAssignments");
 

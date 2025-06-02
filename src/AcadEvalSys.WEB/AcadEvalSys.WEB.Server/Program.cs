@@ -14,7 +14,7 @@ try
     // Presentation layer services, including Serilog, are added here
     builder.AddPresentation(); 
     builder.Services.AddApplication();
-    builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
     
     var app = builder.Build();
     
@@ -35,8 +35,12 @@ try
     }
 
     app.UseHttpsRedirection();
-    app.UseDefaultFiles();
-    app.UseStaticFiles();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+    }
    
     app.UsePathBase("/api");
     app.UseRouting();
@@ -50,7 +54,10 @@ try
 
     app.MapControllers();
 
-    app.MapFallbackToFile("/index.html");
+    if (!app.Environment.IsDevelopment())
+    {
+        app.MapFallbackToFile("/index.html");
+    }
 
     var serverAddress = app.Urls.FirstOrDefault() ?? "https://localhost:7004";
     var machineName = Environment.MachineName;
