@@ -21,7 +21,6 @@ import { PersonalPage, TecnicaturasPage } from "./features/administracion";
 import { AppLayout } from "./shared/components/layout";
 
 const rootElement = document.getElementById("root");
-if (!rootElement) throw new Error("Root element not found");
 
 createRoot(rootElement).render(
   <StrictMode>
@@ -52,7 +51,6 @@ createRoot(rootElement).render(
             />
             <Route path="/administration/personal" component={PersonalPage} />
 
-            {/* Rutas de 404  */}
             <Route path="/:rest*">404, not found!</Route>
           </Switch>
         </AppLayout>

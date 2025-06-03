@@ -72,7 +72,6 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-// import { CompetencyRow } from "@/components/ui/competency-row"; // No usado directamente
 import {
   Tooltip,
   TooltipContent,
@@ -82,7 +81,6 @@ import {
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 
-// --- Inicia Mock Data ---
 const TECNICATURAS_MOCK = [
   { id: "tec-1", name: "Tecnicatura en Desarrollo de Software" },
   { id: "tec-2", name: "Tecnicatura en Gestión Industrial" },
@@ -92,7 +90,6 @@ const TECNICATURAS_MOCK = [
 
 const YEARS_MOCK = [1, 2, 3];
 
-// Esquema de validación (mantenido para estructura del formulario)
 const competencyFormSchema = z.object({
   name: z.string().min(3, "El nombre debe tener al menos 3 caracteres."),
   description: z
@@ -111,10 +108,8 @@ const competencyFormSchema = z.object({
     }
   ),
 });
-// --- Termina Mock Data ---
 
 export default function CompetenciasPage() {
-  // const router = useRouter(); // Navegación deshabilitada para el mock
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [tecnicaturaFilter, setTecnicaturaFilter] = useState("all");
@@ -144,16 +139,6 @@ export default function CompetenciasPage() {
         name: competency.name,
         description: competency.description,
         type: competency.type,
-        // Mapeo complejo para tecnicaturaYears - simplificado para mock
-        tecnicaturaYears: TECNICATURAS_MOCK.reduce(
-          (acc, tec) => ({
-            ...acc,
-            [tec.id]: competency.tecnicaturas?.includes(tec.id)
-              ? competency.years || YEARS_MOCK
-              : [],
-          }),
-          {}
-        ),
       });
     } else {
       setEditingCompetency(null);
@@ -161,10 +146,6 @@ export default function CompetenciasPage() {
         name: "",
         description: "",
         type: undefined,
-        tecnicaturaYears: TECNICATURAS_MOCK.reduce(
-          (acc, tec) => ({ ...acc, [tec.id]: [] }),
-          {}
-        ),
       });
     }
     setIsDialogOpen(true);
@@ -185,10 +166,8 @@ export default function CompetenciasPage() {
 
   const handleDelete = (id: string) => {
     console.log("Eliminando competencia (mock):", id);
-    // setCompetencies((prev) => prev.filter((c) => c.id !== id)); // No modificar estado para mock puro
   };
 
-  // Simulación de filtrado para que la UI no se rompa, siempre devuelve array vacío.
   const filteredCompetencies = competencies
     .filter(
       (c) =>
