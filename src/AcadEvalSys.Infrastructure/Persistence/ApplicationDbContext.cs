@@ -13,6 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<TechnicalCareer> TechnicalCareers { get; set; }
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<Competency> Competencies { get; set; }
+    public DbSet<CareerCompetencies> CareerCompetencies { get; set; }
     public DbSet<StudentSubject> StudentSubjects { get; set; }
 
     // Evaluation, Survey, and Form Entities
@@ -25,7 +26,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-        
+
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -61,6 +62,24 @@ public class ApplicationDbContext : IdentityDbContext<User>
                   .HasForeignKey<Coordinator>(c => c.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
-     
+
+        builder.Entity<CareerCompetencies>(entity =>
+        {
+            entity.HasKey(cc => new { cc.CareerId, cc.CompetencyId, cc.CareerYear });
+        });
+
+        builder.Entity<CareerCompetencies>(entity =>
+        {
+            entity.HasOne(cc => cc.Career)
+                .WithMany(c => c.CareerCompetencies)
+                .HasForeignKey(cc => cc.CareerId);
+        });
+
+        builder.Entity<CareerCompetencies>(entity =>
+        {
+            entity.HasOne(cc => cc.Competency)
+                .WithMany(c => c.CareerCompetencies)
+                .HasForeignKey(cc => cc.CompetencyId);
+        });
     }
 }

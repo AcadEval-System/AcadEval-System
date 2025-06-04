@@ -40,5 +40,6 @@ public static class ServiceCollectionExtensions
             .AddEntityFrameworkStores<ApplicationDbContext>();
         services.AddScoped<IDbSeeder, DbSeeder>();
         services.AddScoped<ICareerRepository, CareerRepository>();
+        services.AddScoped<ICompetencyRepository, CompetencyRepository>();
     }
 }
