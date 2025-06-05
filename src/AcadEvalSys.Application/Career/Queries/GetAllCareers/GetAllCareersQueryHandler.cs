@@ -4,7 +4,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace AcadEvalSys.Application.Career.Queries;
+namespace AcadEvalSys.Application.Career.Queries.GetAllCareers;
 
 public class GetAllCareersQueryHandler(ILogger<GetAllCareersQueryHandler> logger, ICareerRepository careerRepository, IMapper mapper) : IRequestHandler<GetAllCareersQuery, IEnumerable<CareerDto>>
 {

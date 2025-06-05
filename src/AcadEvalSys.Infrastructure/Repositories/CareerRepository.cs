@@ -7,14 +7,35 @@ namespace AcadEvalSys.Infrastructure.Repositories;
 
 public class CareerRepository(ApplicationDbContext dbContext) : ICareerRepository
 {
+    public async Task<Guid> Create(TechnicalCareer entity)
+    {
+        dbContext.TechnicalCareers.Add(entity);
+        await dbContext.SaveChangesAsync();
+        return entity.Id;
+    }
+
+    public Task Update()
+    => dbContext.SaveChangesAsync();
+
+    public async Task Delete(TechnicalCareer entity)
+    {
+        dbContext.Update(entity);
+        await dbContext.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<TechnicalCareer>> GetAllCareersAsync()
     {
-        var careers = await dbContext.TechnicalCareers.ToListAsync();
+        var careers = await dbContext.TechnicalCareers
+            .Where(t => t.IsActive == true)
+            .ToListAsync();
         return careers;
     }
 
-    public Task<TechnicalCareer?> GetCareerByIdAsync(Guid id)
+    public async Task<TechnicalCareer?> GetCareerByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var career = await dbContext.TechnicalCareers
+            .FirstOrDefaultAsync(x => x.Id == id);
+        return career;
     }
+
 }
