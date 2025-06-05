@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/src/AcadEvalSys.Infrastructure/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/AcadEvalSys.Application/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/AcadEvalSys.Domain/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/AcadEvalSys.WEB/AcadEvalSys.WEB.Server/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/src/AcadEvalSys.WEB/AcadEvalSys.WEB.Client/"
+    schedule:
+      interval: "weekly"
