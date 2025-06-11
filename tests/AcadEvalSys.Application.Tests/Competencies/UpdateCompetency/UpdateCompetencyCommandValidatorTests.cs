@@ -1,23 +1,23 @@
 using AcadEvalSys.Application.Competencies.Commands.UpdateCompetency;
 using AcadEvalSys.Domain.Enums;
-using AcadEvalSys.Domain.Repositories;
 using FluentValidation.TestHelper;
-using Moq;
 using Xunit;
 
 namespace AcadEvalSys.Application.Tests.Competencies.UpdateCompetency;
 
 public class UpdateCompetencyCommandValidatorTests
 {
-    [Fact()]
-    public async Task Validator_ForValidCommand_ShouldNotHaveValidationsErrors()
+    private readonly UpdateCompetencyCommandValidator _validator;
+
+    public UpdateCompetencyCommandValidatorTests()
+    {
+        _validator = new UpdateCompetencyCommandValidator();
+    }
+
+    [Fact]
+    public void Validator_ForValidCommand_ShouldNotHaveValidationErrors()
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-            .ReturnsAsync(false);
-        
         var command = new UpdateCompetencyCommand()
         {
             Id = Guid.NewGuid(),
@@ -26,49 +26,36 @@ public class UpdateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
 
-        var validator = new UpdateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldNotHaveAnyValidationErrors();
     }
     
-    [Fact()]
-    public async Task Validator_ForDuplicateName_ShouldHaveValidationError()
+    [Fact]
+    public void Validator_ForEmptyId_ShouldHaveValidationError()
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        
-        mockRepository.Setup(x => x.ExistsByNameAsync("Existing Competency"))
-            .ReturnsAsync(true);
-        
         var command = new UpdateCompetencyCommand()
         {
-            Id = Guid.NewGuid(),
-            Name = "Existing Competency",
-            Description = "This is a test competency.",
+            Id = Guid.Empty,
+            Name = "Valid Competency",
+            Description = "Valid description.",
             Type = CompetencyType.Soft
         };
-        
-        var validator = new UpdateCompetencyCommandValidator(mockRepository.Object);
-        
+
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
-        result.ShouldHaveValidationErrorFor(x => x.Name)
-            .WithErrorMessage("A competency with this name already exists.");
+        var result = _validator.TestValidate(command);
+        result.ShouldHaveValidationErrorFor(x => x.Id)
+              .WithErrorMessage("Competency ID is required.");
     }
     
     [Theory]
     [InlineData("")]
     [InlineData(null)]
-    [InlineData("AB")]
-    public async Task Validator_ForInvalidName_ShouldHaveValidationError(string invalidName)
+    [InlineData("AB")] // Too short (less than 3 characters)
+    public void Validator_ForInvalidName_ShouldHaveValidationError(string invalidName)
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new UpdateCompetencyCommand()
         {
             Id = Guid.NewGuid(),
@@ -77,21 +64,15 @@ public class UpdateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
         
-        var validator = new UpdateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
     
-    [Fact()]
-    public async Task Validator_ForTooLongName_ShouldHaveValidationError()
+    [Fact]
+    public void Validator_ForTooLongName_ShouldHaveValidationError()
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new UpdateCompetencyCommand()
         {
             Id = Guid.NewGuid(),
@@ -100,23 +81,17 @@ public class UpdateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
         
-        var validator = new UpdateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
     
     [Theory]
     [InlineData("")]
     [InlineData(null)]
-    public async Task Validator_ForInvalidDescription_ShouldHaveValidationError(string invalidDescription)
+    public void Validator_ForInvalidDescription_ShouldHaveValidationError(string invalidDescription)
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new UpdateCompetencyCommand()
         {
             Id = Guid.NewGuid(),
@@ -125,22 +100,16 @@ public class UpdateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
         
-        var validator = new UpdateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Description)
               .WithErrorMessage("Competency description is required.");
     }
     
-    [Fact()]
-    public async Task Validator_ForTooLongDescription_ShouldHaveValidationError()
+    [Fact]
+    public void Validator_ForTooLongDescription_ShouldHaveValidationError()
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new UpdateCompetencyCommand()
         {
             Id = Guid.NewGuid(),
@@ -149,23 +118,17 @@ public class UpdateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
         
-        var validator = new UpdateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Description)
               .WithErrorMessage("Competency description must not exceed 500 characters.");
     }
     
     [Theory]
     [InlineData((CompetencyType)999)] // Invalid enum value
-    public async Task Validator_ForInvalidType_ShouldHaveValidationError(CompetencyType invalidType)
+    public void Validator_ForInvalidType_ShouldHaveValidationError(CompetencyType invalidType)
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new UpdateCompetencyCommand()
         {
             Id = Guid.NewGuid(),
@@ -174,10 +137,8 @@ public class UpdateCompetencyCommandValidatorTests
             Type = invalidType
         };
         
-        var validator = new UpdateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Type)
               .WithErrorMessage("Invalid competency type.");
     }

@@ -20,6 +20,17 @@ public class UpdateCompetencyCommandHandler(ILogger<UpdateCompetencyCommandHandl
             throw new InvalidOperationException($"Competency with ID {request.Id} was not found.");
         }
 
+        // Validación asíncrona: verificar si ya existe otra competencia con el mismo nombre
+        if (existingCompetency.Name != request.Name)
+        {
+            var nameExists = await competencyRepository.ExistsByNameAsync(request.Name);
+            if (nameExists)
+            {
+                logger.LogWarning("Competency with name '{Name}' already exists", request.Name);
+                throw new InvalidOperationException($"A competency with the name '{request.Name}' already exists.");
+            }
+        }
+
         mapper.Map(request, existingCompetency);
         existingCompetency.UpdatedAt = DateTime.UtcNow;
 
