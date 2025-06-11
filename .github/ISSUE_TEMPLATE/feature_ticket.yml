@@ -1,0 +1,59 @@
+name: "Feature Ticket"
+description: "Solicitar una nueva funcionalidad o mejora"
+title: "[Funcionalidad]: "
+labels: ["feature"]
+
+body:
+  - type: markdown
+    attributes:
+      value: "# Descripción\n\nDescribe la funcionalidad o cambio que propones."
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción
+      description: "Proporciona detalles sobre la funcionalidad que deseas agregar."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Tipo de Cambio\nMarca las opciones relevantes:"
+
+  - type: checkboxes
+    id: type-of-change
+    attributes:
+      label: Tipo de Cambio
+      options:
+        - label: "**Funcionalidad** - Nueva funcionalidad"
+          required: false
+        - label: "**Corrección de Error** - Solución a un bug"
+          required: false
+        - label: "**Refactorización** - Mejora de código sin cambiar la funcionalidad"
+          required: false
+        - label: "**Documentación** - Actualización de documentación"
+          required: false
+        - label: "**Otro** - Otro (especificar en la descripción)"
+          required: false
+
+  - type: markdown
+    attributes:
+      value: "## ¿Fue probado esto?\nAsegúrate de que este cambio haya sido correctamente probado."
+
+  - type: checkboxes
+    id: testing
+    attributes:
+      label: Pruebas
+      options:
+        - label: "Este cambio fue probado correctamente"
+          required: true
+
+  - type: markdown
+    attributes:
+      value: "## Lista de Verificación"
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Lista de Verificación
+      description: "Agrega cualquier información adicional o pasos relacionados con esta solicitud."
