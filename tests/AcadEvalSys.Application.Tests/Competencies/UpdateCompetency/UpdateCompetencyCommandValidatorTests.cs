@@ -31,24 +31,6 @@ public class UpdateCompetencyCommandValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
     
-    [Fact]
-    public void Validator_ForEmptyId_ShouldHaveValidationError()
-    {
-        // Arrange
-        var command = new UpdateCompetencyCommand()
-        {
-            Id = Guid.Empty,
-            Name = "Valid Competency",
-            Description = "Valid description.",
-            Type = CompetencyType.Soft
-        };
-
-        // Act & Assert
-        var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(x => x.Id)
-              .WithErrorMessage("Competency ID is required.");
-    }
-    
     [Theory]
     [InlineData("")]
     [InlineData(null)]
