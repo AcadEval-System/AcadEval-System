@@ -12,6 +12,7 @@ namespace AcadEvalSys.WEB.Server.Controllers;
 
 [ApiController]
 [Route("competencies")]
+[Authorize(Roles = UserRoles.Admin)]
 public class CompetenciesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]

@@ -1,24 +1,23 @@
 using AcadEvalSys.Application.Competencies.Commands.CreateCompetency;
 using AcadEvalSys.Domain.Enums;
-using AcadEvalSys.Domain.Repositories;
 using FluentValidation.TestHelper;
-using Moq;
 using Xunit;
 
 namespace AcadEvalSys.Application.Tests.Competencies.CreateCompetency;
 
 public class CreateCompetencyCommandValidatorTests
 {
-    [Fact()]
-    public async Task Validator_ForValidCommand_ShouldNotHaveValidationsErrors()
+    private readonly CreateCompetencyCommandValidator _validator;
+
+    public CreateCompetencyCommandValidatorTests()
+    {
+        _validator = new CreateCompetencyCommandValidator();
+    }
+
+    [Fact]
+    public void Validator_ForValidCommand_ShouldNotHaveValidationErrors()
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        
-     
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new CreateCompetencyCommand()
         {
             Name = "Test Competency",
@@ -26,49 +25,18 @@ public class CreateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
         
-        var validator = new CreateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldNotHaveAnyValidationErrors();
-    }
-    
-    [Fact()]
-    public async Task Validator_ForDuplicateName_ShouldHaveValidationError()
-    {
-        // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        
-        // Configure mock to return true (competency already exists)
-        mockRepository.Setup(x => x.ExistsByNameAsync("Existing Competency"))
-                     .ReturnsAsync(true);
-        
-        var command = new CreateCompetencyCommand()
-        {
-            Name = "Existing Competency",
-            Description = "This is a test competency.",
-            Type = CompetencyType.Soft
-        };
-        
-        var validator = new CreateCompetencyCommandValidator(mockRepository.Object);
-        
-        // Act & Assert
-        var result = await validator.TestValidateAsync(command);
-        result.ShouldHaveValidationErrorFor(x => x.Name)
-              .WithErrorMessage("A competency with this name already exists.");
     }
     
     [Theory]
     [InlineData("")]
     [InlineData(null)]
-    [InlineData("AB")] 
-    public async Task Validator_ForInvalidName_ShouldHaveValidationError(string invalidName)
+    [InlineData("AB")] // Too short (less than 3 characters)
+    public void Validator_ForInvalidName_ShouldHaveValidationError(string invalidName)
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new CreateCompetencyCommand()
         {
             Name = invalidName,
@@ -76,21 +44,15 @@ public class CreateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
         
-        var validator = new CreateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
     
-    [Fact()]
-    public async Task Validator_ForTooLongName_ShouldHaveValidationError()
+    [Fact]
+    public void Validator_ForTooLongName_ShouldHaveValidationError()
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new CreateCompetencyCommand()
         {
             Name = new string('A', 101), // 101 characters (exceeds max of 100)
@@ -98,21 +60,15 @@ public class CreateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
         
-        var validator = new CreateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
     
-    [Fact()]
-    public async Task Validator_ForTooLongDescription_ShouldHaveValidationError()
+    [Fact]
+    public void Validator_ForTooLongDescription_ShouldHaveValidationError()
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new CreateCompetencyCommand()
         {
             Name = "Valid Competency",
@@ -120,22 +76,16 @@ public class CreateCompetencyCommandValidatorTests
             Type = CompetencyType.Soft
         };
         
-        var validator = new CreateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Description);
     }
     
     [Theory]
     [InlineData((CompetencyType)999)] // Invalid enum value
-    public async Task Validator_ForInvalidType_ShouldHaveValidationError(CompetencyType invalidType)
+    public void Validator_ForInvalidType_ShouldHaveValidationError(CompetencyType invalidType)
     {
         // Arrange
-        var mockRepository = new Mock<ICompetencyRepository>();
-        mockRepository.Setup(x => x.ExistsByNameAsync(It.IsAny<string>()))
-                     .ReturnsAsync(false);
-        
         var command = new CreateCompetencyCommand()
         {
             Name = "Valid Competency",
@@ -143,10 +93,8 @@ public class CreateCompetencyCommandValidatorTests
             Type = invalidType
         };
         
-        var validator = new CreateCompetencyCommandValidator(mockRepository.Object);
-        
         // Act & Assert
-        var result = await validator.TestValidateAsync(command);
+        var result = _validator.TestValidate(command);
         result.ShouldHaveValidationErrorFor(x => x.Type);
     }
 }
