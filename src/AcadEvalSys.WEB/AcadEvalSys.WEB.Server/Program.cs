@@ -1,6 +1,7 @@
 using AcadEvalSys.Application.Extensions;
 using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Infrastructure.Extensions;
+using AcadEvalSys.Infrastructure.Seeders;
 using AcadEvalSys.WEB.Server.Extensions;
 using AcadEvalSys.WEB.Server.Middlewares;
 using Microsoft.OpenApi.Models;
@@ -10,15 +11,22 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.AddPresentation();
+    // Presentation layer services, including Serilog, are added here
+    builder.AddPresentation(); 
     builder.Services.AddApplication();
-    builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
     
     var app = builder.Build();
     
+
+    
     app.UseSerilogRequestLogging();
     app.UseMiddleware<ErrorHandlingMiddleware>();
-    
+
+    var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+
+    await seeder.Seed();
 
     if (app.Environment.IsDevelopment())
     {
@@ -27,8 +35,12 @@ try
     }
 
     app.UseHttpsRedirection();
-    app.UseDefaultFiles();
-    app.UseStaticFiles();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+    }
    
     app.UsePathBase("/api");
     app.UseRouting();
@@ -37,12 +49,15 @@ try
     app.UseAuthorization();
 
     app.MapGroup("identity")
-        .MapIdentityApi<Usuario>()
+        .MapIdentityApi<User>()
         .WithTags("Identity"); // Agrupa estos endpoints bajo la etiqueta 'Auth' en Swagger
 
     app.MapControllers();
 
-    app.MapFallbackToFile("/index.html");
+    if (!app.Environment.IsDevelopment())
+    {
+        app.MapFallbackToFile("/index.html");
+    }
 
     var serverAddress = app.Urls.FirstOrDefault() ?? "https://localhost:7004";
     var machineName = Environment.MachineName;
@@ -55,7 +70,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Error in app startup");
+    Log.Fatal(ex.Message, "Error in app startup");
 }
 finally
 {

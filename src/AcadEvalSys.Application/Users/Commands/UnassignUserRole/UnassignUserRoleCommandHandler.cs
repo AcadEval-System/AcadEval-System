@@ -8,7 +8,7 @@ namespace AcadEvalSys.Application.Users.Commands.UnassignUserRole;
 
 public class UnassingUserRoleCommandHandler(
     ILogger<UnassingUserRoleCommandHandler> logger,
-    UserManager<Usuario> userManager,
+    UserManager<User> userManager,
     RoleManager<IdentityRole> roleManager) : IRequestHandler<UnassingUserRoleCommand>
 {
     public async Task Handle(UnassingUserRoleCommand request, CancellationToken cancellationToken)
@@ -16,7 +16,7 @@ public class UnassingUserRoleCommandHandler(
         logger.LogInformation("Assigning role {RoleName} to user with email {UserEmail}", request.RoleName,
             request.UserEmail);
         var user = await userManager.FindByEmailAsync(request.UserEmail) ??
-                   throw new NotFoundException(nameof(Usuario), request.UserEmail);
+                   throw new NotFoundException(nameof(User), request.UserEmail);
         var role = await roleManager.FindByNameAsync(request.RoleName) ??
                    throw new NotFoundException(nameof(IdentityRole), request.RoleName);
 

@@ -24,7 +24,6 @@
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
           <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
@@ -37,8 +36,6 @@
         <ProjectReference Include="../AcadEvalSys.WEB.Client/AcadEvalSys.WEB.Client.esproj">
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
-        <ProjectReference Include="..\..\..\AcadEvalSys.Application\AcadEvalSys.Application.csproj" />
-        <ProjectReference Include="..\..\..\AcadEvalSys.Infrastructure\AcadEvalSys.Infrastructure.csproj" />
         <ProjectReference Include="..\..\AcadEvalSys.Application\AcadEvalSys.Application.csproj" />
         <ProjectReference Include="..\..\AcadEvalSys.Infrastructure\AcadEvalSys.Infrastructure.csproj" />
     </ItemGroup>

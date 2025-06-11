@@ -17,541 +17,619 @@ namespace AcadEvalSys.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Asignatura", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competency", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("AnioTecnicatura")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("CreatedByUserId")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("PerfilProfesorId")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TecnicaturaId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PerfilProfesorId");
+                    b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("TecnicaturaId");
+                    b.HasIndex("UpdatedByUserId");
 
-                    b.ToTable("Asignaturas");
+                    b.ToTable("Competencies");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competencia", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetencyLevelDescription", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("CompetencyId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("Descripcion")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("FechaActualizacion")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
+                    b.Property<string>("UpdatedByUserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Competencias");
-                });
+                    b.HasIndex("CreatedByUserId");
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Encuesta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.HasIndex("UpdatedByUserId");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreadoPorUsuarioId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("DescripcionAudienciaObjetivo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("FechaFin")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("FechaInicio")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("PlantillaId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Titulo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreadoPorUsuarioId");
-
-                    b.HasIndex("PlantillaId");
-
-                    b.ToTable("Encuestas");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Encuestado", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EncuestaId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("FechaCompletado")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EncuestaId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Encuestados");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EstadoWizard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DatosEstado")
-                        .HasColumnType("text");
-
-                    b.Property<int>("PasoActual")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("TipoWizard")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UltimaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("EstadosWizard");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Evaluacion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ComentariosGenerales")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("EvaluadoUsuarioId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("EvaluadorUsuarioId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaEvaluacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EvaluadoUsuarioId");
-
-                    b.HasIndex("EvaluadorUsuarioId");
-
-                    b.ToTable("Evaluaciones");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EvaluacionCompetencia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("Calificacion")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Comentarios")
-                        .HasColumnType("text");
-
-                    b.Property<int>("CompetenciaId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("EvaluacionId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompetenciaId");
-
-                    b.HasIndex("EvaluacionId");
-
-                    b.ToTable("EvaluacionesCompetencias");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PerfilAlumno", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnioCursado")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("TecnicaturaId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TecnicaturaId");
-
-                    b.HasIndex("UsuarioId")
+                    b.HasIndex("CompetencyId", "Level")
                         .IsUnique();
 
-                    b.ToTable("PerfilesAlumnos");
+                    b.ToTable("CompetencyLevelDescriptions");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PerfilCoordinador", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Coordinator", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("TechnicalCareerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("TechnicalCareerId");
+
+                    b.ToTable("Coordinators");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EvaluationPeriod", b =>
+                {
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("FechaActualizacion")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("FechaCreacion")
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("NotifyClose")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("NotifyStart")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("PeriodFrom")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("TecnicaturaId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("PeriodTo")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
+                    b.Property<string>("ReminderFrequency")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("SendReminders")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TecnicaturaId")
-                        .IsUnique();
+                    b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
+                    b.HasIndex("UpdatedByUserId");
 
-                    b.ToTable("PerfilesCoordinadores");
+                    b.ToTable("EvaluationPeriods");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PerfilProfesor", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EvaluationPeriodCareer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("FechaActualizacion")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("FechaCreacion")
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("EvaluationPeriodId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("TechnicalCareerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
+                    b.Property<string>("UpdatedByUserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
+                    b.HasIndex("CreatedByUserId");
 
-                    b.ToTable("PerfilesProfesores");
+                    b.HasIndex("EvaluationPeriodId");
+
+                    b.HasIndex("TechnicalCareerId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("EvaluationPeriodCareer");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PlantillaEncuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.FormQuestion", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CompetencyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Order")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreadoPorUsuarioId")
-                        .IsRequired()
+                    b.Property<string>("Text")
                         .HasColumnType("text");
 
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("FechaActualizacion")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
+                    b.Property<string>("UpdatedByUserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreadoPorUsuarioId");
+                    b.HasIndex("CompetencyId");
 
-                    b.ToTable("PlantillasEncuestas");
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("FormQuestions");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PreguntaEncuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Professor", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EncuestaId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Opciones")
+                    b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.Property<int>("OrdenEnEncuesta")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("TextoPregunta")
-                        .IsRequired()
+                    b.Property<string>("Phone")
                         .HasColumnType("text");
 
-                    b.Property<string>("TipoPregunta")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("UserId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("EncuestaId");
-
-                    b.ToTable("PreguntasEncuestas");
+                    b.ToTable("Professors");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PreguntaPlantillaEncuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.ProfessorCompetencyAssignment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("CompetencyId")
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("FechaActualizacion")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Opciones")
+                    b.Property<string>("CreatedByUserId")
                         .HasColumnType("text");
 
-                    b.Property<int>("OrdenEnPlantilla")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("EvaluationPeriodId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("PlantillaId")
-                        .HasColumnType("integer");
+                    b.Property<string>("FormName")
+                        .HasColumnType("text");
 
-                    b.Property<string>("TextoPregunta")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("NotificationSentAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ProfessorId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TipoPregunta")
-                        .IsRequired()
+                    b.Property<string>("Status")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("TechnicalCareerId")
+                        .HasColumnType("uuid");
 
-                    b.HasIndex("PlantillaId");
-
-                    b.ToTable("PreguntasPlantillasEncuestas");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.RespuestaEncuesta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EncuestadoId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("FechaActualizacion")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("PreguntaEncuestaId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ValorRespuesta")
+                    b.Property<string>("UpdatedByUserId")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("EncuestadoId");
-
-                    b.HasIndex("PreguntaEncuestaId");
-
-                    b.ToTable("RespuestasEncuestas");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Tecnicatura", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Descripcion")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("PerfilCoordinadorId")
+                    b.Property<int>("Year")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PerfilCoordinadorId")
-                        .IsUnique()
-                        .HasFilter("[PerfilCoordinadorId] IS NOT NULL");
+                    b.HasIndex("CompetencyId");
 
-                    b.ToTable("Tecnicaturas");
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("EvaluationPeriodId");
+
+                    b.HasIndex("ProfessorId");
+
+                    b.HasIndex("TechnicalCareerId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("ProfessorCompetencyAssignments");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Usuario", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.QuestionResponse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("FormQuestionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ResponseValue")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("StudentCompetencyEvaluationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("FormQuestionId");
+
+                    b.HasIndex("StudentCompetencyEvaluationId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("QuestionResponses");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Student", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CurrentYear")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("TechnicalCareerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("TechnicalCareerId");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentCompetencyEvaluation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("CareerYear")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("CompetencyLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("FinalScore")
+                        .HasColumnType("numeric");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ProfessorCompetencyAssignmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ProfessorCompetencyAssignmentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("StudentCompetencyEvaluations");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentEvaluationReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("EvaluationPeriodId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ReportData")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("EvaluationPeriodId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("StudentEvaluationReport");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentSubject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("SubjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("StudentSubjects");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Subject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfessorId")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("TechnicalCareerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("ProfessorId");
+
+                    b.HasIndex("TechnicalCareerId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.TechnicalCareer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("TechnicalCareers");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -569,12 +647,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
-
-                    b.Property<DateTime>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -619,6 +691,36 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("CompetencyTechnicalCareer", b =>
+                {
+                    b.Property<Guid>("CompetenciesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TechnicalCareersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CompetenciesId", "TechnicalCareersId");
+
+                    b.HasIndex("TechnicalCareersId");
+
+                    b.ToTable("CompetencyTechnicalCareer");
+                });
+
+            modelBuilder.Entity("EvaluationPeriodTechnicalCareer", b =>
+                {
+                    b.Property<Guid>("EvaluationPeriodsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TechnicalCareersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("EvaluationPeriodsId", "TechnicalCareersId");
+
+                    b.HasIndex("TechnicalCareersId");
+
+                    b.ToTable("EvaluationPeriodTechnicalCareer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -753,216 +855,388 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Asignatura", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competency", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.PerfilProfesor", "PerfilProfesor")
-                        .WithMany("AsignaturasImpartidas")
-                        .HasForeignKey("PerfilProfesorId");
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
 
-                    b.HasOne("AcadEvalSys.Domain.Entities.Tecnicatura", "Tecnicatura")
-                        .WithMany("Materias")
-                        .HasForeignKey("TecnicaturaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
 
-                    b.Navigation("PerfilProfesor");
+                    b.Navigation("CreatedByUser");
 
-                    b.Navigation("Tecnicatura");
+                    b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Encuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetencyLevelDescription", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "CreadoPorUsuario")
-                        .WithMany()
-                        .HasForeignKey("CreadoPorUsuarioId")
+                    b.HasOne("AcadEvalSys.Domain.Entities.Competency", "Competency")
+                        .WithMany("LevelDescriptions")
+                        .HasForeignKey("CompetencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AcadEvalSys.Domain.Entities.PlantillaEncuesta", "PlantillaEncuesta")
-                        .WithMany("Encuestas")
-                        .HasForeignKey("PlantillaId");
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
 
-                    b.Navigation("CreadoPorUsuario");
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
 
-                    b.Navigation("PlantillaEncuesta");
+                    b.Navigation("Competency");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Encuestado", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Coordinator", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Encuesta", "Encuesta")
-                        .WithMany("Encuestados")
-                        .HasForeignKey("EncuestaId")
+                    b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
+                        .WithMany("Coordinators")
+                        .HasForeignKey("TechnicalCareerId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "User")
+                        .WithOne("Coordinator")
+                        .HasForeignKey("AcadEvalSys.Domain.Entities.Coordinator", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("TechnicalCareer");
 
-                    b.Navigation("Encuesta");
-
-                    b.Navigation("Usuario");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EstadoWizard", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EvaluationPeriod", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "Usuario")
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EvaluationPeriodCareer", b =>
+                {
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.EvaluationPeriod", "EvaluationPeriod")
+                        .WithMany("EvaluationPeriodCareers")
+                        .HasForeignKey("EvaluationPeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Usuario");
+                    b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
+                        .WithMany("EvaluationPeriodCareers")
+                        .HasForeignKey("TechnicalCareerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("EvaluationPeriod");
+
+                    b.Navigation("TechnicalCareer");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Evaluacion", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.FormQuestion", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "EvaluadoUsuario")
+                    b.HasOne("AcadEvalSys.Domain.Entities.Competency", "Competency")
+                        .WithMany("FormQuestions")
+                        .HasForeignKey("CompetencyId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("EvaluadoUsuarioId")
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("Competency");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Professor", b =>
+                {
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "User")
+                        .WithOne("Professor")
+                        .HasForeignKey("AcadEvalSys.Domain.Entities.Professor", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.ProfessorCompetencyAssignment", b =>
+                {
+                    b.HasOne("AcadEvalSys.Domain.Entities.Competency", "Competency")
+                        .WithMany("ProfessorCompetencyAssignments")
+                        .HasForeignKey("CompetencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.EvaluationPeriod", "EvaluationPeriod")
+                        .WithMany("ProfessorCompetencyAssignments")
+                        .HasForeignKey("EvaluationPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.Professor", "Professor")
+                        .WithMany("ProfessorCompetencyAssignments")
+                        .HasForeignKey("ProfessorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
+                        .WithMany("ProfessorCompetencyAssignments")
+                        .HasForeignKey("TechnicalCareerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("Competency");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("EvaluationPeriod");
+
+                    b.Navigation("Professor");
+
+                    b.Navigation("TechnicalCareer");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.QuestionResponse", b =>
+                {
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.FormQuestion", "FormQuestion")
+                        .WithMany("QuestionResponses")
+                        .HasForeignKey("FormQuestionId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.StudentCompetencyEvaluation", "StudentCompetencyEvaluation")
+                        .WithMany("QuestionResponses")
+                        .HasForeignKey("StudentCompetencyEvaluationId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("FormQuestion");
+
+                    b.Navigation("StudentCompetencyEvaluation");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Student", b =>
+                {
+                    b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
+                        .WithMany("Students")
+                        .HasForeignKey("TechnicalCareerId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "User")
+                        .WithOne("Student")
+                        .HasForeignKey("AcadEvalSys.Domain.Entities.Student", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TechnicalCareer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentCompetencyEvaluation", b =>
+                {
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.ProfessorCompetencyAssignment", "ProfessorCompetencyAssignment")
+                        .WithMany("StudentCompetencyEvaluations")
+                        .HasForeignKey("ProfessorCompetencyAssignmentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "EvaluadorUsuario")
+                    b.HasOne("AcadEvalSys.Domain.Entities.Student", "Student")
+                        .WithMany("StudentCompetencyEvaluations")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
                         .WithMany()
-                        .HasForeignKey("EvaluadorUsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("UpdatedByUserId");
 
-                    b.Navigation("EvaluadoUsuario");
+                    b.Navigation("CreatedByUser");
 
-                    b.Navigation("EvaluadorUsuario");
+                    b.Navigation("ProfessorCompetencyAssignment");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EvaluacionCompetencia", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentEvaluationReport", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Competencia", "Competencia")
-                        .WithMany("EvaluacionesCompetencias")
-                        .HasForeignKey("CompetenciaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AcadEvalSys.Domain.Entities.Evaluacion", "Evaluacion")
-                        .WithMany("EvaluacionesCompetencias")
-                        .HasForeignKey("EvaluacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Competencia");
-
-                    b.Navigation("Evaluacion");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PerfilAlumno", b =>
-                {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Tecnicatura", "Tecnicatura")
-                        .WithMany("PerfilesAlumnos")
-                        .HasForeignKey("TecnicaturaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "Usuario")
-                        .WithOne("PerfilAlumno")
-                        .HasForeignKey("AcadEvalSys.Domain.Entities.PerfilAlumno", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tecnicatura");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PerfilCoordinador", b =>
-                {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Tecnicatura", "TecnicaturaCoordinada")
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("TecnicaturaId")
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.EvaluationPeriod", "EvaluationPeriod")
+                        .WithMany("StudentEvaluationReports")
+                        .HasForeignKey("EvaluationPeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "Usuario")
-                        .WithOne("PerfilCoordinador")
-                        .HasForeignKey("AcadEvalSys.Domain.Entities.PerfilCoordinador", "UsuarioId")
+                    b.HasOne("AcadEvalSys.Domain.Entities.Student", "Student")
+                        .WithMany("EvaluationReports")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TecnicaturaCoordinada");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PerfilProfesor", b =>
-                {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "Usuario")
-                        .WithOne("PerfilProfesor")
-                        .HasForeignKey("AcadEvalSys.Domain.Entities.PerfilProfesor", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PlantillaEncuesta", b =>
-                {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", "CreadoPorUsuario")
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
                         .WithMany()
-                        .HasForeignKey("CreadoPorUsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UpdatedByUserId");
 
-                    b.Navigation("CreadoPorUsuario");
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("EvaluationPeriod");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PreguntaEncuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentSubject", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Encuesta", "Encuesta")
-                        .WithMany("PreguntasEncuesta")
-                        .HasForeignKey("EncuestaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
 
-                    b.Navigation("Encuesta");
+                    b.HasOne("AcadEvalSys.Domain.Entities.Student", "Student")
+                        .WithMany("StudentSubjects")
+                        .HasForeignKey("StudentId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.Subject", "Subject")
+                        .WithMany("StudentSubjects")
+                        .HasForeignKey("SubjectId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PreguntaPlantillaEncuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Subject", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.PlantillaEncuesta", "PlantillaEncuesta")
-                        .WithMany("PreguntasPlantillaEncuesta")
-                        .HasForeignKey("PlantillaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
 
-                    b.Navigation("PlantillaEncuesta");
+                    b.HasOne("AcadEvalSys.Domain.Entities.Professor", "Professor")
+                        .WithMany("Subjects")
+                        .HasForeignKey("ProfessorId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", "TechnicalCareer")
+                        .WithMany("Subjects")
+                        .HasForeignKey("TechnicalCareerId");
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("Professor");
+
+                    b.Navigation("TechnicalCareer");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.RespuestaEncuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.TechnicalCareer", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Encuestado", "Encuestado")
-                        .WithMany("RespuestasEncuesta")
-                        .HasForeignKey("EncuestadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
 
-                    b.HasOne("AcadEvalSys.Domain.Entities.PreguntaEncuesta", "PreguntaEncuesta")
-                        .WithMany("RespuestasEncuesta")
-                        .HasForeignKey("PreguntaEncuestaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
 
-                    b.Navigation("Encuestado");
+                    b.Navigation("CreatedByUser");
 
-                    b.Navigation("PreguntaEncuesta");
+                    b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Tecnicatura", b =>
+            modelBuilder.Entity("CompetencyTechnicalCareer", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.PerfilCoordinador", "PerfilCoordinador")
-                        .WithOne()
-                        .HasForeignKey("AcadEvalSys.Domain.Entities.Tecnicatura", "PerfilCoordinadorId");
+                    b.HasOne("AcadEvalSys.Domain.Entities.Competency", null)
+                        .WithMany()
+                        .HasForeignKey("CompetenciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("PerfilCoordinador");
+                    b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", null)
+                        .WithMany()
+                        .HasForeignKey("TechnicalCareersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EvaluationPeriodTechnicalCareer", b =>
+                {
+                    b.HasOne("AcadEvalSys.Domain.Entities.EvaluationPeriod", null)
+                        .WithMany()
+                        .HasForeignKey("EvaluationPeriodsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcadEvalSys.Domain.Entities.TechnicalCareer", null)
+                        .WithMany()
+                        .HasForeignKey("TechnicalCareersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -976,7 +1250,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", null)
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -985,7 +1259,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", null)
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1000,7 +1274,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", null)
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1009,66 +1283,87 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.Usuario", null)
+                    b.HasOne("AcadEvalSys.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competencia", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competency", b =>
                 {
-                    b.Navigation("EvaluacionesCompetencias");
+                    b.Navigation("FormQuestions");
+
+                    b.Navigation("LevelDescriptions");
+
+                    b.Navigation("ProfessorCompetencyAssignments");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Encuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.EvaluationPeriod", b =>
                 {
-                    b.Navigation("Encuestados");
+                    b.Navigation("EvaluationPeriodCareers");
 
-                    b.Navigation("PreguntasEncuesta");
+                    b.Navigation("ProfessorCompetencyAssignments");
+
+                    b.Navigation("StudentEvaluationReports");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Encuestado", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.FormQuestion", b =>
                 {
-                    b.Navigation("RespuestasEncuesta");
+                    b.Navigation("QuestionResponses");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Evaluacion", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Professor", b =>
                 {
-                    b.Navigation("EvaluacionesCompetencias");
+                    b.Navigation("ProfessorCompetencyAssignments");
+
+                    b.Navigation("Subjects");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PerfilProfesor", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.ProfessorCompetencyAssignment", b =>
                 {
-                    b.Navigation("AsignaturasImpartidas");
+                    b.Navigation("StudentCompetencyEvaluations");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PlantillaEncuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Student", b =>
                 {
-                    b.Navigation("Encuestas");
+                    b.Navigation("EvaluationReports");
 
-                    b.Navigation("PreguntasPlantillaEncuesta");
+                    b.Navigation("StudentCompetencyEvaluations");
+
+                    b.Navigation("StudentSubjects");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.PreguntaEncuesta", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentCompetencyEvaluation", b =>
                 {
-                    b.Navigation("RespuestasEncuesta");
+                    b.Navigation("QuestionResponses");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Tecnicatura", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Subject", b =>
                 {
-                    b.Navigation("Materias");
-
-                    b.Navigation("PerfilesAlumnos");
+                    b.Navigation("StudentSubjects");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Usuario", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.TechnicalCareer", b =>
                 {
-                    b.Navigation("PerfilAlumno");
+                    b.Navigation("Coordinators");
 
-                    b.Navigation("PerfilCoordinador");
+                    b.Navigation("EvaluationPeriodCareers");
 
-                    b.Navigation("PerfilProfesor");
+                    b.Navigation("ProfessorCompetencyAssignments");
+
+                    b.Navigation("Students");
+
+                    b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Coordinator");
+
+                    b.Navigation("Professor");
+
+                    b.Navigation("Student");
                 });
 #pragma warning restore 612, 618
         }

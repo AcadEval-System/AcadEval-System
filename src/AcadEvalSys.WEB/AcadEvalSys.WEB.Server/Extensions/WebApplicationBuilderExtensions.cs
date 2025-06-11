@@ -10,6 +10,17 @@ public static class WebApplicationBuilderExtensions
 {
     public static void AddPresentation(this WebApplicationBuilder builder)
     {
+        // Initialize Serilog bootstrap logger
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateBootstrapLogger();
+
+        // Configure Serilog
+        builder.Host.UseSerilog((context, services, configuration) => configuration
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext());
+
         builder.Services.AddControllers()
             .AddJsonOptions(options =>
             {
@@ -39,13 +50,5 @@ public static class WebApplicationBuilderExtensions
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
-
-        builder.Host.UseSerilog((context, configuration) => configuration
-            .ReadFrom.Configuration(context.Configuration)
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Information)
-            .WriteTo.Console(
-                outputTemplate:
-                $"[{{Timestamp:dd-MM HH:mm:ss}} {{Level:u3}}] |{{SourceContext}}{{NewLine}}{{Message:lj}}{{NewLine}}{{Exception}}")); // Registra el logger (Serilog)
     }
 }
