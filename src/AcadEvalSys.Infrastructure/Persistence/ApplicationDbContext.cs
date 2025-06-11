@@ -13,7 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<TechnicalCareer> TechnicalCareers { get; set; }
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<Competency> Competencies { get; set; }
-    public DbSet<CareerCompetencies> CareerCompetencies { get; set; }
+    public DbSet<CompetencyLevelDescription> CompetencyLevelDescriptions { get; set; }
     public DbSet<StudentSubject> StudentSubjects { get; set; }
 
     // Evaluation, Survey, and Form Entities
@@ -63,23 +63,29 @@ public class ApplicationDbContext : IdentityDbContext<User>
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        builder.Entity<CareerCompetencies>(entity =>
+        builder.Entity<StudentCompetencyEvaluation>(entity =>
         {
-            entity.HasKey(cc => new { cc.CareerId, cc.CompetencyId, cc.CareerYear });
+            entity.HasOne(e => e.Student)
+                .WithMany(s => s.StudentCompetencyEvaluations)
+                .HasForeignKey(e => e.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.ProfessorCompetencyAssignment)
+                .WithMany(p => p.StudentCompetencyEvaluations)
+                .HasForeignKey(e => e.ProfessorCompetencyAssignmentId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
-        builder.Entity<CareerCompetencies>(entity =>
+        builder.Entity<CompetencyLevelDescription>(entity =>
         {
-            entity.HasOne(cc => cc.Career)
-                .WithMany(c => c.CareerCompetencies)
-                .HasForeignKey(cc => cc.CareerId);
-        });
+            entity.HasOne(cld => cld.Competency)
+                .WithMany(c => c.LevelDescriptions)
+                .HasForeignKey(cld => cld.CompetencyId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<CareerCompetencies>(entity =>
-        {
-            entity.HasOne(cc => cc.Competency)
-                .WithMany(c => c.CareerCompetencies)
-                .HasForeignKey(cc => cc.CompetencyId);
+            // Ensure unique combination of CompetencyId and Level
+            entity.HasIndex(cld => new { cld.CompetencyId, cld.Level })
+                .IsUnique();
         });
     }
 }
