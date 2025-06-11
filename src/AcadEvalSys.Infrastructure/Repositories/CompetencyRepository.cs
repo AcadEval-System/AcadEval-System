@@ -9,7 +9,7 @@ public class CompetencyRepository(ApplicationDbContext dbContext) : ICompetencyR
 {
     public async Task<IEnumerable<Competency>> GetAllCompetenciesAsync()
     {
-        var competencies = await dbContext.Competencies.ToListAsync();
+        var competencies = await dbContext.Competencies.Where(c => c.IsActive).ToListAsync();
         return competencies;
     }
 
@@ -32,15 +32,15 @@ public class CompetencyRepository(ApplicationDbContext dbContext) : ICompetencyR
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteCompetencyAsync(Competency competency)
+    public async Task DeleteCompetencyAsync(Guid id)
     {
-        dbContext.Remove(competency);
+        var competencyToDelete = await dbContext.Competencies.FirstOrDefaultAsync(c => c.Id == id);
+        competencyToDelete!.IsActive = false; 
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task AddCareerCompetenciesAsync(IEnumerable<CareerCompetencies> careerCompetencies)
+    public Task<bool> ExistsByNameAsync(string name)
     {
-        dbContext.CareerCompetencies.AddRange(careerCompetencies);
-        await dbContext.SaveChangesAsync();
+        return dbContext.Competencies.AnyAsync(c => c.Name == name);
     }
 }
