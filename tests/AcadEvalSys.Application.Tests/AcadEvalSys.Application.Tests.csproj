@@ -30,7 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Competencies\DeleteCompetency\" />
+      <Folder Include="Competencies\Commands\" />
     </ItemGroup>
 
 </Project>

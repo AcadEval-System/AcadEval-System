@@ -8,7 +8,7 @@ public interface ICompetencyRepository
     Task<Competency?> GetCompetencyByIdAsync(Guid id);
     Task<Guid> CreateCompetencyAsync(Competency competency);
     Task UpdateCompetencyAsync(Competency competency);
-    Task DeleteCompetencyAsync(Guid id);
+    Task DeleteCompetencyAsync(Guid id, string? updatedByUserId = null);
     Task<bool> ExistsByNameAsync(string name);
     
 }

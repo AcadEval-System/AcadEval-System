@@ -3,7 +3,7 @@ using AcadEvalSys.Domain.Enums;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace AcadEvalSys.Application.Tests.Competencies.UpdateCompetency;
+namespace AcadEvalSys.Application.Tests.Competencies.Commands.UpdateCompetency;
 
 public class UpdateCompetencyCommandValidatorTests
 {
