@@ -1,4 +1,5 @@
 using AcadEvalSys.Application.Competencies.Dtos;
+using AcadEvalSys.Domain.Exceptions;
 using AcadEvalSys.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -13,6 +14,13 @@ public class GetCompetencyQueryHandler(ILogger<GetCompetencyQueryHandler> logger
         logger.LogInformation("Getting competency with ID: {Id}", request.Id);
         
         var competency = await competencyRepository.GetCompetencyByIdAsync(request.Id);
+        
+        if (competency == null)
+        {
+            logger.LogWarning("Competency with ID: {Id} not found", request.Id);
+            throw new NotFoundException(nameof(competency), request.Id.ToString());
+        }
+        
         var competencyDto = mapper.Map<CompetencyDto>(competency);
         return competencyDto;
     }

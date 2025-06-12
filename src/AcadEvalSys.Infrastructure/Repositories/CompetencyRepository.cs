@@ -32,10 +32,19 @@ public class CompetencyRepository(ApplicationDbContext dbContext) : ICompetencyR
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteCompetencyAsync(Guid id)
+    public async Task DeleteCompetencyAsync(Guid id, string? updatedByUserId = null)
     {
         var competencyToDelete = await dbContext.Competencies.FirstOrDefaultAsync(c => c.Id == id);
-        competencyToDelete!.IsActive = false; 
+        
+        if (competencyToDelete == null)
+        {
+            throw new InvalidOperationException($"Competency with ID {id} was not found.");
+        }
+        
+        competencyToDelete.IsActive = false;
+        competencyToDelete.UpdatedAt = DateTime.UtcNow;
+        competencyToDelete.UpdatedByUserId = updatedByUserId ?? String.Empty;
+        
         await dbContext.SaveChangesAsync();
     }
 

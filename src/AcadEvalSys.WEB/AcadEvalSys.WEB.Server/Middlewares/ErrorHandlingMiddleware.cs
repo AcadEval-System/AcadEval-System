@@ -33,6 +33,15 @@ public class ErrorHandlingMiddleware(
             await context.Response.WriteAsJsonAsync(new { Message = "Access forbbiden" });
             logger.LogWarning(forbid.Message);
         }
+        
+        catch (DuplicateResourceException duplicate)
+        {
+            context.Response.StatusCode = 409;
+            await context.Response.WriteAsJsonAsync(new { Message = duplicate.Message });
+            logger.LogWarning(duplicate.Message);
+        }
+        
+        
         catch (Exception ex)
         {
             // En desarrollo
