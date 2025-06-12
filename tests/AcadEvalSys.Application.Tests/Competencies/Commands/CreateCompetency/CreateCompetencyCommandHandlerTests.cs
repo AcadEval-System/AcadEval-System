@@ -92,11 +92,11 @@ public class CreateCompetencyCommandHandlerTests
             .ReturnsAsync(true); // Competency already exists
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<InvalidOperationException>(
+        var exception = await Assert.ThrowsAsync<DuplicateResourceException>(
             () => _handler.Handle(command, CancellationToken.None)
         );
 
-        exception.Message.Should().Be($"A competency with the name '{command.Name}' already exists.");   
+        exception.Message.Should().Be($"Competency with name '{command.Name}' already exists.");   
     }
 
     [Fact]
