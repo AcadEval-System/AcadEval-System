@@ -96,7 +96,7 @@ public class CreateCompetencyCommandHandlerTests
             () => _handler.Handle(command, CancellationToken.None)
         );
 
-        exception.Message.Should().Be($"Competency with name '{command.Name}' already exists.");   
+        exception.Message.Should().Be($"Competency with name '{command.Name}' already exists");
     }
 
     [Fact]
