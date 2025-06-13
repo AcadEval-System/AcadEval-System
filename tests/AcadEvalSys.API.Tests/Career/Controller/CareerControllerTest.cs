@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Xunit;
 using FluentAssertions;
 
-namespace AcadEvalSys.API.Tests.Controllers
+namespace AcadEvalSys.API.Tests.Career.Controllers
 {
     public class CareerControllerTest : IClassFixture<WebApplicationFactory<Program>>
     {
@@ -29,5 +29,19 @@ namespace AcadEvalSys.API.Tests.Controllers
 
             
         }
+
+        [Fact]
+        public async Task GetAll_ForInvalidRequest_Return400BadRequest()
+        {
+            var client = _factory.CreateClient();
+
+            var result = await client.GetAsync("/careers?pageNumber=1&pageSize=10");
+
+            result.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+
+
+        }
+
+
     }
 }
