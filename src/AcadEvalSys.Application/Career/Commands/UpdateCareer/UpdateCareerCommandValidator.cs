@@ -13,6 +13,9 @@ namespace AcadEvalSys.Application.Career.Commands.UpdateCareer
         {
             RuleFor(dto => dto.Name)
                 .Length(3, 100);
+            RuleFor(x => x.Name)
+                .NotEmpty()
+                .WithMessage("El nombre es obligatorio.");
 
         }
     }
