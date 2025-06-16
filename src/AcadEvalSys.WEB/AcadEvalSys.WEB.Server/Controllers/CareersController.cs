@@ -3,7 +3,6 @@ using AcadEvalSys.Application.Career.Commands.DeleteCareer;
 using AcadEvalSys.Application.Career.Commands.UpdateCareer;
 using AcadEvalSys.Application.Career.Dtos;
 using AcadEvalSys.Application.Career.Queries;
-using AcadEvalSys.Application.Career.Queries.GetAllCareers;
 using AcadEvalSys.Application.Career.Queries.GetCareerById;
 using AcadEvalSys.Domain.Constants.Constants;
 using MediatR;

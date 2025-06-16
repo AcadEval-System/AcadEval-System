@@ -1,17 +1,16 @@
-using System;
-using System.Collections.Generic;
+using AcadEvalSys.Domain.Enums;
 
 namespace AcadEvalSys.Domain.Entities
 {
     public class Competency : BaseEntity
     {
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-        public string? Type { get; set; }
-        public Guid? TechnicalCareerId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public CompetencyType Type { get; set; } 
 
-        public virtual TechnicalCareer? TechnicalCareer { get; set; }
         public virtual ICollection<FormQuestion>? FormQuestions { get; set; } = new List<FormQuestion>();
         public virtual ICollection<ProfessorCompetencyAssignment>? ProfessorCompetencyAssignments { get; set; } = new List<ProfessorCompetencyAssignment>();
+        public virtual ICollection<TechnicalCareer>? TechnicalCareers { get; set; } = new List<TechnicalCareer>();
+        public virtual ICollection<CompetencyLevelDescription>? LevelDescriptions { get; set; } = new List<CompetencyLevelDescription>();
     }
 }

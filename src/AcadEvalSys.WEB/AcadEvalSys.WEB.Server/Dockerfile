@@ -53,7 +53,7 @@ COPY ["src/AcadEvalSys.WEB/AcadEvalSys.WEB.Client/package.json", "src/AcadEvalSy
 COPY ["src/AcadEvalSys.WEB/AcadEvalSys.WEB.Client/package-lock.json", "src/AcadEvalSys.WEB/AcadEvalSys.WEB.Client/"]
 # If you use other files for npm like .npmrc, copy them here
 WORKDIR /src/src/AcadEvalSys.WEB/AcadEvalSys.WEB.Client
-RUN npm install && \
+RUN npm install --legacy-peer-deps && \
     npm cache clean --force
 
 # Copy the rest of the source code
