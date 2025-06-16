@@ -1,5 +1,6 @@
 ﻿using AcadEvalSys.Application.Career.Commands.CreateCareer;
 using FluentValidation.TestHelper;
+using Xunit;
 
 namespace AcadEvalSys.Application.Tests.Career.Commands.CreateCareer;
 
