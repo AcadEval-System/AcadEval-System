@@ -10,11 +10,7 @@ namespace AcadEvalSys.Domain.Entities
         public string? Description { get; set; }
         public DateTime PeriodFrom { get; set; }
         public DateTime PeriodTo { get; set; }
-        public bool NotifyStart { get; set; }
-        public bool SendReminders { get; set; }
-        public bool NotifyClose { get; set; }
-        public string? ReminderFrequency { get; set; }
-        public string? Status { get; set; }
+      
 
         public virtual ICollection<ProfessorCompetencyAssignment>? ProfessorCompetencyAssignments { get; set; } = new List<ProfessorCompetencyAssignment>();
         public virtual ICollection<EvaluationPeriodCareer>? EvaluationPeriodCareers { get; set; } = new List<EvaluationPeriodCareer>();

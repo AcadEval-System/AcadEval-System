@@ -13,8 +13,9 @@ public class CareerRepository(ApplicationDbContext dbContext) : ICareerRepositor
         return careers;
     }
 
-    public Task<TechnicalCareer?> GetCareerByIdAsync(Guid id)
+    public async Task<TechnicalCareer?> GetCareerByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var career = await dbContext.TechnicalCareers.FirstOrDefaultAsync(c => c.Id == id);
+        return career;
     }
 }

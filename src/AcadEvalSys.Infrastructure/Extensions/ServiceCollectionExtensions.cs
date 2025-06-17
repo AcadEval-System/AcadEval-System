@@ -41,5 +41,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDbSeeder, DbSeeder>();
         services.AddScoped<ICareerRepository, CareerRepository>();
         services.AddScoped<ICompetencyRepository, CompetencyRepository>();
+        services.AddScoped<IEvaluationPeriodRepository, EvaluationPeriodRepository>();
+        services.AddScoped<IProfessorCompetencyAssignmentRepository, ProfessorCompetencyAssignmentRepository>();
     }
 }
