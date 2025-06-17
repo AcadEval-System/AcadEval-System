@@ -18,43 +18,38 @@ using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Net.Http;
+using System.Text;
 
 namespace AcadEvalSys.API.tests.Career.Controller
 {
-    public class CareerControllerTest : IClassFixture<WebApplicationFactory<Program>>
+    [Collection("Integration Tests")]
+    public class CareerControllerTest : BaseIntegrationTest
     {
-        private readonly WebApplicationFactory<Program> _factory;
         private readonly Mock<ICareerRepository> _careerRepositoryMock = new();
-        private readonly Mock<IUserContext> _userContextMock = new();
-        private JsonSerializerOptions _jsonOptions;
-        public CareerControllerTest(WebApplicationFactory<Program> factory)
+
+        protected override void ResetSpecificMocks()
         {
-            _factory = factory.WithWebHostBuilder(builder =>
+            _careerRepositoryMock.Reset();
+        }
+
+        protected override WebApplicationFactory<Program> CreateFactory()
+        {
+            return new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
                 {
-                    builder.ConfigureTestServices(services =>
-                    {
-                        services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
-                        services.Replace(ServiceDescriptor.Scoped(typeof(ICareerRepository),
-                            _ => _careerRepositoryMock.Object));
-                        services.Replace(ServiceDescriptor.Scoped(typeof(IUserContext),
-                            _ => _userContextMock.Object));
-                    });
-                    var currentUser = new CurrentUser("1", "test@test.com", [UserRoles.Admin]);
-                    _userContextMock.Setup(uc => uc.GetCurrentUser()).Returns(currentUser);
-
-                    _jsonOptions = new JsonSerializerOptions
-                    {
-                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                        Converters = { new JsonStringEnumConverter() }
-                    };
-                }
-
-            );
-        }   
+                    ConfigureTestServices(services);
+                    services.Replace(ServiceDescriptor.Scoped(typeof(ICareerRepository),
+                        _ => _careerRepositoryMock.Object));
+                });
+            });
+        }
         
         [Fact]
         public async Task GetCareers_ForValidRequest_Returns200Ok()
         {
+            // Arrange
             var careers = new List<TechnicalCareer>
             {
                 new() { Id = Guid.NewGuid(), Name = "Career 1" },
@@ -62,30 +57,30 @@ namespace AcadEvalSys.API.tests.Career.Controller
             };
             _careerRepositoryMock.Setup(repo => repo.GetAllCareersAsync())
                 .ReturnsAsync(careers);
-            
-            var client = _factory.CreateClient();
 
-            var result = await client.GetAsync("/careers");
+            // Act
+            var result = await Client.GetAsync("/careers");
 
+            // Assert
             result.StatusCode.Should().Be(HttpStatusCode.OK);
-
         }
 
         [Fact]
         public async Task GetCareerById_ForValidId_Returns200Ok()
         {
+            // Arrange
             var careerId = Guid.NewGuid();
             var career = new TechnicalCareer { Id = careerId, Name = "Career 1" };
             _careerRepositoryMock.Setup(repo => repo.GetCareerByIdAsync(careerId))
                 .ReturnsAsync(career);
-            
-            var client = _factory.CreateClient();
 
-            var result = await client.GetAsync($"/careers/{careerId}");
+            // Act
+            var result = await Client.GetAsync($"/careers/{careerId}");
 
+            // Assert
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             var content = await result.Content.ReadAsStringAsync();
-            var careerDto = JsonSerializer.Deserialize<CareerDto>(content, _jsonOptions);
+            var careerDto = JsonSerializer.Deserialize<CareerDto>(content, JsonOptions);
             careerDto.Should().NotBeNull();
             careerDto.Id.Should().Be(careerId);
         }
@@ -93,17 +88,18 @@ namespace AcadEvalSys.API.tests.Career.Controller
         [Fact]
         public async Task CreateCareer_ForValidRequest_Returns201Created()
         {
+            // Arrange
             var newCareer = new CreateCareerCommand { Name = "New Career" };
             var createdId = Guid.NewGuid();
             _careerRepositoryMock.Setup(repo => repo.Create(It.IsAny<TechnicalCareer>()))
                 .ReturnsAsync(createdId);
-            
-            var client = _factory.CreateClient();
 
-            var content = new StringContent(JsonSerializer.Serialize(newCareer, _jsonOptions), 
-                System.Text.Encoding.UTF8, "application/json");
-            var result = await client.PostAsync("/careers", content);
+            // Act
+            var json = JsonSerializer.Serialize(newCareer, JsonOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var result = await Client.PostAsync("/careers", content);
 
+            // Assert
             result.StatusCode.Should().Be(HttpStatusCode.Created);
             result.Headers.Location.Should().NotBeNull();
             result.Headers.Location!.AbsolutePath.Should().Be($"/careers/{createdId}");
@@ -112,6 +108,7 @@ namespace AcadEvalSys.API.tests.Career.Controller
         [Fact]
         public async Task UpdateCareer_ForValidRequest_Returns204NoContent()
         {
+            // Arrange
             var careerId = Guid.NewGuid();
             var existingCareer = new TechnicalCareer { Id = careerId, Name = "Existing Career" };
             var updateCareer = new UpdateCareerCommand
@@ -124,27 +121,30 @@ namespace AcadEvalSys.API.tests.Career.Controller
             _careerRepositoryMock.Setup(repo => repo.Update())
                 .Returns(Task.CompletedTask);
             
-            var client = _factory.CreateClient();
-            var json = JsonSerializer.Serialize(updateCareer);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            // Act
+            var json = JsonSerializer.Serialize(updateCareer, JsonOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var result = await Client.PatchAsync($"/careers/{careerId}", content);
             
-            var result = await client.PatchAsync($"/careers/{careerId}", content);
-            
+            // Assert
             result.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
         
         [Fact]
         public async Task DeleteCareer_ForValidId_Returns204NoContent()
         {
+            // Arrange
             var careerId = Guid.NewGuid();
             var existingCareer = new TechnicalCareer { Id = careerId, Name = "Career to Delete" };
             _careerRepositoryMock.Setup(repo => repo.GetCareerByIdAsync(careerId))
                 .ReturnsAsync(existingCareer);
             _careerRepositoryMock.Setup(repo => repo.Delete(existingCareer))
                 .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await Client.DeleteAsync($"/careers/{careerId}");
             
-            var client = _factory.CreateClient();
-            var result = await client.DeleteAsync($"/careers/{careerId}");
+            // Assert
             result.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }

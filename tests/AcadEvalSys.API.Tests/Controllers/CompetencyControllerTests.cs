@@ -20,35 +20,27 @@ using AcadEvalSys.Domain.Repositories;
 
 namespace AcadEvalSys.API.Tests.Controllers;
 
-public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Program>>
+[Collection("Integration Tests")]
+public class CompetencyControllerTests : BaseIntegrationTest
 {
-    private readonly WebApplicationFactory<Program> _factory;
     private readonly Mock<ICompetencyRepository> _competencyRepositoryMock = new();
-    private readonly Mock<IUserContext> _userContextMock = new();
-    private readonly JsonSerializerOptions _jsonOptions;
 
-    public CompetencyControllerTests(WebApplicationFactory<Program> factory)
+    protected override void ResetSpecificMocks()
     {
-        _factory = factory.WithWebHostBuilder(builder =>
+        _competencyRepositoryMock.Reset();
+    }
+
+    protected override WebApplicationFactory<Program> CreateFactory()
+    {
+        return new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
         {
             builder.ConfigureTestServices(services =>
             {
-                services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
+                ConfigureTestServices(services);
                 services.Replace(ServiceDescriptor.Scoped(typeof(ICompetencyRepository),
-                                            _ => _competencyRepositoryMock.Object));
-                services.Replace(ServiceDescriptor.Scoped(typeof(IUserContext),
-                                            _ => _userContextMock.Object));
+                                    _ => _competencyRepositoryMock.Object));
             });
         });
-
-        var currentUser = new CurrentUser("1", "test@test.com", [UserRoles.Admin]);
-        _userContextMock.Setup(uc => uc.GetCurrentUser()).Returns(currentUser);
-
-        _jsonOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { new JsonStringEnumConverter() }
-        };
     }
 
     [Fact]
@@ -63,10 +55,8 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
 
         _competencyRepositoryMock.Setup(m => m.GetAllCompetenciesAsync()).ReturnsAsync(competencies);
 
-        var client = _factory.CreateClient();
-
         // Act
-        var response = await client.GetAsync("/competencies");
+        var response = await Client.GetAsync("/competencies");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -87,11 +77,9 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
 
         _competencyRepositoryMock.Setup(m => m.GetCompetencyByIdAsync(competencyId)).ReturnsAsync(competency);
 
-        var client = _factory.CreateClient();
-
         // Act
-        var response = await client.GetAsync($"/competencies/{competencyId}");
-        var competencyDto = await response.Content.ReadFromJsonAsync<CompetencyDto>(_jsonOptions);
+        var response = await Client.GetAsync($"/competencies/{competencyId}");
+        var competencyDto = await response.Content.ReadFromJsonAsync<CompetencyDto>(JsonOptions);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -109,10 +97,8 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
 
         _competencyRepositoryMock.Setup(m => m.GetCompetencyByIdAsync(competencyId)).ReturnsAsync((Competency?)null);
 
-        var client = _factory.CreateClient();
-
         // Act
-        var response = await client.GetAsync($"/competencies/{competencyId}");
+        var response = await Client.GetAsync($"/competencies/{competencyId}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -134,12 +120,11 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
         _competencyRepositoryMock.Setup(m => m.ExistsByNameAsync(competency.Name)).ReturnsAsync(false);
         _competencyRepositoryMock.Setup(m => m.CreateCompetencyAsync(It.IsAny<Competency>())).ReturnsAsync(expectedId);
 
-        var client = _factory.CreateClient();
-        var json = JsonSerializer.Serialize(competency);
+        var json = JsonSerializer.Serialize(competency, JsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // Act
-        var response = await client.PostAsync("/competencies", content);
+        var response = await Client.PostAsync("/competencies", content);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -157,12 +142,11 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
             Type = CompetencyType.Technical
         };
 
-        var client = _factory.CreateClient();
-        var json = JsonSerializer.Serialize(invalidCompetency);
+        var json = JsonSerializer.Serialize(invalidCompetency, JsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // Act
-        var response = await client.PostAsync("/competencies", content);
+        var response = await Client.PostAsync("/competencies", content);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -181,12 +165,11 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
 
         _competencyRepositoryMock.Setup(m => m.ExistsByNameAsync(duplicateCompetency.Name)).ReturnsAsync(true);
 
-        var client = _factory.CreateClient();
-        var json = JsonSerializer.Serialize(duplicateCompetency);
+        var json = JsonSerializer.Serialize(duplicateCompetency, JsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // Act
-        var response = await client.PostAsync("/competencies", content);
+        var response = await Client.PostAsync("/competencies", content);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
@@ -215,12 +198,11 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
         _competencyRepositoryMock.Setup(m => m.GetCompetencyByIdAsync(competencyId)).ReturnsAsync(existingCompetency);
         _competencyRepositoryMock.Setup(m => m.ExistsByNameAsync(updatedCompetency.Name)).ReturnsAsync(false);
 
-        var client = _factory.CreateClient();
-        var json = JsonSerializer.Serialize(updatedCompetency);
+        var json = JsonSerializer.Serialize(updatedCompetency, JsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // Act
-        var response = await client.PutAsync($"/competencies/{competencyId}", content);
+        var response = await Client.PutAsync($"/competencies/{competencyId}", content);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -240,12 +222,11 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
 
         _competencyRepositoryMock.Setup(m => m.GetCompetencyByIdAsync(competencyId)).ReturnsAsync((Competency?)null);
 
-        var client = _factory.CreateClient();
-        var json = JsonSerializer.Serialize(updatedCompetency);
+        var json = JsonSerializer.Serialize(updatedCompetency, JsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // Act
-        var response = await client.PutAsync($"/competencies/{competencyId}", content);
+        var response = await Client.PutAsync($"/competencies/{competencyId}", content);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
@@ -263,12 +244,11 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
             Type = CompetencyType.Technical
         };
 
-        var client = _factory.CreateClient();
-        var json = JsonSerializer.Serialize(invalidCompetency);
+        var json = JsonSerializer.Serialize(invalidCompetency, JsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // Act
-        var response = await client.PutAsync($"/competencies/{competencyId}", content);
+        var response = await Client.PutAsync($"/competencies/{competencyId}", content);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -283,10 +263,8 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
         _competencyRepositoryMock.Setup(m => m.DeleteCompetencyAsync(competencyId, It.IsAny<string>()))
             .Returns(Task.CompletedTask);
 
-        var client = _factory.CreateClient();
-
         // Act
-        var response = await client.DeleteAsync($"/competencies/{competencyId}");
+        var response = await Client.DeleteAsync($"/competencies/{competencyId}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -301,10 +279,8 @@ public class CompetencyControllerTests : IClassFixture<WebApplicationFactory<Pro
         _competencyRepositoryMock.Setup(m => m.DeleteCompetencyAsync(competencyId, It.IsAny<string>()))
             .ThrowsAsync(new InvalidOperationException($"Competency with ID {competencyId} was not found."));
 
-        var client = _factory.CreateClient();
-
         // Act
-        var response = await client.DeleteAsync($"/competencies/{competencyId}");
+        var response = await Client.DeleteAsync($"/competencies/{competencyId}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
