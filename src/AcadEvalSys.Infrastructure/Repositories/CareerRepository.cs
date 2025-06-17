@@ -7,9 +7,27 @@ namespace AcadEvalSys.Infrastructure.Repositories;
 
 public class CareerRepository(ApplicationDbContext dbContext) : ICareerRepository
 {
+    public async Task<Guid> Create(TechnicalCareer entity)
+    {
+        dbContext.TechnicalCareers.Add(entity);
+        await dbContext.SaveChangesAsync();
+        return entity.Id;
+    }
+
+    public Task Update()
+    => dbContext.SaveChangesAsync();
+
+    public async Task Delete(TechnicalCareer entity)
+    {
+        dbContext.Update(entity);
+        await dbContext.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<TechnicalCareer>> GetAllCareersAsync()
     {
-        var careers = await dbContext.TechnicalCareers.ToListAsync();
+        var careers = await dbContext.TechnicalCareers
+            .Where(t => t.IsActive == true)
+            .ToListAsync();
         return careers;
     }
 
@@ -26,4 +44,5 @@ public class CareerRepository(ApplicationDbContext dbContext) : ICareerRepositor
             .ToListAsync();
         return careers;
     }
+
 }
