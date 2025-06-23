@@ -11,12 +11,10 @@ namespace AcadEvalSys.Domain.Entities
         public DateTime PeriodFrom { get; set; }
         public DateTime PeriodTo { get; set; }
       
-
         public virtual ICollection<ProfessorCompetencyAssignment>? ProfessorCompetencyAssignments { get; set; } = new List<ProfessorCompetencyAssignment>();
-        public virtual ICollection<EvaluationPeriodCareer>? EvaluationPeriodCareers { get; set; } = new List<EvaluationPeriodCareer>();
         public virtual ICollection<StudentEvaluationReport>? StudentEvaluationReports { get; set; } = new List<StudentEvaluationReport>();
         
-        public virtual IEnumerable<TechnicalCareer> TechnicalCareers => 
-            EvaluationPeriodCareers?.Select(epc => epc.TechnicalCareer).Where(tc => tc != null)! ?? Enumerable.Empty<TechnicalCareer>();
+        // Many-to-many relationship with TechnicalCareer
+        public virtual ICollection<TechnicalCareer> TechnicalCareers { get; set; } = new List<TechnicalCareer>();
     }
 }
