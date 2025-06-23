@@ -19,7 +19,6 @@
 
     <ItemGroup>
       <Folder Include="EvaluationPeriods\Queries\GetAllEvaluationPeriods\" />
-      <Folder Include="EvaluationPeriods\Queries\GetEvaluationPeriod\" />
     </ItemGroup>
 
 </Project>
