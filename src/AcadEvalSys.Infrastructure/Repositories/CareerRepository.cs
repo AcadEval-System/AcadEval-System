@@ -18,4 +18,12 @@ public class CareerRepository(ApplicationDbContext dbContext) : ICareerRepositor
         var career = await dbContext.TechnicalCareers.FirstOrDefaultAsync(c => c.Id == id);
         return career;
     }
+
+    public async Task<IEnumerable<TechnicalCareer>> GetCareersByIdsAsync(IEnumerable<Guid> ids)
+    {
+        var careers = await dbContext.TechnicalCareers
+            .Where(c => ids.Contains(c.Id))
+            .ToListAsync();
+        return careers;
+    }
 }
