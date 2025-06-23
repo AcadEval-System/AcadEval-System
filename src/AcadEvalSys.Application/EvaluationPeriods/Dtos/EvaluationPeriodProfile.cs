@@ -8,26 +8,16 @@ public class EvaluationPeriodProfile : Profile
 {
     public EvaluationPeriodProfile()
     {
-        // Command to Entity mappings
-        CreateMap<CreateEvaluationPeriodCommand, EvaluationPeriod>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedByUserId, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedByUserId, opt => opt.Ignore())
-            .ForMember(dest => dest.IsActive, opt => opt.Ignore())
-            .ForMember(dest => dest.ProfessorCompetencyAssignments, opt => opt.Ignore())
-            .ForMember(dest => dest.EvaluationPeriodCareers, opt => opt.Ignore())
-            .ForMember(dest => dest.StudentEvaluationReports, opt => opt.Ignore())
-            .ForMember(dest => dest.TechnicalCareers, opt => opt.Ignore());
+        // Command to Entity - AutoMapper mapea automáticamente: Title, Description, PeriodFrom, PeriodTo
+        CreateMap<CreateEvaluationPeriodCommand, EvaluationPeriod>();
 
-        // Entity to DTO mappings
-        CreateMap<EvaluationPeriod, EvaluationPeriodDto>()
-            .ForMember(dest => dest.TechnicalCareers, opt => opt.MapFrom(src => src.TechnicalCareers))
-            .ForMember(dest => dest.ProfessorAssignments, opt => opt.MapFrom(src => src.ProfessorCompetencyAssignments));
+        // DTO to Entity - para crear ProfessorCompetencyAssignment desde CompetencyAssignmentDto
+        CreateMap<CompetencyAssignmentDto, ProfessorCompetencyAssignment>()
+            .ForMember(dest => dest.EvaluationPeriodId, opt => opt.Ignore()) // Se establece en lógica de negocio
+            .ForMember(dest => dest.TechnicalCareerId, opt => opt.Ignore()) // Se establece en lógica de negocio
+            .ForMember(dest => dest.Year, opt => opt.Ignore()); // Se establece en lógica de negocio
 
-        CreateMap<TechnicalCareer, TechnicalCareerDto>();
-
-      
+        // Entity to DTO - para leer datos
+        CreateMap<ProfessorCompetencyAssignment, CompetencyAssignmentDto>();
     }
 } 

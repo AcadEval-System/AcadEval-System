@@ -11,6 +11,7 @@ namespace AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPer
 public class CreateEvaluationPeriodCommandHandler(
     ILogger<CreateEvaluationPeriodCommandHandler> logger,
     IEvaluationPeriodRepository evaluationPeriodRepository,
+    IProfessorCompetencyAssignmentRepository professorCompetencyAssignmentRepository,
     ICareerRepository careerRepository,
     IMapper mapper,
     IUserContext userContext) : IRequestHandler<CreateEvaluationPeriodCommand, Guid>
@@ -33,15 +34,47 @@ public class CreateEvaluationPeriodCommandHandler(
             throw new DuplicateResourceException(nameof(EvaluationPeriod), request.Title);
         }
 
-
-        // Create evaluation period
         var evaluationPeriod = mapper.Map<EvaluationPeriod>(request);
         evaluationPeriod.CreatedByUserId = user.Id ?? string.Empty;
 
-        var id = await evaluationPeriodRepository.CreateEvaluationPeriodAsync(evaluationPeriod);
+        var careerIds = request.CareerAssignments.Select(ca => ca.TechnicalCareerId).Distinct().ToList();
 
-        logger.LogInformation("Evaluation period created successfully with ID: {Id}", id);
+        var technicalCareers = await careerRepository.GetCareersByIdsAsync(careerIds);
 
-        return id;
+        evaluationPeriod.TechnicalCareers = technicalCareers.ToList();
+
+        var evaluationPeriodId = await evaluationPeriodRepository.CreateEvaluationPeriodAsync(evaluationPeriod);
+
+        logger.LogInformation("Evaluation period created successfully with ID: {Id}", evaluationPeriodId);
+
+        var professorAssignments = new List<ProfessorCompetencyAssignment>();
+
+        foreach (var careerAssignment in request.CareerAssignments)
+        {
+            foreach (var yearAssignment in careerAssignment.AssignmentsByYear)
+            {
+                var year = yearAssignment.Key;
+                var competencyAssignments = yearAssignment.Value;
+
+                foreach (var competencyAssignment in competencyAssignments)
+                {
+                    var professorAssignment = mapper.Map<ProfessorCompetencyAssignment>(competencyAssignment);
+                    professorAssignment.EvaluationPeriodId = evaluationPeriodId;
+                    professorAssignment.TechnicalCareerId = careerAssignment.TechnicalCareerId;
+                    professorAssignment.Year = year;
+                    professorAssignment.CreatedByUserId = user.Id ?? string.Empty;
+
+                    professorAssignments.Add(professorAssignment);
+                }
+            }
+        }
+
+        if (professorAssignments.Any())
+        {
+            await professorCompetencyAssignmentRepository.CreateMultipleAsync(professorAssignments);
+            logger.LogInformation("Created {Count} professor competency assignments", professorAssignments.Count);
+        }
+
+        return evaluationPeriodId;
     }
 } 

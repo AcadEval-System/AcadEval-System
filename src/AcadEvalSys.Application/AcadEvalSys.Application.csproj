@@ -17,4 +17,9 @@
       <ProjectReference Include="..\AcadEvalSys.Domain\AcadEvalSys.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="EvaluationPeriods\Queries\GetAllEvaluationPeriods\" />
+      <Folder Include="EvaluationPeriods\Queries\GetEvaluationPeriod\" />
+    </ItemGroup>
+
 </Project>
