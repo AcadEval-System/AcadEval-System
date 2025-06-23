@@ -11,9 +11,9 @@ public class GetEvaluationPeriodQueryHandler(
     ILogger<GetEvaluationPeriodQueryHandler> logger,
     IEvaluationPeriodRepository evaluationPeriodRepository,
     IMapper mapper
-    ) : IRequestHandler<GetEvaluationPeriodQuery, CompetencyEvaluationDto>
+    ) : IRequestHandler<GetEvaluationPeriodQuery, EvaluationPeriodDetailDto>
 {
-    public async Task<CompetencyEvaluationDto> Handle(GetEvaluationPeriodQuery request, CancellationToken cancellationToken)
+    public async Task<EvaluationPeriodDetailDto> Handle(GetEvaluationPeriodQuery request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Getting Evaluation for ID: {Id}", request.Id);
         var evaluationPeriod = await evaluationPeriodRepository.GetEvaluationPeriodByIdAsync(request.Id);
@@ -23,7 +23,7 @@ public class GetEvaluationPeriodQueryHandler(
             throw new NotFoundException(nameof(evaluationPeriod), request.Id.ToString());
         }
         
-        var evaluationDto = mapper.Map<CompetencyEvaluationDto>(evaluationPeriod);
+        var evaluationDto = mapper.Map<EvaluationPeriodDetailDto>(evaluationPeriod);
         return evaluationDto;
     }
 }

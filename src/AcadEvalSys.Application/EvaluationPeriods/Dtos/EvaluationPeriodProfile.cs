@@ -12,7 +12,7 @@ public class EvaluationPeriodProfile : Profile
         CreateMap<CreateEvaluationPeriodCommand, EvaluationPeriod>();
         
         // Entity to DTO - mapeo simplificado para el frontend
-        CreateMap<EvaluationPeriod, CompetencyEvaluationDto>()
+        CreateMap<EvaluationPeriod, EvaluationPeriodDetailDto>()
             .ForMember(dest => dest.CareerAssignments, opt => opt.MapFrom(src =>
                 src.ProfessorCompetencyAssignments != null
                     ? src.ProfessorCompetencyAssignments

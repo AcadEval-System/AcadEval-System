@@ -1,6 +1,6 @@
 namespace AcadEvalSys.Application.EvaluationPeriods.Dtos;
 
-public class CompetencyEvaluationDto
+public class EvaluationPeriodDetailDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;

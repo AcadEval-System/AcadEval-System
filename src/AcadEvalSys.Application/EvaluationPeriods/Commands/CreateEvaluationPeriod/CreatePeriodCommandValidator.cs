@@ -3,11 +3,11 @@ using FluentValidation;
 
 namespace AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPeriod;
 
-public class CreatePeriodCommandValidator : AbstractValidator<CreateEvaluationPeriodCommand>
+public class CreateEvaluationPeriodCommandValidator : AbstractValidator<CreateEvaluationPeriodCommand>
 {
     private static readonly string[] ValidYears = { "First", "Second", "Third", "Fourth", "Fifth" };
 
-    public CreatePeriodCommandValidator()
+    public CreateEvaluationPeriodCommandValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty()
