@@ -44,5 +44,4 @@ public class CareerRepository(ApplicationDbContext dbContext) : ICareerRepositor
             .ToListAsync();
         return careers;
     }
-
 }
