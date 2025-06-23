@@ -1,7 +1,7 @@
 using AcadEvalSys.Application.EvaluationPeriods.Dtos;
 using FluentValidation;
 
-namespace AcadEvalSys.Application.EvaluationPeriods.Dtos;
+namespace AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPeriod;
 
 public class CompetencyAssignmentDtoValidator : AbstractValidator<CompetencyAssignmentDto>
 {
@@ -9,10 +9,10 @@ public class CompetencyAssignmentDtoValidator : AbstractValidator<CompetencyAssi
     {
         RuleFor(x => x.CompetencyId)
             .NotEmpty()
-            .WithMessage("CompetencyId is required");
+            .WithMessage("El ID de la competencia es requerido");
 
         RuleFor(x => x.ProfessorId)
             .NotEmpty()
-            .WithMessage("ProfessorId is required");
+            .WithMessage("El ID del profesor es requerido");
     }
 }

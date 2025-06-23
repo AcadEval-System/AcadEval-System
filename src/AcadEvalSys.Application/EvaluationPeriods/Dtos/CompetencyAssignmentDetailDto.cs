@@ -2,24 +2,20 @@ using AcadEvalSys.Domain.Enums;
 
 namespace AcadEvalSys.Application.EvaluationPeriods.Dtos;
 
-public class CompetencyAssignmentDetailDto
+public record CompetencyAssignmentDetailDto
 {
     // Información de la asignación
-    public Guid AssignmentId { get; set; }
-    public CareerYear Year { get; set; }
-    
-    // Información de la carrera
-    public Guid TechnicalCareerId { get; set; }
-    public string TechnicalCareerName { get; set; } = string.Empty;
+    public required Guid AssignmentId { get; init; }
+    public required CareerYear Year { get; init; }
     
     // Información de la competencia
-    public Guid CompetencyId { get; set; }
-    public string CompetencyName { get; set; } = string.Empty;
-    public string CompetencyDescription { get; set; } = string.Empty;
-    public CompetencyType CompetencyType { get; set; }
+    public required Guid CompetencyId { get; init; }
+    public required string CompetencyName { get; init; }
+    public string CompetencyDescription { get; init; } = string.Empty;
+    public required CompetencyType CompetencyType { get; init; }
     
     // Información del profesor
-    public string ProfessorId { get; set; } = string.Empty;
-    public string ProfessorName { get; set; } = string.Empty;
-    public string ProfessorEmail { get; set; } = string.Empty;
+    public required string ProfessorId { get; init; }
+    public required string ProfessorName { get; init; }
+    public string ProfessorEmail { get; init; } = string.Empty;
 } 

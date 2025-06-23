@@ -1,3 +1,4 @@
+using AcadEvalSys.Application.Commands.CreateEvaluationPeriod;
 using AcadEvalSys.Application.EvaluationPeriods.Dtos;
 using FluentValidation;
 
@@ -32,6 +33,6 @@ public class CreateEvaluationPeriodCommandValidator : AbstractValidator<CreateEv
             .WithMessage("At least one career assignment is required");
 
         RuleForEach(x => x.CareerAssignments)
-            .SetValidator(new CareerAssignmentDtoValidator());
+            .SetValidator(new CreateCareerAssignmentDtoValidator());
     }
 }

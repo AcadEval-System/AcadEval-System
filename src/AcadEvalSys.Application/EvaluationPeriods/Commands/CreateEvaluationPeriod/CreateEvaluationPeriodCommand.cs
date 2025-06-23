@@ -5,9 +5,9 @@ namespace AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPer
 
 public class CreateEvaluationPeriodCommand : IRequest<Guid>
 {
-    public string Title { get; set; } = string.Empty;
+    public required string Title { get; set; }
     public string Description { get; set; } = string.Empty;
-    public DateTime PeriodFrom { get; set; }
-    public DateTime PeriodTo { get; set; }
-    public List<CareerAssignmentDto> CareerAssignments { get; set; } = new List<CareerAssignmentDto>();
+    public required DateTime PeriodFrom { get; set; }
+    public required DateTime PeriodTo { get; set; }
+    public IReadOnlyList<CreateCareerAssignmentDto> CareerAssignments { get; set; } = Array.Empty<CreateCareerAssignmentDto>();
 } 

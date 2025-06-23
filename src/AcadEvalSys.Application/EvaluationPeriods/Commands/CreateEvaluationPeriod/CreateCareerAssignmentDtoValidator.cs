@@ -1,12 +1,13 @@
+using AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPeriod;
 using AcadEvalSys.Application.EvaluationPeriods.Dtos;
 using AcadEvalSys.Domain.Enums;
 using FluentValidation;
 
-namespace AcadEvalSys.Application.EvaluationPeriods.Dtos;
+namespace AcadEvalSys.Application.Commands.CreateEvaluationPeriod;
 
-public class CareerAssignmentDtoValidator : AbstractValidator<CareerAssignmentDto>
+public class CreateCareerAssignmentDtoValidator : AbstractValidator<CreateCareerAssignmentDto>
 {
-    public CareerAssignmentDtoValidator()
+    public CreateCareerAssignmentDtoValidator()
     {
         RuleFor(x => x.TechnicalCareerId)
             .NotEmpty()
@@ -17,6 +18,6 @@ public class CareerAssignmentDtoValidator : AbstractValidator<CareerAssignmentDt
             .WithMessage("At least one year assignment is required");
 
         RuleForEach(x => x.AssignmentsByYear.Values.SelectMany(list => list))
-            .SetValidator(new CompetencyAssignmentDtoValidator());
+            .SetValidator(new CreateCompetencyAssignmentDtoValidator());
     }
 }
