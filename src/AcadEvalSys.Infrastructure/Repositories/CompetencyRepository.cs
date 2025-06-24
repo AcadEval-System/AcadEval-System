@@ -9,13 +9,17 @@ public class CompetencyRepository(ApplicationDbContext dbContext) : ICompetencyR
 {
     public async Task<IEnumerable<Competency>> GetAllCompetenciesAsync()
     {
-        var competencies = await dbContext.Competencies.Where(c => c.IsActive).ToListAsync();
+        var competencies = await dbContext.Competencies.Where(c => c.IsActive)
+            .Include(l => l.LevelDescriptions!.OrderBy(ld => ld.Level))
+            .ToListAsync();
         return competencies;
     }
 
     public async Task<Competency?> GetCompetencyByIdAsync(Guid id)
     {
-        var competency = await dbContext.Competencies.FirstOrDefaultAsync(c => c.Id == id);
+        var competency = await dbContext.Competencies
+            .Include(l => l.LevelDescriptions!.OrderBy(ld => ld.Level))
+            .FirstOrDefaultAsync(c => c.Id == id);
         return competency;
     }
 

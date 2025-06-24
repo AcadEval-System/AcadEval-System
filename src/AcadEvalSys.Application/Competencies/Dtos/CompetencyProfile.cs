@@ -19,11 +19,14 @@ public class CompetencyProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore()) // We'll set this manually
             .ForMember(dest => dest.UpdatedByUserId, opt => opt.Ignore()) // Don't overwrite for now
             .ForMember(dest => dest.IsActive, opt => opt.Ignore()); // Don't overwrite IsActive
-            
+
         CreateMap<Competency, CompetencyDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type));
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+            .ForMember(dest => dest.Levels, opt => opt.MapFrom(src => src.LevelDescriptions));
+
+        CreateMap<CompetencyLevelDescription, CompetencyLevelDescriptionDto>();
     }
 }
