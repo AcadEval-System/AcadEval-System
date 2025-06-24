@@ -13,6 +13,17 @@ try
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
     
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowFrontend",
+            policy => policy
+                .WithOrigins("https://localhost:5173", "https://acaditec-eseke2dheteuewch.brazilsouth-01.azurewebsites.net")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
+    });
+
+    
     var app = builder.Build();
     
     app.UseSerilogRequestLogging();
@@ -34,6 +45,8 @@ try
     
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseCors("AllowFrontend");
+
 
     app.MapGroup("identity")
         .MapIdentityApi<User>()
