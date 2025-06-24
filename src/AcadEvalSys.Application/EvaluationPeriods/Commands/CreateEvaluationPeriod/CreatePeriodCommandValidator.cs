@@ -6,8 +6,6 @@ namespace AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPer
 
 public class CreateEvaluationPeriodCommandValidator : AbstractValidator<CreateEvaluationPeriodCommand>
 {
-    private static readonly string[] ValidYears = { "First", "Second", "Third", "Fourth", "Fifth" };
-
     public CreateEvaluationPeriodCommandValidator()
     {
         RuleFor(x => x.Title)
