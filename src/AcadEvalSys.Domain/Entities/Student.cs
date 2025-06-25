@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AcadEvalSys.Domain.Enums;
 
 namespace AcadEvalSys.Domain.Entities
 {
@@ -7,10 +8,11 @@ namespace AcadEvalSys.Domain.Entities
     {
         public string? UserId { get; set; }
         public Guid? TechnicalCareerId { get; set; }
-        public int CurrentYear { get; set; } = 1; // Default to first year
-
+        public CareerYear CurrentYear { get; set; } // Default to first year
+    
         // Navigation properties
         public virtual User? User { get; set; }
+        
         public virtual TechnicalCareer? TechnicalCareer { get; set; }
 
         // Collections

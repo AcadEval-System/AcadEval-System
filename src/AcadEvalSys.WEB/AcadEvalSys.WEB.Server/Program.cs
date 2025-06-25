@@ -43,9 +43,10 @@ try
     app.UsePathBase("/api");
     app.UseRouting();
     
+    app.UseCors("AllowFrontend");
+    
     app.UseAuthentication();
     app.UseAuthorization();
-    app.UseCors("AllowFrontend");
 
 
     app.MapGroup("identity")
