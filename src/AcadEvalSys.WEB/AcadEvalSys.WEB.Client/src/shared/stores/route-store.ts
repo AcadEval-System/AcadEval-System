@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-// Types
 export type RouteInfo = {
   section: string;
   page: string;

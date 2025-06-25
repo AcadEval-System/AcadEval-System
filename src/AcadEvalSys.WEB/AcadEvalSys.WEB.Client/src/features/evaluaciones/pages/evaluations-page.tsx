@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 import { Evaluation, Career } from "../types";
-import { EvaluationFilters } from "../components/evaluations-list/evaluations-filters";
-import { EvaluationsTable } from "../components/evaluations-list/evaluations-table";
+import { EvaluationFilters } from "../components/evaluations-list/data-table/evaluations-filters";
+import { EvaluationsTable } from "../components/evaluations-list/data-table/evaluations-table";
 import { EvaluationsGrid } from "../components/evaluations-list/evaluations-grid";
 import { EvaluationHeader } from "../components/evaluations-list/evaluation-header";
 
