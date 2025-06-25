@@ -1,4 +1,5 @@
 using AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPeriod;
+using AcadEvalSys.Application.EvaluationPeriods.Commands.UpdateEvaluationPeriod;
 using AcadEvalSys.Domain.Entities;
 using AutoMapper;
 
@@ -10,6 +11,7 @@ public class EvaluationPeriodProfile : Profile
     {
         // Command to Entity - AutoMapper mapea automáticamente: Title, Description, PeriodFrom, PeriodTo
         CreateMap<CreateEvaluationPeriodCommand, EvaluationPeriod>();
+        CreateMap<UpdateEvaluationPeriodCommand, EvaluationPeriod>();
         
         // Entity to DTO - mapeo simplificado para el frontend
         CreateMap<EvaluationPeriod, EvaluationPeriodDetailDto>()

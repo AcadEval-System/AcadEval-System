@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace AcadEvalSys.Application.Competencies.Commands.UpdateCompetency;
 
-public class UpdateCompetencyCommand: IRequest
+public class UpdateCompetencyCommand : IRequest
 {
     [JsonIgnore]
     public Guid Id { get; set; }

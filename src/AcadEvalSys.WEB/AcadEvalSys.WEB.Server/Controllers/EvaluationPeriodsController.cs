@@ -1,4 +1,6 @@
 using AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPeriod;
+using AcadEvalSys.Application.EvaluationPeriods.Commands.DeleteEvaluationPeriod;
+using AcadEvalSys.Application.EvaluationPeriods.Commands.UpdateEvaluationPeriod;
 using AcadEvalSys.Application.EvaluationPeriods.Queries.GetEvaluationPeriod;
 using AcadEvalSys.Domain.Constants.Constants;
 using MediatR;
@@ -26,5 +28,20 @@ public class EvaluationPeriodsController(IMediator mediator) : ControllerBase
     {
         var id = await mediator.Send(command);
         return CreatedAtAction(nameof(GetEvaluationPeriodById), new { id }, null);
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteEvaluationPeriod([FromRoute] Guid id)
+    {
+        await mediator.Send(new DeleteEvaluationPeriodCommand(id));
+        return NoContent();
+    }
+    
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateEvaluationPeriod([FromBody] UpdateEvaluationPeriodCommand command, [FromRoute] Guid id)
+    {
+        command.Id = id;
+        await mediator.Send(command);
+        return NoContent();
     }
 } 
