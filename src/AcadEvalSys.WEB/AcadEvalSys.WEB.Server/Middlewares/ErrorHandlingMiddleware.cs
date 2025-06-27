@@ -45,8 +45,10 @@ public class ErrorHandlingMiddleware(
         catch (Exception ex)
         {
             // En desarrollo
+            var baseException = ex.GetBaseException();
+
             var response = env.IsDevelopment()
-                ? new { Message = ex.Message, StackTrace = ex.StackTrace }
+                ? new { Message = baseException.Message, StackTrace = baseException.StackTrace }
                 : new { Message = "Something went wrong", StackTrace = (string?)null };
 
             context.Response.StatusCode = 500;

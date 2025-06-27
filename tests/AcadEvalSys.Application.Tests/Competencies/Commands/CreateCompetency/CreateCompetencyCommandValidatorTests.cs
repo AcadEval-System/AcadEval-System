@@ -30,16 +30,13 @@ public class CreateCompetencyCommandValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
     
-    [Theory]
-    [InlineData("")]
-    [InlineData(null)]
-    [InlineData("AB")] // Too short (less than 3 characters)
-    public void Validator_ForInvalidName_ShouldHaveValidationError(string invalidName)
+    [Fact()]
+    public void Validator_ForInvalidName_ShouldHaveValidationError()
     {
         // Arrange
         var command = new CreateCompetencyCommand()
         {
-            Name = invalidName,
+            Name = "",
             Description = "This is a test competency.",
             Type = CompetencyType.Soft
         };

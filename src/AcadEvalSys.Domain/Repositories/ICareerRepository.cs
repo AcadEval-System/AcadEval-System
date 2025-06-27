@@ -10,4 +10,5 @@ public interface ICareerRepository
 
     Task<IEnumerable<TechnicalCareer>> GetAllCareersAsync();
     Task<TechnicalCareer?> GetCareerByIdAsync(Guid id);
+    Task<IEnumerable<TechnicalCareer>> GetCareersByIdsAsync(IEnumerable<Guid> ids);
 }

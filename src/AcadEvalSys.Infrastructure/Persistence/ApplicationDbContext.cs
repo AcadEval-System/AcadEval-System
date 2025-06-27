@@ -6,7 +6,6 @@ namespace AcadEvalSys.Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {
-    // Core Academic Entities
     public DbSet<Student> Students { get; set; }
     public DbSet<Professor> Professors { get; set; }
     public DbSet<Coordinator> Coordinators { get; set; }
@@ -16,7 +15,6 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<CompetencyLevelDescription> CompetencyLevelDescriptions { get; set; }
     public DbSet<StudentSubject> StudentSubjects { get; set; }
 
-    // Evaluation, Survey, and Form Entities
     public DbSet<EvaluationPeriod> EvaluationPeriods { get; set; }
     public DbSet<FormQuestion> FormQuestions { get; set; }
     public DbSet<QuestionResponse> QuestionResponses { get; set; }
@@ -83,9 +81,13 @@ public class ApplicationDbContext : IdentityDbContext<User>
                 .HasForeignKey(cld => cld.CompetencyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Ensure unique combination of CompetencyId and Level
             entity.HasIndex(cld => new { cld.CompetencyId, cld.Level })
                 .IsUnique();
         });
+
+        builder.Entity<EvaluationPeriod>()
+            .HasMany(e => e.TechnicalCareers)
+            .WithMany(t => t.EvaluationPeriods);
+
     }
 }
