@@ -1,29 +1,30 @@
+// ✅ VERSIÓN MEJORADA de use-session-check.ts
 import { useEffect, useState } from "react";
 import { authService } from "../services/auth-service";
 import { authStore } from "../stores/auth-store";
 
 /**
- * Hook simple: solo verifica cookies al cargar la app
+ * Hook para verificar sesión usando endpoint limpio que nunca devuelve 401
+ * Sigue Clean Architecture y evita logs rojos en consola
  */
 export const useSessionCheck = () => {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
 
   useEffect(() => {
     const checkSession = async () => {
-      console.log("🔍 Verificando sesión...");
       try {
-        // Intentar obtener usuario con cookies actuales
-        const userData = await authService.getCurrentUser();
-        console.log("✅ Usuario válido encontrado:", userData.email);
-        authStore.getState().setAuth(userData);
+        const sessionStatus = await authService.checkSession();
+
+        if (sessionStatus.isAuthenticated && sessionStatus.user) {
+          authStore.getState().setAuth(sessionStatus.user);
+        } else {
+          authStore.getState().clearAuth();
+        }
       } catch (error) {
-        // Si falla, no hay sesión válida
-        console.log("❌ No hay sesión válida, limpiando estado");
+        console.error("Error de conexión al verificar sesión:", error);
         authStore.getState().clearAuth();
       } finally {
-        // IMPORTANTE: Siempre setear que terminó la verificación
         setIsCheckingSession(false);
-        console.log("🏁 Verificación completada");
       }
     };
 

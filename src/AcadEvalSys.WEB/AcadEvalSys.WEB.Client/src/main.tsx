@@ -13,14 +13,12 @@ function AppRouter() {
   const { isCheckingSession } = useSessionCheck();
   const [location, setLocation] = useLocation();
 
-  // Redirigir si está autenticado y en ruta de auth
   useEffect(() => {
     if (isAuthenticated && location.startsWith("/auth")) {
       setLocation("/");
     }
   }, [isAuthenticated, location, setLocation]);
 
-  // Loading mientras verifica cookies
   if (isCheckingSession) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -29,7 +27,6 @@ function AppRouter() {
     );
   }
 
-  // Simple: autenticado = app, no autenticado = login
   return isAuthenticated ? <AppRoutes /> : <AuthRoutes />;
 }
 

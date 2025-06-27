@@ -1,9 +1,8 @@
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
-import { Checkbox } from "@/shared/components/ui/checkbox";
 import { useLoginMutation } from "@/shared/auth/hooks/use-login-mutation";
 import { Loader2 } from "lucide-react";
 
@@ -19,14 +18,12 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: "",
-      rememberMe: false,
     },
   });
 
@@ -77,29 +74,6 @@ export const LoginForm = () => {
             {errors.password.message}
           </p>
         )}
-      </div>
-
-      {/* Checkbox Mantener sesión */}
-      <div className="flex items-center space-x-2 py-2">
-        <Controller
-          name="rememberMe"
-          control={control}
-          render={({ field }) => (
-            <Checkbox
-              id="rememberMe"
-              checked={field.value}
-              onCheckedChange={field.onChange}
-              disabled={isLoading}
-              className="border-border"
-            />
-          )}
-        />
-        <label
-          htmlFor="rememberMe"
-          className="text-sm text-muted-foreground cursor-pointer"
-        >
-          Mantener la sesión activa
-        </label>
       </div>
 
       {/* Mostrar error de login si existe */}

@@ -1,5 +1,5 @@
 import { api } from "@/shared/config/axios";
-import { LoginCredentials, User } from "../types";
+import { LoginCredentials, User, SessionStatus } from "../types";
 import { authStore } from "../stores/auth-store";
 
 const AUTH_API_URL = "/identity";
@@ -16,6 +16,13 @@ export const authService = {
 
   async getCurrentUser(): Promise<User> {
     const response = await api.get<User>(`${AUTH_API_URL}/info`);
+    return response.data;
+  },
+
+  async checkSession(): Promise<SessionStatus> {
+    const response = await api.get<SessionStatus>(
+      `${AUTH_API_URL}/session-check`
+    );
     return response.data;
   },
 };

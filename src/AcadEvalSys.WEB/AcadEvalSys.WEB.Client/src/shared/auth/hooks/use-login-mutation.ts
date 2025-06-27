@@ -17,9 +17,7 @@ export const useLoginMutation = () => {
     },
     onSuccess: async () => {
       try {
-        console.log("me logeeee");
         const userData = await authService.getCurrentUser();
-        console.log("userData", userData);
         authStore.getState().setAuth(userData);
         queryClient.setQueryData(authKeys.user(), userData);
         queryClient.invalidateQueries({ queryKey: authKeys.user() });

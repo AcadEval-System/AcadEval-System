@@ -18,7 +18,7 @@ export function AuthRoutes() {
       <Switch>
         <Route path="/auth/login" component={LoginPage} />
         <Route path="/auth/forgot-password" component={ForgotPasswordPage} />
-        <Route path="*" component={LoginPage} />
+        <Route path="/*" component={LoginPage} />
       </Switch>
     </AuthLayout>
   );
