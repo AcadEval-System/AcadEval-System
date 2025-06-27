@@ -6,8 +6,8 @@ namespace AcadEvalSys.Domain.Entities
     public class Professor
     {
         public string? UserId { get; set; }
-        public string? Phone { get; set; }
-
+        public string? Name { get; set; }
+        
         // Navigation property to User
         public virtual User? User { get; set; }
 

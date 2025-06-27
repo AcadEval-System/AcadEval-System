@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AcadEvalSys.Application.Career.Commands.CreateCareer
 {
-    public class CreateCareerCommandHandler(ILogger<CreateCareerCommand> logger, IMapper mapper, ICareerRepository careerRepository ) : IRequestHandler<CreateCareerCommand, Guid>
+    public class CreateCareerCommandHandler(ILogger<CreateCareerCommandHandler> logger, IMapper mapper, ICareerRepository careerRepository ) : IRequestHandler<CreateCareerCommand, Guid>
     {
         public async Task<Guid> Handle(CreateCareerCommand request, CancellationToken cancellationToken)
         {
