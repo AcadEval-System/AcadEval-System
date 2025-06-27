@@ -1,7 +1,6 @@
-import { Card } from "@/shared/components/ui/card";
-import { PlusCircle, Search } from "lucide-react";
 import { EvaluationCard } from "./evaluation-card";
 import { Evaluation } from "../../types";
+import { Search } from "lucide-react";
 
 interface EvaluationsGridProps {
   evaluations: Evaluation[];
@@ -15,7 +14,6 @@ export function EvaluationsGrid({
 }: EvaluationsGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {/* Tarjetas de evaluaciones */}
       {evaluations.length > 0 ? (
         evaluations.map((evaluation) => (
           <EvaluationCard

@@ -17,7 +17,11 @@ namespace AcadEvalSys.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+
+                .HasAnnotation("ProductVersion", "9.0.6")
+
                 .HasAnnotation("ProductVersion", "9.0.5")
+
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -589,6 +593,9 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)

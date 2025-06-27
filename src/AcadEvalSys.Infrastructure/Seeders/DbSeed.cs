@@ -86,9 +86,9 @@ internal class DbSeeder(ApplicationDbContext dbContext, UserManager<User> userMa
         List<IdentityRole> roles =
         [
             new(UserRoles.Admin) { NormalizedName = UserRoles.Admin.ToUpper() },
-            new(UserRoles.User) { NormalizedName = UserRoles.User.ToUpper() },
             new(UserRoles.Student) { NormalizedName = UserRoles.Student.ToUpper() },
-            new(UserRoles.Professor) { NormalizedName = UserRoles.Professor.ToUpper() }
+            new(UserRoles.Professor) { NormalizedName = UserRoles.Professor.ToUpper() },
+            new(UserRoles.Coordinator) { NormalizedName = UserRoles.Coordinator.ToUpper() }
         ];
 
         return roles;

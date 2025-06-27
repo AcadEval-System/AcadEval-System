@@ -17,3 +17,10 @@ export interface Evaluation {
   description?: string;
   type?: string;
 }
+
+export interface Competency {
+  id: string;
+  name: string;
+  description: string;
+  type: "soft" | "technical";
+}
