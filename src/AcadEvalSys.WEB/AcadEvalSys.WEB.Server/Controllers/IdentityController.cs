@@ -2,6 +2,8 @@ using AcadEvalSys.Application.Users.Commands.AssignRole;
 using AcadEvalSys.Application.Users.Commands.UnassignUserRole;
 using AcadEvalSys.Application.Users.Queries;
 using AcadEvalSys.Application.Users.Queries.GetCurrentUserInfo;
+using AcadEvalSys.Application.Users.Queries.GetSessionStatus;
+using AcadEvalSys.Application.Users.Dtos;
 using AcadEvalSys.Domain.Constants.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -46,5 +48,13 @@ public class IdentityController(IMediator mediator) : ControllerBase
     {
         var user = await mediator.Send(new GetCurrentUserInfoQuery());
         return Ok(user);
+    }
+
+   
+    [HttpGet("session-check")]
+    public async Task<ActionResult<SessionStatusDto>> GetSessionCheck()
+    {
+        var sessionStatus = await mediator.Send(new GetSessionStatusQuery());
+        return Ok(sessionStatus);
     }
 }

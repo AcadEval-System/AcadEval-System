@@ -87,5 +87,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICareerRepository, CareerRepository>();
         services.AddScoped<ICompetencyRepository, CompetencyRepository>();
         services.AddScoped<IUserProfileService, UserProfileService>();
+        services.AddScoped<ISessionService, SessionService>();
     }
 }
