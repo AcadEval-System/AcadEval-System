@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using AcadEvalSys.Application.Users.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,7 @@ public class SessionService : ISessionService
         _logger = logger;
     }
 
-    public DateTimeOffset? GetSessionExpiration()
+    public async Task<DateTimeOffset?> GetSessionExpiration()
     {
         try
         {
@@ -29,7 +30,7 @@ public class SessionService : ISessionService
             }
 
             // Obtener el ticket de autenticación de las cookies
-            var authenticateResult = httpContext.AuthenticateAsync(IdentityConstants.ApplicationScheme).Result;
+            var authenticateResult = await httpContext.AuthenticateAsync(IdentityConstants.ApplicationScheme);
             
             if (!authenticateResult.Succeeded || authenticateResult.Properties == null)
             {
@@ -67,7 +68,7 @@ public class SessionService : ISessionService
 
     public int? GetMinutesRemaining()
     {
-        var expiration = GetSessionExpiration();
+        var expiration = GetSessionExpiration().Result;
         if (!expiration.HasValue)
         {
             return null;
