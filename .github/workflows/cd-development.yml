@@ -1,0 +1,66 @@
+name: CD - Deploy AcadEvalSys to Azure (Development)
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
+
+      - name: Log in to Azure Container Registry
+        run: |
+          az acr login --name ${{ vars.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ vars.DOCKERFILE_PATH }}
+          push: true
+          tags: ${{ vars.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ vars.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: Development
+
+    steps:
+      - name: Log in to Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
+
+      - name: Deploy to Azure Web App
+        run: |
+          az webapp config container set \
+            --name ${{ vars.AZURE_WEBAPP_NAME }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_DEV }} \
+            --docker-custom-image-name ${{ vars.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ vars.IMAGE_NAME }}:${{ github.sha }} \
+            --docker-registry-server-url https://${{ vars.AZURE_CONTAINER_REGISTRY_LOGIN_SERVER }}
+
+      - name: Restart Azure Web App
+        run: |
+          az webapp restart \
+            --name ${{ vars.AZURE_WEBAPP_NAME }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_DEV }}
