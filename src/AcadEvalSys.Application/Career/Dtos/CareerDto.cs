@@ -1,7 +1,7 @@
 namespace AcadEvalSys.Application.Career.Dtos;
 
-public class CareerDto
+public record CareerDto
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public required Guid Id { get; init; }
+    public required string Name { get; init; }
 }

@@ -13,11 +13,9 @@ namespace AcadEvalSys.Domain.Entities
         public virtual ICollection<ProfessorCompetencyAssignment>? ProfessorCompetencyAssignments { get; set; } = new List<ProfessorCompetencyAssignment>();
         public virtual ICollection<Coordinator>? Coordinators { get; set; } = new List<Coordinator>();
         public virtual ICollection<Competency> Competencies { get; set; } = new List<Competency>();
-        public virtual ICollection<EvaluationPeriodCareer>? EvaluationPeriodCareers { get; set; } = new List<EvaluationPeriodCareer>();
         public virtual ICollection<Student>? Students { get; set; } = new List<Student>();
         
-        // Computed property for convenience
-        public virtual IEnumerable<EvaluationPeriod> EvaluationPeriods => 
-            EvaluationPeriodCareers?.Select(epc => epc.EvaluationPeriod).Where(ep => ep != null)! ?? Enumerable.Empty<EvaluationPeriod>();
+        // Many-to-many relationship with EvaluationPeriod
+        public virtual ICollection<EvaluationPeriod> EvaluationPeriods { get; set; } = new List<EvaluationPeriod>();
     }
 }

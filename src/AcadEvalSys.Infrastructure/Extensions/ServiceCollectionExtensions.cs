@@ -88,5 +88,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICompetencyRepository, CompetencyRepository>();
         services.AddScoped<IUserProfileService, UserProfileService>();
         services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<IEvaluationPeriodRepository, EvaluationPeriodRepository>();
+        services.AddScoped<IProfessorCompetencyAssignmentRepository, ProfessorCompetencyAssignmentRepository>();
+
     }
 }
