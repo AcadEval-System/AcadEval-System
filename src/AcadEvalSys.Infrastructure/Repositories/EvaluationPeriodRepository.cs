@@ -30,9 +30,22 @@ public class EvaluationPeriodRepository(ApplicationDbContext dbContext) : IEvalu
         return evaluationPeriod;
     }
 
-    public Task<IEnumerable<EvaluationPeriod>> GetAllEvaluationPeriodsAsync()
+    public async Task<IEnumerable<EvaluationPeriod>> GetAllEvaluationPeriodsAsync()
     {
-        throw new NotImplementedException();
+        var evaluationPeriods = await dbContext.EvaluationPeriods
+            .Include(ep => ep.TechnicalCareers)
+            .Include(ep => ep.ProfessorCompetencyAssignments)
+                .ThenInclude(pca => pca.Competency)
+            .Include(ep => ep.ProfessorCompetencyAssignments)
+                .ThenInclude(pca => pca.Professor)
+                    .ThenInclude(p => p.User)
+            .Include(ep => ep.ProfessorCompetencyAssignments)
+                .ThenInclude(pca => pca.TechnicalCareer)
+            .Include(ep => ep.StudentEvaluationReports)
+            .Where(ep => ep.IsActive)
+            .ToListAsync();
+        
+        return evaluationPeriods;
     }
 
 

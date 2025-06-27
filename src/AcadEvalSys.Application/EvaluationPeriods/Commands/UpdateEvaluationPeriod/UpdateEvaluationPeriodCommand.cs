@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AcadEvalSys.Application.EvaluationPeriods.Dtos;
+using MediatR;
 
 namespace AcadEvalSys.Application.EvaluationPeriods.Commands.UpdateEvaluationPeriod;
 
@@ -9,4 +10,6 @@ public class UpdateEvaluationPeriodCommand : IRequest
     public string Description { get; set; } = string.Empty;
     public required DateTime PeriodFrom { get; set; }
     public required DateTime PeriodTo { get; set; }
+    
+    public IReadOnlyList<CreateCareerAssignmentDto> CareerAssignments { get; set; } = Array.Empty<CreateCareerAssignmentDto>();
 }

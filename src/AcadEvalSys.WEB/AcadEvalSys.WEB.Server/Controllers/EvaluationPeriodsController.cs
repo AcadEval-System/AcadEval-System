@@ -1,8 +1,10 @@
 using AcadEvalSys.Application.EvaluationPeriods.Commands.CreateEvaluationPeriod;
 using AcadEvalSys.Application.EvaluationPeriods.Commands.DeleteEvaluationPeriod;
 using AcadEvalSys.Application.EvaluationPeriods.Commands.UpdateEvaluationPeriod;
+using AcadEvalSys.Application.EvaluationPeriods.Queries.GetAllEvaluationPeriods;
 using AcadEvalSys.Application.EvaluationPeriods.Queries.GetEvaluationPeriod;
 using AcadEvalSys.Domain.Constants.Constants;
+using AcadEvalSys.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +16,12 @@ namespace AcadEvalSys.WEB.Server.Controllers;
 [Authorize(Roles = UserRoles.Admin)]
 public class EvaluationPeriodsController(IMediator mediator) : ControllerBase
 {
-
+    [HttpGet]
+    public async Task<IActionResult> GetAllEvaluationPeriods()
+    {
+        var evaluationPeriods = await mediator.Send(new GetAllEvaluationPeriodQuery());
+        return Ok(evaluationPeriods);
+    }
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEvaluationPeriodById(Guid id)
