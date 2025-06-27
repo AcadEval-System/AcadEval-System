@@ -66,9 +66,9 @@ public class SessionService : ISessionService
         }
     }
 
-    public int? GetMinutesRemaining()
+    public async Task<int?> GetMinutesRemaining()
     {
-        var expiration = GetSessionExpiration().Result;
+        var expiration = await GetSessionExpiration();
         if (!expiration.HasValue)
         {
             return null;

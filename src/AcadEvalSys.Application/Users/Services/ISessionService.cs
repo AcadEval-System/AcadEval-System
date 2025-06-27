@@ -6,5 +6,5 @@ namespace AcadEvalSys.Application.Users.Services;
 public interface ISessionService
 {
     Task<DateTimeOffset?> GetSessionExpiration();
-    int? GetMinutesRemaining();
+    Task<int?> GetMinutesRemaining();
 } 

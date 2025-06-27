@@ -1,0 +1,77 @@
+name: "Bug Report"
+description: "Report an issue or bug in the project"
+title: "[Bug]: "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: "# Bug Description\n\nDescribe the bug you encountered."
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: "Provide details about the issue you are experiencing."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Steps to Reproduce\nList the steps to reproduce the bug."
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: "Provide a step-by-step guide to reproduce the bug."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Expected Behavior\nDescribe what you expected to happen."
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: "Describe what should have happened instead."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Screenshots\nAttach screenshots if applicable."
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: "Attach any relevant screenshots."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "## Environment\nProvide details about your system."
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: "Include OS, browser, project version, etc."
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Additional Notes\nProvide any extra information."
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Additional Notes
+      description: "Include any extra details or context about the bug."
+    validations:
+      required: false

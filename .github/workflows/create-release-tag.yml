@@ -31,12 +31,12 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git tag v${{ steps.semver.outputs.next }}
-          git push origin v${{ steps.semver.outputs.next }}
+          git tag ${{ steps.semver.outputs.next }}
+          git push origin ${{ steps.semver.outputs.next }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.semver.outputs.next }}
-          name: Release v${{ steps.semver.outputs.next }}
+          tag_name: ${{ steps.semver.outputs.next }}
+          name: Release ${{ steps.semver.outputs.next }}
           generate_release_notes: true

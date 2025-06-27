@@ -38,7 +38,7 @@ public class GetSessionStatusQueryHandler(
             
             // Usar el servicio para obtener la expiración real
             var sessionExpiration = await sessionService.GetSessionExpiration();
-            var minutesRemaining =  sessionService.GetMinutesRemaining();
+            var minutesRemaining = await sessionService.GetMinutesRemaining();
 
             logger.LogInformation("Session valid for user {UserId}, expires at {ExpiresAt}", 
                 currentUser.Id, sessionExpiration);
