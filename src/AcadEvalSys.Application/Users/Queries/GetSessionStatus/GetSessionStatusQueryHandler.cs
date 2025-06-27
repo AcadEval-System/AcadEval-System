@@ -12,7 +12,6 @@ namespace AcadEvalSys.Application.Users.Queries.GetSessionStatus;
 
 public class GetSessionStatusQueryHandler(
     ILogger<GetSessionStatusQueryHandler> logger,
-    UserManager<User> userManager,
     IMediator mediator,
     IUserContext userContext,
     ISessionService sessionService) : IRequestHandler<GetSessionStatusQuery, SessionStatusDto>
@@ -38,8 +37,8 @@ public class GetSessionStatusQueryHandler(
             var userInfo = await mediator.Send(new GetCurrentUserInfoQuery(), cancellationToken);
             
             // Usar el servicio para obtener la expiración real
-            var sessionExpiration = sessionService.GetSessionExpiration();
-            var minutesRemaining = sessionService.GetMinutesRemaining();
+            var sessionExpiration = await sessionService.GetSessionExpiration();
+            var minutesRemaining = await sessionService.GetMinutesRemaining();
 
             logger.LogInformation("Session valid for user {UserId}, expires at {ExpiresAt}", 
                 currentUser.Id, sessionExpiration);
@@ -48,7 +47,7 @@ public class GetSessionStatusQueryHandler(
             {
                 IsAuthenticated = true,
                 User = userInfo,
-                ExpiresAt = sessionExpiration,
+                ExpiresAt =  sessionExpiration,
                 MinutesRemaining = minutesRemaining
             };
         }
