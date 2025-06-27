@@ -3,10 +3,6 @@ import { useEffect, useState } from "react";
 import { authService } from "../services/auth-service";
 import { authStore } from "../stores/auth-store";
 
-/**
- * Hook para verificar sesión usando endpoint limpio que nunca devuelve 401
- * Sigue Clean Architecture y evita logs rojos en consola
- */
 export const useSessionCheck = () => {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
 
@@ -14,7 +10,7 @@ export const useSessionCheck = () => {
     const checkSession = async () => {
       try {
         const sessionStatus = await authService.checkSession();
-
+        console.log("sessionStatus", sessionStatus);
         if (sessionStatus.isAuthenticated && sessionStatus.user) {
           authStore.getState().setAuth(sessionStatus.user);
         } else {
