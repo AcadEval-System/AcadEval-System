@@ -21,7 +21,7 @@ export const useUpdateCompetency = () => {
           queryKey: competenciesKeys.lists(),
         }),
         queryClient.invalidateQueries({
-          queryKey: competenciesKeys.detail(id),
+          queryKey: competenciesKeys.all,
         }),
       ]);
     },

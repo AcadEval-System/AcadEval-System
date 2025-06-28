@@ -22,5 +22,5 @@ export interface Competency {
   id: string;
   name: string;
   description: string;
-  type: "soft" | "technical";
+  type: "Soft" | "Hard";
 }

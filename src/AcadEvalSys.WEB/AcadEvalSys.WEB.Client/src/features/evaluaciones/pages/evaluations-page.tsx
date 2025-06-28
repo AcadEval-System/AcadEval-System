@@ -6,6 +6,7 @@ import { EvaluationFilters } from "../components/evaluations-list/data-table/eva
 import { EvaluationsTable } from "../components/evaluations-list/data-table/evaluations-table";
 import { EvaluationsGrid } from "../components/evaluations-list/evaluations-grid";
 import { EvaluationHeader } from "../components/evaluations-list/evaluation-header";
+import { ContainerPage } from "@/shared/components/container-page";
 
 // Datos de ejemplo para el mock
 const MOCK_CAREERS: Career[] = [
@@ -107,7 +108,7 @@ export default function EvaluacionesPage() {
   };
 
   return (
-    <div className="w-full space-y-6 max-w-full">
+    <ContainerPage>
       <EvaluationHeader
         onNewEvaluation={handleCreateClick}
         onViewResults={handleViewResults}
@@ -129,6 +130,6 @@ export default function EvaluacionesPage() {
           onCardClick={handleViewDetails}
         />
       )}
-    </div>
+    </ContainerPage>
   );
 }
