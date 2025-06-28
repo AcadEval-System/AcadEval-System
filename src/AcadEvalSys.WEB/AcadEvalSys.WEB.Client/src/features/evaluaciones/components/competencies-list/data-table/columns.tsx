@@ -10,7 +10,6 @@ import {
   Copy,
   Trash2,
 } from "lucide-react";
-import { format } from "date-fns";
 
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
@@ -55,17 +54,17 @@ export const columns: ColumnDef<Competency>[] = [
         <Badge
           variant="secondary"
           className={
-            competency.type === "soft"
+            competency.type === "Soft"
               ? "bg-blue-100 text-blue-800 hover:bg-blue-200"
               : "bg-amber-100 text-amber-800 hover:bg-amber-200"
           }
         >
-          {competency.type === "soft" ? (
+          {competency.type === "Soft" ? (
             <BookOpen className="mr-1 h-3 w-3" />
           ) : (
             <Briefcase className="mr-1 h-3 w-3" />
           )}
-          {competency.type === "soft" ? "Blanda" : "Técnica"}
+          {competency.type === "Soft" ? "Blanda" : "Técnica"}
         </Badge>
       );
     },

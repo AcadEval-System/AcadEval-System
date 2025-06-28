@@ -6,16 +6,38 @@ export interface Career {
 export interface Evaluation {
   id: string;
   title: string;
-  status: "active" | "completed" | "upcoming" | "cancelled" | "default";
-  progress: number;
-  startDate: Date;
-  endDate: Date;
-  competenciesCount: number;
-  studentsCount: number;
-  careers: Career[];
-  createdAt: Date;
-  description?: string;
-  type?: string;
+  description: string;
+  periodFrom: string;
+  periodTo: string;
+  careerAssignments: CareerAssignment[];
+}
+
+export interface CareerAssignment {
+  technicalCareerId: string;
+  technicalCareerName: string;
+  assignmentsByYear: AssignmentsByYear;
+  totalAssignments: number;
+  totalProfessors: number;
+  totalCompetencies: number;
+  activeYears: string[];
+}
+
+export type CareerYear = "First" | "Second" | "Third";
+
+export type AssignmentsByYear = {
+  [key in CareerYear]: Assignment[];
+};
+
+export interface Assignment {
+  assignmentId: string;
+  year: string;
+  competencyId: string;
+  competencyName: string;
+  competencyDescription: string;
+  competencyType: string;
+  professorId: string;
+  professorName: string;
+  professorEmail: string;
 }
 
 export interface Competency {
