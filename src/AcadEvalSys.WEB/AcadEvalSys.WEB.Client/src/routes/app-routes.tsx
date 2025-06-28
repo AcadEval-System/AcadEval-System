@@ -5,6 +5,7 @@ import {
   CompetenciasPage,
   EvaluacionesPage,
   NuevaEvaluacionPage,
+  CompetencyDetailPage,
 } from "../features/evaluaciones";
 import {
   CrearEncuestaPage,
@@ -21,6 +22,10 @@ export function AppRoutes() {
         <Route path="/surveys" component={EncuestasPage} />
         <Route path="/surveys/templates" component={PlantillasPage} />
         <Route path="/surveys/new" component={CrearEncuestaPage} />
+        <Route
+          path="/evaluations/competencies/:name"
+          component={CompetencyDetailPage}
+        />
         <Route path="/evaluations/competencies" component={CompetenciasPage} />
         <Route path="/evaluations" component={EvaluacionesPage} />
         <Route path="/evaluations/new" component={NuevaEvaluacionPage} />

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useCallback, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { usePathname } from "wouter/use-browser-location";
 import { AppSidebar } from "./sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "./ui/sidebar";

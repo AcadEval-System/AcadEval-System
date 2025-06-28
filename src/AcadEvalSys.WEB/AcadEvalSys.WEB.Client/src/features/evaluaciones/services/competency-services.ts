@@ -9,6 +9,13 @@ export const getCompetencies = async (): Promise<Competency[]> => {
   return data;
 };
 
+export const getCompetencyById = async (
+  id: string
+): Promise<Competency | null> => {
+  const { data } = await api.get<Competency>(`${COMPETENCIES_API_URL}/${id}`);
+  return data;
+};
+
 export const createCompetency = async (
   competencyData: CompetencyFormData
 ): Promise<Competency> => {

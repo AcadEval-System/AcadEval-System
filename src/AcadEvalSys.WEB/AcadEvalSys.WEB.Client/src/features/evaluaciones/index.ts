@@ -1,6 +1,7 @@
 export { default as CompetenciasPage } from "./pages/competencies-page";
 export { default as NuevaEvaluacionPage } from "./pages/new-evaluation-page";
 export { default as EvaluacionesPage } from "./pages/evaluations-page";
+export { default as CompetencyDetailPage } from "./pages/competency-detail-page";
 
 // Componentes reutilizables
 export { EvaluationsTable } from "./components/evaluations-list/data-table/evaluations-table";
