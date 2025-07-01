@@ -13,6 +13,6 @@ namespace AcadEvalSys.Domain.Entities
         public virtual EvaluationPeriod? EvaluationPeriod { get; set; }
         public virtual Competency? Competency { get; set; }
         public virtual Subject? Subject { get; set; }
-        public virtual ICollection<StudentCompetencyEvaluation>? StudentCompetencyEvaluations { get; set; } = new List<StudentCompetencyEvaluation>();
+        public virtual ICollection<StudentCompetencyEvaluationCalification>? StudentCompetencyEvaluations { get; set; } = new List<StudentCompetencyEvaluationCalification>();
     }
 }
