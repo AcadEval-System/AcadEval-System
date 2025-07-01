@@ -33,19 +33,11 @@ try
     // Ejecutar el seeder
     if (app.Environment.IsDevelopment())
     {
-
-
-        if (app.Environment.IsDevelopment())
-        {
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));
-            using (var scope = app.Services.CreateScope())
-            {
-                var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-                await seeder.Seed();
-            }
-        }
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));      
     }
+
+    
 
     app.UseHttpsRedirection();
     app.UseDefaultFiles();
