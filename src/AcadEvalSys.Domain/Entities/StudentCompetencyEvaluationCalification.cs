@@ -15,6 +15,5 @@ namespace AcadEvalSys.Domain.Entities
         public virtual Student? Student { get; set; }
         public virtual ProfessorCompetencyAssignment? ProfessorCompetencyAssignment { get; set; }
         public virtual Subject? Subject { get; set; }
-        public virtual ICollection<QuestionResponse>? QuestionResponses { get; set; } = new List<QuestionResponse>();
     }
 }

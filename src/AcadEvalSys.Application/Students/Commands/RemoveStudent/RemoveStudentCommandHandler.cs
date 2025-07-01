@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AcadEvalSys.Application.Students.Commands.RemoveStudent;
 
-public class RemoveStudentCommandHandler(Logger<RemoveStudentCommandHandler> logger, Mapper mapper, UserStore<User> userStore) : IRequestHandler<RemoveStudentCommand>
+public class RemoveStudentCommandHandler() : IRequestHandler<RemoveStudentCommand>
 {
     public Task Handle(RemoveStudentCommand request, CancellationToken cancellationToken)
     {

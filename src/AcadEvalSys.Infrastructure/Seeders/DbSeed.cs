@@ -424,7 +424,6 @@ private string GetLevel4Description(string competencyName)
                     Text = competencyQuestions[i],
                     Order = i + 1,
                     IsRequired = true,
-                    CompetencyId = competency.Id,
                     CreatedByUserId = createdByUserId
                 });
             }

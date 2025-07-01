@@ -23,7 +23,7 @@ public class AddStudentCommandHandler(
         
         var user = mapper.Map<User>(request);
         
-        var result = await userManager.CreateAsync(user, request.Password);
+        await userManager.CreateAsync(user, request.Password);
 
         await userManager.AddToRoleAsync(user, UserRoles.Student);
 
