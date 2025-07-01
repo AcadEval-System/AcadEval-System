@@ -1,6 +1,3 @@
-
-
-using AcadEvalSys.Application.Competencies.Queries.GetCompetency;
 using AcadEvalSys.Domain.Constants.Constants;
 using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Domain.Enums;
@@ -30,13 +27,40 @@ internal class DbSeeder(ApplicationDbContext dbContext, UserManager<User> userMa
                 await dbContext.SaveChangesAsync();
             }
 
-            // Después creamos el usuario administrador
+            // Después creamos los usuarios
             var adminId = await EnsureAdminUser();
+            var professorId = await EnsureProfessorUser();
+            var studentId = await EnsureStudentUser();
 
             if (!dbContext.TechnicalCareers.Any())
             {
                 var careers = GetCareers();
                 dbContext.TechnicalCareers.AddRange(careers);
+                await dbContext.SaveChangesAsync();
+            }
+
+            // Crear entidad Professor ANTES de crear las materias
+            if (!dbContext.Professors.Any())
+            {
+                var professor = new Professor
+                {
+                    UserId = professorId,
+                    Phone = "+34 612 345 678"
+                };
+                dbContext.Professors.Add(professor);
+                await dbContext.SaveChangesAsync();
+            }
+
+            // Crear entidad Student ANTES de crear StudentSubject
+            if (!dbContext.Students.Any())
+            {
+                var student = new Student
+                {
+                    UserId = studentId,
+                    TechnicalCareerId = dbContext.TechnicalCareers.First().Id,
+                    CurrentYear = CareerYear.Second
+                };
+                dbContext.Students.Add(student);
                 await dbContext.SaveChangesAsync();
             }
 
@@ -52,6 +76,57 @@ internal class DbSeeder(ApplicationDbContext dbContext, UserManager<User> userMa
 
                 var descriptions = GetCompetencyLevelDescriptions(insertedCompetencies);
                 dbContext.CompetencyLevelDescriptions.AddRange(descriptions);
+                await dbContext.SaveChangesAsync();
+
+                // Crear preguntas para las competencias
+                var formQuestions = GetFormQuestions(insertedCompetencies, adminId);
+                dbContext.FormQuestions.AddRange(formQuestions);
+                await dbContext.SaveChangesAsync();
+            }
+
+            // AHORA crear las materias (después de crear Professor)
+            if (!dbContext.Subjects.Any())
+            {
+                var subjects = GetSubjects(dbContext.TechnicalCareers.First().Id.ToString(), professorId);
+                dbContext.Subjects.AddRange(subjects);
+                await dbContext.SaveChangesAsync();
+            }
+
+            // Asignar estudiante a materia (StudentSubject) - DESPUÉS de crear Student y Subjects
+            if (!dbContext.StudentSubjects.Any())
+            {
+                var studentSubject = new StudentSubject
+                {
+                    StudentId = studentId,
+                    SubjectId = dbContext.Subjects.First().Id,
+                    CreatedByUserId = adminId
+                };
+                dbContext.StudentSubjects.Add(studentSubject);
+                await dbContext.SaveChangesAsync();
+            }
+
+            // Crear período de evaluación
+            if (!dbContext.EvaluationPeriods.Any())
+            {
+                var evaluationPeriod = new EvaluationPeriod
+                {
+                    Title = "Período de Evaluación Primer Semestre 2024",
+                    Description = "Evaluación de competencias blandas para el primer semestre del año académico 2024",
+                    PeriodFrom = DateTime.UtcNow.AddDays(-30),
+                    PeriodTo = DateTime.UtcNow.AddDays(30),
+                    CreatedByUserId = adminId
+                };
+                dbContext.EvaluationPeriods.Add(evaluationPeriod);
+                await dbContext.SaveChangesAsync();
+
+                // Asignar competencias al profesor para este período (ProfessorCompetencyAssignment)
+                var professorCompetencyAssignments = GetProfessorCompetencyAssignments(
+                    evaluationPeriod.Id, 
+                    dbContext.Competencies.ToList(), 
+                    dbContext.Subjects.First().Id,
+                    adminId);
+                
+                dbContext.ProfessorCompetencyAssignments.AddRange(professorCompetencyAssignments);
                 await dbContext.SaveChangesAsync();
             }
         }
@@ -69,6 +144,7 @@ internal class DbSeeder(ApplicationDbContext dbContext, UserManager<User> userMa
                 UserName = adminEmail,
                 Email = adminEmail,
                 EmailConfirmed = true,
+                Name = "Administrador del Sistema"
             };
 
             var result = await userManager.CreateAsync(adminUser, "Administrator1390_");
@@ -79,6 +155,56 @@ internal class DbSeeder(ApplicationDbContext dbContext, UserManager<User> userMa
         }
 
         return adminUser.Id;
+    }
+
+    private async Task<string> EnsureProfessorUser()
+    {
+        const string professorEmail = "profesor@itec.com";
+        var professorUser = await userManager.FindByEmailAsync(professorEmail);
+
+        if (professorUser == null)
+        {
+            professorUser = new User
+            {
+                UserName = professorEmail,
+                Email = professorEmail,
+                EmailConfirmed = true,
+                Name = "María González Rodríguez"
+            };
+
+            var result = await userManager.CreateAsync(professorUser, "Professor1390_");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(professorUser, UserRoles.Professor);
+            }
+        }
+
+        return professorUser.Id;
+    }
+
+    private async Task<string> EnsureStudentUser()
+    {
+        const string studentEmail = "estudiante@itec.com";
+        var studentUser = await userManager.FindByEmailAsync(studentEmail);
+
+        if (studentUser == null)
+        {
+            studentUser = new User
+            {
+                UserName = studentEmail,
+                Email = studentEmail,
+                EmailConfirmed = true,
+                Name = "Juan Carlos Pérez López"
+            };
+
+            var result = await userManager.CreateAsync(studentUser, "Student1390_");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(studentUser, UserRoles.Student);
+            }
+        }
+
+        return studentUser.Id;
     }
 
     private IEnumerable<IdentityRole> GetRoles()
@@ -107,6 +233,18 @@ internal class DbSeeder(ApplicationDbContext dbContext, UserManager<User> userMa
         ];
 
         return careers;
+    }
+
+
+    private IEnumerable<Subject> GetSubjects(string technicalCareerId, string professorId)
+    {
+        List<Subject> subjects = new()
+        {
+            new() { Name = "Programación II", TechnicalCareerId = Guid.Parse(technicalCareerId), Year = CareerYear.Second, ProfessorId = professorId },
+            new() { Name = "Estructura de Datos", TechnicalCareerId = Guid.Parse(technicalCareerId), Year = CareerYear.Second, ProfessorId = professorId },
+        };
+
+        return subjects;
     }
     
     private IEnumerable<Competency> GetCompetencies()
@@ -238,4 +376,82 @@ private string GetLevel4Description(string competencyName)
     };
 }
 
+    private IEnumerable<FormQuestion> GetFormQuestions(IEnumerable<Competency> competencies, string createdByUserId)
+    {
+        var questions = new List<FormQuestion>();
+
+        foreach (var competency in competencies)
+        {
+            var competencyQuestions = competency.Name switch
+            {
+                "Liderazgo" => new[]
+                {
+                    "¿Con qué frecuencia toma la iniciativa para liderar proyectos o actividades grupales?",
+                    "¿Cómo motiva y guía a sus compañeros durante el trabajo en equipo?",
+                    "¿De qué manera comunica su visión y objetivos al grupo?"
+                },
+                "Comunicación Efectiva" => new[]
+                {
+                    "¿Con qué claridad expresa sus ideas en presentaciones orales?",
+                    "¿Cómo adapta su comunicación según el contexto y la audiencia?",
+                    "¿De qué manera escucha activamente las opiniones de otros?"
+                },
+                "Gestión Emocional" => new[]
+                {
+                    "¿Cómo maneja la presión y el estrés en situaciones académicas?",
+                    "¿De qué manera controla sus emociones en situaciones de conflicto?",
+                    "¿Cómo demuestra empatía hacia las emociones de sus compañeros?"
+                },
+                "Proactividad" => new[]
+                {
+                    "¿Con qué frecuencia anticipa problemas y propone soluciones?",
+                    "¿Cómo toma la iniciativa para mejorar procesos o metodologías?",
+                    "¿De qué manera busca oportunidades de aprendizaje adicionales?"
+                },
+                "Trabajo en Equipo" => new[]
+                {
+                    "¿Cómo colabora efectivamente con compañeros de diferentes estilos de trabajo?",
+                    "¿De qué manera contribuye a resolver conflictos dentro del grupo?",
+                    "¿Cómo promueve la participación equitativa de todos los miembros?"
+                },
+                _ => new[] { "Pregunta por defecto para esta competencia." }
+            };
+
+            for (int i = 0; i < competencyQuestions.Length; i++)
+            {
+                questions.Add(new FormQuestion
+                {
+                    Text = competencyQuestions[i],
+                    Order = i + 1,
+                    IsRequired = true,
+                    CompetencyId = competency.Id,
+                    CreatedByUserId = createdByUserId
+                });
+            }
+        }
+
+        return questions;
+    }
+
+    private IEnumerable<ProfessorCompetencyAssignment> GetProfessorCompetencyAssignments(
+        Guid evaluationPeriodId, 
+        IEnumerable<Competency> competencies, 
+        Guid subjectId,
+        string createdByUserId)
+    {
+        var assignments = new List<ProfessorCompetencyAssignment>();
+
+        foreach (var competency in competencies)
+        {
+            assignments.Add(new ProfessorCompetencyAssignment
+            {
+                EvaluationPeriodId = evaluationPeriodId,
+                CompetencyId = competency.Id,
+                SubjectId = subjectId,
+                CreatedByUserId = createdByUserId
+            });
+        }
+
+        return assignments;
+    }
 }

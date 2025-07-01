@@ -3,6 +3,7 @@ using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Infrastructure.Extensions;
 using AcadEvalSys.WEB.Server.Extensions;
 using AcadEvalSys.WEB.Server.Middlewares;
+using AcadEvalSys.Infrastructure.Seeders;
 using Serilog;
 
 try
@@ -12,7 +13,7 @@ try
     builder.AddPresentation();
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
-    
+
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowFrontend",
@@ -23,35 +24,37 @@ try
                 .AllowCredentials());
     });
 
-    
+
     var app = builder.Build();
-    
+
     app.UseSerilogRequestLogging();
     app.UseMiddleware<ErrorHandlingMiddleware>();
-    
 
+    // Ejecutar el seeder
     if (app.Environment.IsDevelopment())
     {
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));      
     }
+
+    
 
     app.UseHttpsRedirection();
     app.UseDefaultFiles();
     app.UseStaticFiles();
-   
+
     app.UsePathBase("/api");
     app.UseRouting();
-    
+
     app.UseCors("AllowFrontend");
-    
+
     app.UseAuthentication();
     app.UseAuthorization();
 
 
     app.MapGroup("identity")
         .MapIdentityApi<User>()
-        .WithTags("Identity"); 
+        .WithTags("Identity");
 
     app.MapControllers();
 
@@ -64,7 +67,7 @@ try
         serverAddress, machineName, environment);
 
     app.Run();
-    
+
 }
 catch (Exception ex)
 {

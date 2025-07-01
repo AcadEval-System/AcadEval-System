@@ -8,5 +8,5 @@ public record EvaluationPeriodDetailDto
     public required DateTime PeriodFrom { get; init; }
     public required DateTime PeriodTo { get; init; }
     
-    public IReadOnlyList<CareerWithAssignmentsDto> CareerAssignments { get; init; } = Array.Empty<CareerWithAssignmentsDto>();
+    public IReadOnlyList<CareerWithAssignmentsDto> CareerAssignments { get; init; } = [];
 }

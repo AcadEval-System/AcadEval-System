@@ -12,7 +12,6 @@ public class CreateEvaluationPeriodCommandHandler(
     ILogger<CreateEvaluationPeriodCommandHandler> logger,
     IEvaluationPeriodRepository evaluationPeriodRepository,
     IProfessorCompetencyAssignmentRepository professorCompetencyAssignmentRepository,
-    ICareerRepository careerRepository,
     IMapper mapper,
     IUserContext userContext) : IRequestHandler<CreateEvaluationPeriodCommand, Guid>
 {
@@ -37,36 +36,19 @@ public class CreateEvaluationPeriodCommandHandler(
         var evaluationPeriod = mapper.Map<EvaluationPeriod>(request);
         evaluationPeriod.CreatedByUserId = user.Id ?? string.Empty;
 
-        var careerIds = request.CareerAssignments.Select(ca => ca.TechnicalCareerId).Distinct().ToList();
-
-        var technicalCareers = await careerRepository.GetCareersByIdsAsync(careerIds);
-
-        evaluationPeriod.TechnicalCareers = technicalCareers.ToList();
-
         var evaluationPeriodId = await evaluationPeriodRepository.CreateEvaluationPeriodAsync(evaluationPeriod);
 
         logger.LogInformation("Evaluation period created successfully with ID: {Id}", evaluationPeriodId);
 
         var professorAssignments = new List<ProfessorCompetencyAssignment>();
 
-        foreach (var careerAssignment in request.CareerAssignments)
+        foreach (var assignment in request.Assignments)
         {
-            foreach (var yearAssignment in careerAssignment.AssignmentsByYear)
-            {
-                var year = yearAssignment.Key;
-                var competencyAssignments = yearAssignment.Value;
+            var professorAssignment = mapper.Map<ProfessorCompetencyAssignment>(assignment);
+            professorAssignment.EvaluationPeriodId = evaluationPeriodId;
+            professorAssignment.CreatedByUserId = user.Id ?? string.Empty;
 
-                foreach (var competencyAssignment in competencyAssignments)
-                {
-                    var professorAssignment = mapper.Map<ProfessorCompetencyAssignment>(competencyAssignment);
-                    professorAssignment.EvaluationPeriodId = evaluationPeriodId;
-                    professorAssignment.TechnicalCareerId = careerAssignment.TechnicalCareerId;
-                    professorAssignment.Year = year;
-                    professorAssignment.CreatedByUserId = user.Id ?? string.Empty;
-
-                    professorAssignments.Add(professorAssignment);
-                }
-            }
+            professorAssignments.Add(professorAssignment);
         }
 
         if (professorAssignments.Any())

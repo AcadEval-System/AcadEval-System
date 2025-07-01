@@ -10,8 +10,8 @@ public class CreateCompetencyAssignmentDtoValidator : AbstractValidator<CreateCo
             .NotEmpty()
             .WithMessage("El ID de la competencia es requerido");
 
-        RuleFor(x => x.ProfessorId)
+        RuleFor(x => x.SubjectId)
             .NotEmpty()
-            .WithMessage("El ID del profesor es requerido");
+            .WithMessage("El ID de la asignatura es requerido");
     }
 }

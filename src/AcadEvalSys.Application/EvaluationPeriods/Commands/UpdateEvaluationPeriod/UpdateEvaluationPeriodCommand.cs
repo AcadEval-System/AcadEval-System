@@ -11,5 +11,5 @@ public class UpdateEvaluationPeriodCommand : IRequest
     public required DateTime PeriodFrom { get; set; }
     public required DateTime PeriodTo { get; set; }
     
-    public IReadOnlyList<CreateCareerAssignmentDto> CareerAssignments { get; set; } = Array.Empty<CreateCareerAssignmentDto>();
+    public IReadOnlyList<CreateCompetencyAssignmentDto> Assignments { get; set; } = Array.Empty<CreateCompetencyAssignmentDto>();
 }
