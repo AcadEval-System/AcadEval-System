@@ -90,6 +90,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISessionService, SessionService>();
         services.AddScoped<IEvaluationPeriodRepository, EvaluationPeriodRepository>();
         services.AddScoped<IProfessorCompetencyAssignmentRepository, ProfessorCompetencyAssignmentRepository>();
-
+        services.AddScoped<IStudentRepository, StudentRepository>();
     }
 }

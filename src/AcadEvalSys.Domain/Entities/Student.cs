@@ -8,7 +8,7 @@ namespace AcadEvalSys.Domain.Entities
     {
         public string? UserId { get; set; }
         public Guid? TechnicalCareerId { get; set; }
-        public CareerYear CurrentYear { get; set; } // Default to first year
+        public CareerYear? CurrentYear { get; set; } 
     
         // Navigation properties
         public virtual User? User { get; set; }
