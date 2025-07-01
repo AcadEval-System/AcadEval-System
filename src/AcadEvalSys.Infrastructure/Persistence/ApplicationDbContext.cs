@@ -72,6 +72,19 @@ public class ApplicationDbContext : IdentityDbContext<User>
                 .WithMany(p => p.StudentCompetencyEvaluations)
                 .HasForeignKey(e => e.ProfessorCompetencyAssignmentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.Subject)
+                .WithMany(s => s.StudentCompetencyEvaluations)
+                .HasForeignKey(e => e.SubjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<ProfessorCompetencyAssignment>(entity =>
+        {
+            entity.HasOne(pca => pca.Subject)
+                .WithMany(s => s.ProfessorCompetencyAssignments)
+                .HasForeignKey(pca => pca.SubjectId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         builder.Entity<ProfessorCompetencyAssignment>(entity =>
