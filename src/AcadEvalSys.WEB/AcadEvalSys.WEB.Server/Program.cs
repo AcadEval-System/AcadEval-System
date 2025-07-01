@@ -3,6 +3,7 @@ using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Infrastructure.Extensions;
 using AcadEvalSys.WEB.Server.Extensions;
 using AcadEvalSys.WEB.Server.Middlewares;
+using AcadEvalSys.Infrastructure.Seeders;
 using Serilog;
 
 try
@@ -29,6 +30,12 @@ try
     app.UseSerilogRequestLogging();
     app.UseMiddleware<ErrorHandlingMiddleware>();
     
+    // Ejecutar el seeder
+    using (var scope = app.Services.CreateScope())
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+        await seeder.Seed();
+    }
 
     if (app.Environment.IsDevelopment())
     {

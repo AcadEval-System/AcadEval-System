@@ -1,5 +1,6 @@
 using AcadEvalSys.Application.Users.Dtos;
 using AcadEvalSys.Application.Users.Services;
+using AcadEvalSys.Domain.Enums;
 using AcadEvalSys.Infrastructure.Persistence;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,6 @@ public class UserProfileService(ApplicationDbContext dbContext, IMapper mapper) 
 
         var result = mapper.Map<StudentDetailsDto>(student);
         
-        // Mapear las materias del estudiante
         result.Subjects = student.StudentSubjects?.Select(ss => new SubjectDetailsDto
         {
             Id = ss.Subject!.Id,

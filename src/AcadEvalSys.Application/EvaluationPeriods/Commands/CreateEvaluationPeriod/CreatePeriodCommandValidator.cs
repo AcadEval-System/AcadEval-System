@@ -1,4 +1,3 @@
-using AcadEvalSys.Application.Commands.CreateEvaluationPeriod;
 using AcadEvalSys.Application.EvaluationPeriods.Dtos;
 using FluentValidation;
 
@@ -26,11 +25,11 @@ public class CreateEvaluationPeriodCommandValidator : AbstractValidator<CreateEv
             .GreaterThan(x => x.PeriodFrom)
             .WithMessage("PeriodTo must be after PeriodFrom");
 
-        RuleFor(x => x.CareerAssignments)
+        RuleFor(x => x.Assignments)
             .NotEmpty()
-            .WithMessage("At least one career assignment is required");
+            .WithMessage("At least one assignment is required");
 
-        RuleForEach(x => x.CareerAssignments)
-            .SetValidator(new CreateCareerAssignmentDtoValidator());
+        RuleForEach(x => x.Assignments)
+            .SetValidator(new CreateCompetencyAssignmentDtoValidator());
     }
 }

@@ -9,5 +9,5 @@ public class CreateEvaluationPeriodCommand : IRequest<Guid>
     public string Description { get; set; } = string.Empty;
     public required DateTime PeriodFrom { get; set; }
     public required DateTime PeriodTo { get; set; }
-    public IReadOnlyList<CreateCareerAssignmentDto> CareerAssignments { get; set; } = Array.Empty<CreateCareerAssignmentDto>();
+    public IReadOnlyList<CreateCompetencyAssignmentDto> Assignments { get; set; } = [];
 } 
