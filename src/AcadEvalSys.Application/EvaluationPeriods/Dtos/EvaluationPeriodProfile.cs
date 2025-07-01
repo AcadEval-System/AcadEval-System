@@ -12,6 +12,7 @@ public class EvaluationPeriodProfile : Profile
         // Command to Entity - AutoMapper mapea automáticamente: Title, Description, PeriodFrom, PeriodTo
         CreateMap<CreateEvaluationPeriodCommand, EvaluationPeriod>();
         CreateMap<UpdateEvaluationPeriodCommand, EvaluationPeriod>();
+        CreateMap<CreateCompetencyAssignmentDto, ProfessorCompetencyAssignment>();
 
         // Entity to DTO - mapeo simplificado para el frontend
         CreateMap<EvaluationPeriod, EvaluationPeriodDetailDto>()
