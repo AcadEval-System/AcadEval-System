@@ -29,6 +29,8 @@ try
 
     app.UseSerilogRequestLogging();
     app.UseMiddleware<ErrorHandlingMiddleware>();
+    
+
 
     // Ejecutar el seeder
     if (app.Environment.IsDevelopment())
@@ -36,8 +38,6 @@ try
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));      
     }
-
-    
 
     app.UseHttpsRedirection();
     app.UseDefaultFiles();

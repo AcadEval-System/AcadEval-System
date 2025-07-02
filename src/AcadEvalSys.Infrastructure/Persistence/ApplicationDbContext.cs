@@ -19,7 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<FormQuestion> FormQuestions { get; set; }
     public DbSet<QuestionResponse> QuestionResponses { get; set; }
     public DbSet<ProfessorCompetencyAssignment> ProfessorCompetencyAssignments { get; set; }
-    public DbSet<StudentCompetencyEvaluation> StudentCompetencyEvaluations { get; set; }
+    public DbSet<StudentCompetencyEvaluationCalification> StudentCompetencyCalification { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -61,7 +61,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        builder.Entity<StudentCompetencyEvaluation>(entity =>
+        builder.Entity<StudentCompetencyEvaluationCalification>(entity =>
         {
             entity.HasOne(e => e.Student)
                 .WithMany(s => s.StudentCompetencyEvaluations)
@@ -72,10 +72,13 @@ public class ApplicationDbContext : IdentityDbContext<User>
                 .WithMany(p => p.StudentCompetencyEvaluations)
                 .HasForeignKey(e => e.ProfessorCompetencyAssignmentId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
 
-            entity.HasOne(e => e.Subject)
-                .WithMany(s => s.StudentCompetencyEvaluations)
-                .HasForeignKey(e => e.SubjectId)
+        builder.Entity<ProfessorCompetencyAssignment>(entity =>
+        {
+            entity.HasOne(pca => pca.Subject)
+                .WithMany(s => s.ProfessorCompetencyAssignments)
+                .HasForeignKey(pca => pca.SubjectId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
