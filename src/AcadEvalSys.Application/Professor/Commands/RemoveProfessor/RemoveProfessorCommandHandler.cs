@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace AcadEvalSys.Application.Professor.Commands.DeleteProfessor;
 
-public class DeleteProfessorCommandHandler(ILogger<DeleteProfessorCommandHandler> logger, UserManager<User> userManager) : IRequestHandler<DeleteProfessorCommand>
+public class RemoveProfessorCommandHandler(ILogger<RemoveProfessorCommandHandler> logger, UserManager<User> userManager) : IRequestHandler<RemoveProfessorCommand>
 {
-    public async Task Handle(DeleteProfessorCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RemoveProfessorCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Deleting professor with id {Id}", request.Id);
         var user = userManager.FindByIdAsync(request.Id).Result;

@@ -35,7 +35,7 @@ public class ProfessorController(IMediator mediator) : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateProfessor([FromBody] CreateProfessorCommand command)
+    public async Task<IActionResult> CreateProfessor([FromBody] AddProfessorCommand command)
     {
         var id = await mediator.Send(command);
         return CreatedAtAction(nameof(GetById), new { id }, null);
@@ -52,7 +52,7 @@ public class ProfessorController(IMediator mediator) : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProfessor([FromRoute] string id)
     {
-        await mediator.Send(new AcadEvalSys.Application.Professor.Commands.DeleteProfessor.DeleteProfessorCommand(id));
+        await mediator.Send(new AcadEvalSys.Application.Professor.Commands.DeleteProfessor.RemoveProfessorCommand(id));
         return NoContent();
     }
     

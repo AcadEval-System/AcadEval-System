@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace AcadEvalSys.Application.Professor.Commands.CreateProfessor;
 
-public class CreateProfessorCommandValidator : AbstractValidator<CreateProfessorCommand>
+public class AddProfessorCommandValidator : AbstractValidator<AddProfessorCommand>
 {
-    public CreateProfessorCommandValidator()
+    public AddProfessorCommandValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()
