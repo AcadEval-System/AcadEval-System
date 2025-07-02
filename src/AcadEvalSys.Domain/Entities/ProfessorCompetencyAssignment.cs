@@ -6,13 +6,13 @@ namespace AcadEvalSys.Domain.Entities
 {
     public class ProfessorCompetencyAssignment : BaseEntity
     {
-        public Guid EvaluationPeriodId { get; set; }
+        public Guid CompetenciesEvaluationInstanceId { get; set; }
         public Guid CompetencyId { get; set; }
         public Guid SubjectId { get; set; }
         
-        public virtual EvaluationPeriod? EvaluationPeriod { get; set; }
+        public virtual CompetenciesEvaluationInstance? CompetenciesEvaluationInstance { get; set; }
         public virtual Competency? Competency { get; set; }
         public virtual Subject? Subject { get; set; }
-        public virtual ICollection<StudentCompetencyEvaluationCalification>? StudentCompetencyEvaluations { get; set; } = new List<StudentCompetencyEvaluationCalification>();
+        public virtual ICollection<StudentCompetencyAssessment>? StudentCompetencyAssessments { get; set; } = new List<StudentCompetencyAssessment>();
     }
 }

@@ -10,5 +10,5 @@ public interface ICompetencyRepository
     Task UpdateCompetencyAsync(Competency competency);
     Task DeleteCompetencyAsync(Guid id, string? updatedByUserId = null);
     Task<bool> ExistsByNameAsync(string name);
-    
+    Task<bool> ExistsByIdAsync(Guid id);
 }

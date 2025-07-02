@@ -38,8 +38,16 @@ public class ProfessorCompetencyAssignmentRepository(ApplicationDbContext dbCont
         }
     }
 
-    public Task DeleteByEvaluationPeriodIdAsync(Guid evaluationPeriodId)
+    public async Task DeleteByCompetenciesEvaluationInstanceIdAsync(Guid competenciesEvaluationInstanceId)
     {
-        throw new NotImplementedException();
+        var assignments = await dbContext.ProfessorCompetencyAssignments
+            .Where(pca => pca.CompetenciesEvaluationInstanceId == competenciesEvaluationInstanceId)
+            .ToListAsync();
+        
+        if (assignments.Any())
+        {
+            dbContext.ProfessorCompetencyAssignments.RemoveRange(assignments);
+            await dbContext.SaveChangesAsync();
+        }
     }
 } 

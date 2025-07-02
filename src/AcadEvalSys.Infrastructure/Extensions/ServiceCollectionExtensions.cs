@@ -86,9 +86,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDbSeeder, DbSeeder>();
         services.AddScoped<ICareerRepository, CareerRepository>();
         services.AddScoped<ICompetencyRepository, CompetencyRepository>();
+        services.AddScoped<ICompetencyEvaluationRepository, CompetencyEvaluationRepository>();
+        services.AddScoped<ISubjectRepository, SubjectRepository>();
         services.AddScoped<IUserProfileService, UserProfileService>();
         services.AddScoped<ISessionService, SessionService>();
-        services.AddScoped<IEvaluationPeriodRepository, EvaluationPeriodRepository>();
+        services.AddScoped<ICompetenciesEvaluationInstanceRepository, CompetenciesEvaluationInstanceRepository>();
         services.AddScoped<IProfessorCompetencyAssignmentRepository, ProfessorCompetencyAssignmentRepository>();
         services.AddScoped<IStudentRepository, StudentRepository>();
     }

@@ -15,7 +15,7 @@ namespace AcadEvalSys.Domain.Entities
         public virtual ICollection<Competency> Competencies { get; set; } = new List<Competency>();
         public virtual ICollection<Student>? Students { get; set; } = new List<Student>();
         
-        // Many-to-many relationship with EvaluationPeriod
-        public virtual ICollection<EvaluationPeriod> EvaluationPeriods { get; set; } = new List<EvaluationPeriod>();
+        // Many-to-many relationship with CompetenciesEvaluationInstance
+        public virtual ICollection<CompetenciesEvaluationInstance> CompetenciesEvaluationInstances { get; set; } = new List<CompetenciesEvaluationInstance>();
     }
 }

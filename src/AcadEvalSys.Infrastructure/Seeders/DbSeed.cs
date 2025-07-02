@@ -106,9 +106,9 @@ internal class DbSeeder(ApplicationDbContext dbContext, UserManager<User> userMa
             }
 
             // Crear período de evaluación
-            if (!dbContext.EvaluationPeriods.Any())
+            if (!dbContext.CompetenciesEvaluationInstances.Any())
             {
-                var evaluationPeriod = new EvaluationPeriod
+                var competenciesEvaluationInstance = new CompetenciesEvaluationInstance
                 {
                     Title = "Período de Evaluación Primer Semestre 2024",
                     Description = "Evaluación de competencias blandas para el primer semestre del año académico 2024",
@@ -116,12 +116,12 @@ internal class DbSeeder(ApplicationDbContext dbContext, UserManager<User> userMa
                     PeriodTo = DateTime.UtcNow.AddDays(30),
                     CreatedByUserId = adminId
                 };
-                dbContext.EvaluationPeriods.Add(evaluationPeriod);
+                dbContext.CompetenciesEvaluationInstances.Add(competenciesEvaluationInstance);
                 await dbContext.SaveChangesAsync();
 
                 // Asignar competencias al profesor para este período (ProfessorCompetencyAssignment)
                 var professorCompetencyAssignments = GetProfessorCompetencyAssignments(
-                    evaluationPeriod.Id, 
+                    competenciesEvaluationInstance.Id, 
                     dbContext.Competencies.ToList(), 
                     dbContext.Subjects.First().Id,
                     adminId);
@@ -433,7 +433,7 @@ private string GetLevel4Description(string competencyName)
     }
 
     private IEnumerable<ProfessorCompetencyAssignment> GetProfessorCompetencyAssignments(
-        Guid evaluationPeriodId, 
+        Guid competenciesEvaluationInstanceId, 
         IEnumerable<Competency> competencies, 
         Guid subjectId,
         string createdByUserId)
@@ -444,7 +444,7 @@ private string GetLevel4Description(string competencyName)
         {
             assignments.Add(new ProfessorCompetencyAssignment
             {
-                EvaluationPeriodId = evaluationPeriodId,
+                CompetenciesEvaluationInstanceId = competenciesEvaluationInstanceId,
                 CompetencyId = competency.Id,
                 SubjectId = subjectId,
                 CreatedByUserId = createdByUserId

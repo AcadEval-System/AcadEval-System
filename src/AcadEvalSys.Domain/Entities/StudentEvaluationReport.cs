@@ -5,12 +5,12 @@ namespace AcadEvalSys.Domain.Entities
     public class StudentEvaluationReport : BaseEntity
     {
         public string StudentId { get; set; } = string.Empty;
-        public Guid EvaluationPeriodId { get; set; }
+        public Guid CompetenciesEvaluationInstanceId { get; set; }
         public DateTime GeneratedAt { get; set; } = DateTime.UtcNow;
 
         
         // Navigation properties
         public virtual Student? Student { get; set; }
-        public virtual EvaluationPeriod? EvaluationPeriod { get; set; }
+        public virtual CompetenciesEvaluationInstance? CompetenciesEvaluationInstance { get; set; }
     }
 } 
