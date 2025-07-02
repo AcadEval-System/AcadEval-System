@@ -13,7 +13,7 @@ namespace AcadEvalSys.WEB.Server.Controllers;
 [ApiController]
 [Route("competencies")]
 [Authorize(Roles = UserRoles.Admin)]
-public class CompetenciesController(IMediator mediator) : ControllerBase
+public class CompetencyController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetCompetencies()
@@ -21,7 +21,7 @@ public class CompetenciesController(IMediator mediator) : ControllerBase
         var competencies = await mediator.Send(new GetAllCompetenciesQuery());
         return Ok(competencies);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCompetency(Guid id)
     {

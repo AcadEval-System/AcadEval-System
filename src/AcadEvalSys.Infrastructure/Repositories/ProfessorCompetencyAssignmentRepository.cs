@@ -41,7 +41,7 @@ public class ProfessorCompetencyAssignmentRepository(ApplicationDbContext dbCont
     public async Task DeleteByCompetenciesEvaluationInstanceIdAsync(Guid competenciesEvaluationInstanceId)
     {
         var assignments = await dbContext.ProfessorCompetencyAssignments
-            .Where(pca => pca.CompetenciesEvaluationInstanceId == competenciesEvaluationInstanceId)
+            .Where(pca => pca.CompetencyEvaluationInstanceId == competenciesEvaluationInstanceId)
             .ToListAsync();
         
         if (assignments.Any())

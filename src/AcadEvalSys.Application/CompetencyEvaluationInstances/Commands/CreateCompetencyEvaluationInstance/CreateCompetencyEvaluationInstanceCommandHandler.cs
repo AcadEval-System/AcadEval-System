@@ -1,4 +1,6 @@
 using AcadEvalSys.Application.CompetenciesEvaluationInstances.Dtos;
+using AcadEvalSys.Application.CompetencyEvaluationInstances.Commands.CreateCompetencyEvaluationInstance;
+using AcadEvalSys.Application.CompetencyEvaluationInstances.Dtos;
 using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Domain.Exceptions;
 using AcadEvalSys.Domain.Repositories;
@@ -8,26 +10,26 @@ using Microsoft.Extensions.Logging;
 
 namespace AcadEvalSys.Application.CompetenciesEvaluationInstances.Commands.CreateCompetenciesEvaluationInstance;
 
-public class CreateCompetenciesEvaluationInstanceCommandHandler(
-    ILogger<CreateCompetenciesEvaluationInstanceCommandHandler> logger,
-    ICompetenciesEvaluationInstanceRepository competenciesEvaluationInstanceRepository,
+public class CreateCompetencyEvaluationInstanceCommandHandler(
+    ILogger<CreateCompetencyEvaluationInstanceCommandHandler> logger,
+    ICompetencyEvaluationInstanceRepository competencyEvaluationInstanceRepository,
     IProfessorCompetencyAssignmentRepository professorCompetencyAssignmentRepository,
     ICompetencyRepository competencyRepository,
     ISubjectRepository subjectRepository,
-    IMapper mapper) : IRequestHandler<CreateCompetenciesEvaluationInstanceCommand, Guid>
+    IMapper mapper) : IRequestHandler<CreateCompetencyEvaluationInstanceCommand, Guid>
 {
-    public async Task<Guid> Handle(CreateCompetenciesEvaluationInstanceCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateCompetencyEvaluationInstanceCommand request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Creating CompetenciesEvaluationInstance with title: {Title}", request.Title);
+        logger.LogInformation("Creating CompetencyEvaluationInstance with title: {Title}", request.Title);
 
         // Validar que todas las competencias y materias existen
         await ValidateAssignmentsAsync(request.CompetencyAssignments);
 
         // Crear la instancia de evaluación
-        var competenciesEvaluationInstance = mapper.Map<CompetenciesEvaluationInstance>(request);
-        var competenciesEvaluationInstanceId = await competenciesEvaluationInstanceRepository.CreateCompetenciesEvaluationInstanceAsync(competenciesEvaluationInstance);
+        var competencyEvaluationInstance = mapper.Map<CompetencyEvaluationInstance>(request);
+        var competencyEvaluationInstanceId = await competencyEvaluationInstanceRepository.CreateCompetencyEvaluationInstanceAsync(competencyEvaluationInstance);
 
-        logger.LogInformation("CompetenciesEvaluationInstance created with ID: {Id}", competenciesEvaluationInstanceId);
+        logger.LogInformation("CompetencyEvaluationInstance created with ID: {Id}", competencyEvaluationInstanceId);
 
         // Crear las asignaciones de competencias a profesores
         var professorAssignments = new List<ProfessorCompetencyAssignment>();
@@ -35,7 +37,7 @@ public class CreateCompetenciesEvaluationInstanceCommandHandler(
         foreach (var assignment in request.CompetencyAssignments)
         {
             var professorAssignment = mapper.Map<ProfessorCompetencyAssignment>(assignment);
-            professorAssignment.CompetenciesEvaluationInstanceId = competenciesEvaluationInstanceId;
+            professorAssignment.CompetencyEvaluationInstanceId = competencyEvaluationInstanceId;
 
             professorAssignments.Add(professorAssignment);
         }
@@ -46,7 +48,7 @@ public class CreateCompetenciesEvaluationInstanceCommandHandler(
             logger.LogInformation("Created {Count} professor competency assignments", professorAssignments.Count);
         }
 
-        return competenciesEvaluationInstanceId;
+        return competencyEvaluationInstanceId;
     }
 
     private async Task ValidateAssignmentsAsync(CreateCompetencyAssignmentDto[] assignments)

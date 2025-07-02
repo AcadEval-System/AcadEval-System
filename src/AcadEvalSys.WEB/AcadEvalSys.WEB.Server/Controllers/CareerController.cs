@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace AcadEvalSys.WEB.Server.Controllers;
 [ApiController]
 [Route("careers")]
-[Authorize(Roles = UserRoles.Admin)] 
-public class CareersController(IMediator mediator) : ControllerBase
+[Authorize(Roles = UserRoles.Admin)]
+public class CareerController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CareerDto>>> GetAllCareers()
@@ -23,7 +23,7 @@ public class CareersController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CareerDto>> GetById([FromRoute]Guid id)
+    public async Task<ActionResult<CareerDto>> GetById([FromRoute] Guid id)
     {
         var career = await mediator.Send(new GetCareerByIdQuery(id));
         return Ok(career);

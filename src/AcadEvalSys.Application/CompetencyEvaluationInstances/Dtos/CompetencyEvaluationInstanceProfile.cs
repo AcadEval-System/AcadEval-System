@@ -1,21 +1,22 @@
-using AcadEvalSys.Application.CompetenciesEvaluationInstances.Commands.CreateCompetenciesEvaluationInstance;
-using AcadEvalSys.Application.CompetenciesEvaluationInstances.Commands.UpdateCompetenciesEvaluationInstance;
+using AcadEvalSys.Application.CompetenciesEvaluationInstances.Dtos;
+using AcadEvalSys.Application.CompetencyEvaluationInstances.Commands.CreateCompetencyEvaluationInstance;
+using AcadEvalSys.Application.CompetencyEvaluationInstances.Commands.UpdateCompetencyEvaluationInstance;
 using AcadEvalSys.Domain.Entities;
 using AutoMapper;
 
-namespace AcadEvalSys.Application.CompetenciesEvaluationInstances.Dtos;
+namespace AcadEvalSys.Application.CompetencyEvaluationInstances.Dtos;
 
-public class CompetenciesEvaluationInstanceProfile : Profile
+public class CompetencyEvaluationInstanceProfile : Profile
 {
-    public CompetenciesEvaluationInstanceProfile()
+    public CompetencyEvaluationInstanceProfile()
     {
         // Command to Entity - AutoMapper mapea automáticamente: Title, Description, PeriodFrom, PeriodTo
-        CreateMap<CreateCompetenciesEvaluationInstanceCommand, CompetenciesEvaluationInstance>();
-        CreateMap<UpdateCompetenciesEvaluationInstanceCommand, CompetenciesEvaluationInstance>();
+        CreateMap<CreateCompetencyEvaluationInstanceCommand, CompetencyEvaluationInstance>();
+        CreateMap<UpdateCompetencyEvaluationInstanceCommand, CompetencyEvaluationInstance>();
         CreateMap<CreateCompetencyAssignmentDto, ProfessorCompetencyAssignment>();
 
         // Entity to DTO - mapeo simplificado para el frontend
-        CreateMap<CompetenciesEvaluationInstance, CompetenciesEvaluationInstanceDetailDto>()
+        CreateMap<CompetencyEvaluationInstance, CompetencyEvaluationInstanceDetailDto>()
             .ForMember(dest => dest.CareerAssignments, opt => opt.MapFrom(src =>
                 src.ProfessorCompetencyAssignments != null
                     ? src.ProfessorCompetencyAssignments
@@ -37,19 +38,19 @@ public class CompetenciesEvaluationInstanceProfile : Profile
                                 {
                                     Year = yearGroup.Key,
                                     Assignments = yearGroup.Select(pca => new CompetencyAssignmentDetailDto
-                                        {
-                                            AssignmentId = pca.Id,
-                                            CompetencyId = pca.CompetencyId,
-                                            SubjectId = pca.SubjectId,
-                                            CompetencyName = pca.Competency.Name,
-                                            SubjectName = pca.Subject.Name,
-                                            ProfessorName = pca.Subject.Professor.User.Name
-                                        })
+                                    {
+                                        AssignmentId = pca.Id,
+                                        CompetencyId = pca.CompetencyId,
+                                        SubjectId = pca.SubjectId,
+                                        CompetencyName = pca.Competency.Name,
+                                        SubjectName = pca.Subject.Name,
+                                        ProfessorName = pca.Subject.Professor.User.Name
+                                    })
                                         .ToArray()
                                 }).ToArray()
                         }
     )
     : new List<CareerWithAssignmentsDto>()));
-    
+
+    }
 }
-} 

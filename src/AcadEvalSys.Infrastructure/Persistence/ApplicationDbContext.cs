@@ -14,8 +14,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Competency> Competencies { get; set; }
     public DbSet<CompetencyLevelDescription> CompetencyLevelDescriptions { get; set; }
     public DbSet<StudentSubject> StudentSubjects { get; set; }
+    public DbSet<StudentEvaluationReport> StudentEvaluationReports { get; set; }
 
-    public DbSet<CompetenciesEvaluationInstance> CompetenciesEvaluationInstances { get; set; }
+    public DbSet<CompetencyEvaluationInstance> CompetencyEvaluationInstances { get; set; }
     public DbSet<FormQuestion> FormQuestions { get; set; }
     public DbSet<QuestionResponse> QuestionResponses { get; set; }
     public DbSet<ProfessorCompetencyAssignment> ProfessorCompetencyAssignments { get; set; }
@@ -93,9 +94,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
                 .IsUnique();
         });
 
-        builder.Entity<CompetenciesEvaluationInstance>()
+        builder.Entity<CompetencyEvaluationInstance>()
             .HasMany(e => e.TechnicalCareers)
-            .WithMany(t => t.CompetenciesEvaluationInstances);
+            .WithMany(t => t.CompetencyEvaluationInstances);
 
         // Configuración explícita para StudentSubject
         builder.Entity<StudentSubject>(entity =>

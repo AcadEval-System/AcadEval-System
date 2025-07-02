@@ -11,6 +11,6 @@ namespace AcadEvalSys.Domain.Entities
         
         // Navigation properties
         public virtual Student? Student { get; set; }
-        public virtual CompetenciesEvaluationInstance? CompetenciesEvaluationInstance { get; set; }
+        public virtual CompetencyEvaluationInstance? CompetencyEvaluationInstance { get; set; }
     }
 } 
