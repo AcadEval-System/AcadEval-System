@@ -36,7 +36,7 @@ public static class ServiceCollectionExtensions
                 options.EnableSensitiveDataLogging();
             }
         });
-        
+
         // Configurar Identity con soporte para cookies
         services.AddIdentityApiEndpoints<User>(options =>
             {
@@ -44,7 +44,7 @@ public static class ServiceCollectionExtensions
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
-                
+
                 // Configuraciones de usuario
                 options.User.RequireUniqueEmail = true;
             })
@@ -58,30 +58,30 @@ public static class ServiceCollectionExtensions
             options.Cookie.HttpOnly = true;
             options.ExpireTimeSpan = TimeSpan.FromDays(120);
             options.SlidingExpiration = true;
-            
+
             // Configuración más permisiva para desarrollo/Postman
             options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
             options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
-            
+
             // Configurar rutas para manejo de autenticación
             options.LoginPath = "/api/identity/login";
             options.LogoutPath = "/api/identity/logout";
             options.AccessDeniedPath = "/api/identity/accessDenied";
-            
+
             // Configurar para APIs (devolver códigos HTTP en lugar de redirecciones)
             options.Events.OnRedirectToLogin = context =>
             {
                 context.Response.StatusCode = 401;
                 return Task.CompletedTask;
             };
-            
+
             options.Events.OnRedirectToAccessDenied = context =>
             {
                 context.Response.StatusCode = 403;
                 return Task.CompletedTask;
             };
         });
-        
+
         // Registrar servicios
         services.AddScoped<IDbSeeder, DbSeeder>();
         services.AddScoped<ICareerRepository, CareerRepository>();
