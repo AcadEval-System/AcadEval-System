@@ -101,10 +101,10 @@ public class SubjectRepository(ApplicationDbContext dbContext) : ISubjectReposit
         {
             existingSubject.IsActive = false;
             existingSubject.UpdatedAt = DateTime.UtcNow;
+            existingSubject.UpdatedByUserId = subject.UpdatedByUserId;
             await dbContext.SaveChangesAsync();
         }
     }
-
     public async Task<bool> ExistsByNameAndCareerAsync(string name, Guid technicalCareerId)
     {
         return await dbContext.Subjects

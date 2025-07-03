@@ -32,6 +32,12 @@ public class StudentRepository(ApplicationDbContext applicationDbContext) : IStu
         return student != null;
     }
 
+    public async Task CreateStudentAsync(Student student)
+    {
+        applicationDbContext.Students.Add(student);
+        await applicationDbContext.SaveChangesAsync();
+    }
+
     public async Task<bool> ExistsInCareerAsync(string studentId, Guid technicalCareerId)
     {
         var student = await GetStudentByIdAsync(studentId);

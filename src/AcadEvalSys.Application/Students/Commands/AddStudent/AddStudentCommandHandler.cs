@@ -20,17 +20,17 @@ public class AddStudentCommandHandler(
     public async Task<string> Handle(AddStudentCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Adding student {@Student}", request);
-        
+
         var user = mapper.Map<User>(request);
-        
+
         await userManager.CreateAsync(user, request.Password);
 
         await userManager.AddToRoleAsync(user, UserRoles.Student);
 
-        var student = new Student();
-        student.UserId = user.Id; 
-        student.TechnicalCareerId = request.CarreraId;
-        
+        var student = mapper.Map<Student>(request);
+        student.UserId = user.Id;
+        await studentRepository.CreateStudentAsync(student);
+
         logger.LogInformation("Student created successfully with ID: {StudentId}", user.Id);
         return user.Id;
     }
