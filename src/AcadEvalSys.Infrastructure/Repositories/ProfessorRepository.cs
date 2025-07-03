@@ -1,12 +1,11 @@
 using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Domain.Repositories;
 using AcadEvalSys.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcadEvalSys.Infrastructure.Repositories;
 
-public class ProfessorRepository(ApplicationDbContext dbContext, UserManager<User> userManager) : IProfessorRepository
+public class ProfessorRepository(ApplicationDbContext dbContext) : IProfessorRepository
 {
     public async Task<Professor?> GetProfessorByIdAsync(string professorId)
     {
@@ -19,28 +18,8 @@ public class ProfessorRepository(ApplicationDbContext dbContext, UserManager<Use
 
     public async Task<bool> ExistsAsync(string professorId)
     {
-        return await dbContext.Professors
-            .AnyAsync(p => p.UserId == professorId);
-    }
-
-    public async Task<bool> IsActiveAsync(string professorId)
-    {
-        // Verificar que existe en la tabla Professors
-        var professorExists = await ExistsAsync(professorId);
-        if (!professorExists) return false;
-
-        // Verificar el estado del usuario subyacente
-        var user = await userManager.FindByIdAsync(professorId);
-        if (user == null) return false;
-
-        // Verificar si el usuario no está bloqueado
-        var isLockedOut = await userManager.IsLockedOutAsync(user);
-        if (isLockedOut) return false;
-
-        // Verificar si el email está confirmado (opcional, según tus reglas de negocio)
-        if (!user.EmailConfirmed) return false;
-
-        return true;
+        var professor = await GetProfessorByIdAsync(professorId);
+        return professor != null;
     }
 
     public async Task<IEnumerable<Professor>> GetAllProfessorsAsync()

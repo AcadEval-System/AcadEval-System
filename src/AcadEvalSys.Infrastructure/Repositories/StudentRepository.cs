@@ -1,13 +1,11 @@
 using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Domain.Repositories;
 using AcadEvalSys.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace AcadEvalSys.Infrastructure.Repositories;
 
-public class StudentRepository(ApplicationDbContext applicationDbContext, UserManager<User> userManager) : IStudentRepository
+public class StudentRepository(ApplicationDbContext applicationDbContext) : IStudentRepository
 {
     public async Task<IEnumerable<Student>> GetStudents()
     {
@@ -30,36 +28,16 @@ public class StudentRepository(ApplicationDbContext applicationDbContext, UserMa
 
     public async Task<bool> ExistsAsync(string studentId)
     {
-        return await applicationDbContext.Students
-            .AnyAsync(s => s.UserId == studentId);
+        var student = await GetStudentByIdAsync(studentId);
+        return student != null;
     }
 
-    public async Task<bool> IsActiveAsync(string studentId)
-    {
-        // Verificar que existe en la tabla Students
-        var studentExists = await ExistsAsync(studentId);
-        if (!studentExists) return false;
-
-        // Verificar el estado del usuario subyacente
-        var user = await userManager.FindByIdAsync(studentId);
-        if (user == null) return false;
-
-        // Verificar si el usuario no está bloqueado
-        var isLockedOut = await userManager.IsLockedOutAsync(user);
-        if (isLockedOut) return false;
-
-        // Verificar si el email está confirmado (opcional, según tus reglas de negocio)
-        if (!user.EmailConfirmed) return false;
-
-        return true;
-    }
-
-    // Métodos de validación y enrollment
     public async Task<bool> ExistsInCareerAsync(string studentId, Guid technicalCareerId)
     {
-        return await applicationDbContext.Students
-            .AnyAsync(s => s.UserId == studentId && s.TechnicalCareerId == technicalCareerId);
+        var student = await GetStudentByIdAsync(studentId);
+        return student != null && student.TechnicalCareerId == technicalCareerId;
     }
+
 
     public async Task<bool> IsEnrolledInSubjectAsync(string studentId, Guid subjectId)
     {

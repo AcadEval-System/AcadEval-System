@@ -23,29 +23,12 @@ public class EnrollStudentInSubjectCommandHandler(
             throw new NotFoundException(nameof(Subject), request.SubjectId.ToString());
         }
 
-        // validar que el estudiante existe
-        var studentExists = await studentRepository.ExistsAsync(request.StudentId);
-        if (!studentExists)
-        {
-            logger.LogWarning("Student with ID {StudentId} not found", request.StudentId);
-            throw new NotFoundException(nameof(Student), request.StudentId);
-        }
-
-        // validar que el estudiante está activo
-        var isStudentActive = await studentRepository.IsActiveAsync(request.StudentId);
-        if (!isStudentActive)
-        {
-            logger.LogWarning("Student with ID {StudentId} is not active", request.StudentId);
-            throw new InvalidOperationException($"El estudiante con ID {request.StudentId} no está activo y no puede ser inscrito en materias.");
-        }
-
-        // validar que el estudiante pertenece a la carrera de la materia
         var studentBelongsToCareer = await studentRepository.ExistsInCareerAsync(request.StudentId, subject.TechnicalCareerId!.Value);
         if (!studentBelongsToCareer)
         {
             logger.LogWarning("Student with ID {StudentId} does not belong to career {TechnicalCareerId} for subject {SubjectId}",
                 request.StudentId, subject.TechnicalCareerId, request.SubjectId);
-            throw new InvalidOperationException($"El estudiante no pertenece a la carrera técnica requerida para esta materia.");
+            throw new NotFoundException(nameof(Student), request.StudentId);
         }
 
         // validar que el estudiante no esté ya inscrito

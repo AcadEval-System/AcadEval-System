@@ -24,20 +24,12 @@ public class AssignProfessorToSubjectCommandHandler(
             throw new NotFoundException(nameof(Subject), request.SubjectId.ToString());
         }
 
-        // validar que el profesor existe
-        var professorExists = await professorRepository.ExistsAsync(request.ProfessorId);
-        if (!professorExists)
+        // validar que el profesor existe y está activo
+        var professor = await professorRepository.GetProfessorByIdAsync(request.ProfessorId);
+        if (professor == null)
         {
-            logger.LogWarning("Professor with ID {ProfessorId} not found", request.ProfessorId);
+            logger.LogWarning("Professor with ID {ProfessorId} not found or not active", request.ProfessorId);
             throw new NotFoundException(nameof(Professor), request.ProfessorId);
-        }
-
-        // validar que el profesor está activo
-        var isProfessorActive = await professorRepository.IsActiveAsync(request.ProfessorId);
-        if (!isProfessorActive)
-        {
-            logger.LogWarning("Professor with ID {ProfessorId} is not active", request.ProfessorId);
-            throw new InvalidOperationException($"El profesor con ID {request.ProfessorId} no está activo y no puede ser asignado a una materia.");
         }
 
         // validar si la materia ya tiene el mismo profesor asignado

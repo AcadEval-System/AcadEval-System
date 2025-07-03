@@ -7,7 +7,6 @@ public interface IStudentRepository
     Task<IEnumerable<Student>> GetStudents();
     Task<Student?> GetStudentByIdAsync(string studentId);
     Task<bool> ExistsAsync(string studentId);
-    Task<bool> IsActiveAsync(string studentId);
 
     Task<bool> ExistsInCareerAsync(string studentId, Guid technicalCareerId);
     Task<bool> IsEnrolledInSubjectAsync(string studentId, Guid subjectId);

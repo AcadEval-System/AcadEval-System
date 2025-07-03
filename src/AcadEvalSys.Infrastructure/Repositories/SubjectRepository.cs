@@ -117,7 +117,6 @@ public class SubjectRepository(ApplicationDbContext dbContext) : ISubjectReposit
             .AnyAsync(s => s.Id == id && s.IsActive);
     }
 
-    // Métodos para profesores
     public async Task AssignProfessorToSubjectAsync(Guid subjectId, string professorId)
     {
         var subject = await dbContext.Subjects.FirstOrDefaultAsync(s => s.Id == subjectId && s.IsActive);
