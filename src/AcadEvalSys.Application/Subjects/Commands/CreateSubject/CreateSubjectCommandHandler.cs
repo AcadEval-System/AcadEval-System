@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AcadEvalSys.Application.Subjects.Commands.CreateSubject;
 
-public class CreateSubjectCommandHandler(ILogger logger, IMapper mapper, IUserContext userContext, ISubjectRepository subjectRepository) : IRequestHandler<CreateSubjectCommand, Guid>
+public class CreateSubjectCommandHandler(ILogger<CreateSubjectCommandHandler> logger, IMapper mapper, IUserContext userContext, ISubjectRepository subjectRepository) : IRequestHandler<CreateSubjectCommand, Guid>
 {
     public async Task<Guid> Handle(CreateSubjectCommand request, CancellationToken cancellationToken)
     {

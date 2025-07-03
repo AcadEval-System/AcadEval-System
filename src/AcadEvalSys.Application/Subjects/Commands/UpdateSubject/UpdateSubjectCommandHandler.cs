@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace AcadEvalSys.Application.Subjects.Commands.UpdateSubject;
 
 public class UpdateSubjectCommandHandler(
-    ILogger logger, 
+    ILogger<UpdateSubjectCommandHandler> logger, 
     IMapper mapper, 
     IUserContext userContext, 
     ISubjectRepository subjectRepository)  : IRequestHandler<UpdateSubjectCommand>
