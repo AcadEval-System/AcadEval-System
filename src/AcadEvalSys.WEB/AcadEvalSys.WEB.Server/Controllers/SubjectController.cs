@@ -35,7 +35,7 @@ public class SubjectController(IMediator mediator) : ControllerBase
     }
 
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetSubjectById(Guid id)
     {
         var query = new GetSubjectByIdQuery { Id = id };
@@ -44,25 +44,25 @@ public class SubjectController(IMediator mediator) : ControllerBase
     }
 
 
-    [HttpPut("{id:guid}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSubject(Guid id, [FromBody] UpdateSubjectCommand command)
     {
         command.Id = id;
-        var result = await mediator.Send(command);
-        return result ? Ok() : BadRequest();
+        await mediator.Send(command);
+        return NoContent();
     }
 
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSubject(Guid id)
     {
-        var command = new DeleteSubjectCommand { Id = id };
-        var result = await mediator.Send(command);
-        return result ? NoContent() : BadRequest();
+        var command = new DeleteSubjectCommand(id);
+        await mediator.Send(command);
+        return NoContent();
     }
 
 
-    [HttpPost("{id:guid}/students")]
+    [HttpPost("{id}/enroll-student")]
     public async Task<IActionResult> EnrollStudent(Guid id, [FromBody] EnrollStudentInSubjectCommand command)
     {
         command.SubjectId = id;
@@ -71,7 +71,7 @@ public class SubjectController(IMediator mediator) : ControllerBase
     }
 
 
-    [HttpPut("{id:guid}/professor")]
+    [HttpPut("{id}/assign-professor")]
     public async Task<IActionResult> AssignProfessor(Guid id, [FromBody] AssignProfessorToSubjectCommand command)
     {
         command.SubjectId = id;

@@ -94,16 +94,9 @@ public class SubjectRepository(ApplicationDbContext dbContext) : ISubjectReposit
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteSubjectAsync(Guid id, string? updatedByUserId = null)
+    public async Task DeleteSubjectAsync(Subject subject)
     {
-        var subject = await dbContext.Subjects.FirstOrDefaultAsync(s => s.Id == id);
-        if (subject != null)
-        {
-            subject.IsActive = false;
-            subject.UpdatedAt = DateTime.UtcNow;
-            subject.UpdatedByUserId = updatedByUserId;
-            await dbContext.SaveChangesAsync();
-        }
+
     }
 
     public async Task<bool> ExistsByNameAndCareerAsync(string name, Guid technicalCareerId)
@@ -131,10 +124,17 @@ public class SubjectRepository(ApplicationDbContext dbContext) : ISubjectReposit
     }
 
     // Métodos para estudiantes
-    public async Task<bool> StudentExistsAsync(string studentId)
+
+    /// <summary>
+    /// Valida que el estudiante exista y pertenezca a la carrera técnica especificada
+    /// </summary>
+    /// <param name="studentId">ID del estudiante</param>
+    /// <param name="technicalCareerId">ID de la carrera técnica</param>
+    /// <returns>True si el estudiante existe y pertenece a la carrera</returns>
+    public async Task<bool> StudentExistsAsync(string studentId, Guid technicalCareerId)
     {
         return await dbContext.Students
-            .AnyAsync(s => s.UserId == studentId);
+            .AnyAsync(s => s.UserId == studentId && s.TechnicalCareerId == technicalCareerId);
     }
 
     public async Task<bool> IsStudentEnrolledInSubjectAsync(string studentId, Guid subjectId)
@@ -145,6 +145,7 @@ public class SubjectRepository(ApplicationDbContext dbContext) : ISubjectReposit
 
     public async Task EnrollStudentInSubjectAsync(string studentId, Guid subjectId)
     {
+
         var studentSubject = new StudentSubject
         {
             StudentId = studentId,

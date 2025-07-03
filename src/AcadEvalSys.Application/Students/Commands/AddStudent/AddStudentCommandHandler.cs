@@ -30,10 +30,7 @@ public class AddStudentCommandHandler(
         var student = new Student();
         student.UserId = user.Id; 
         student.TechnicalCareerId = request.CarreraId;
-
-        await studentRepository.EnrollStudentInCareerAsync(student);
         
-
         logger.LogInformation("Student created successfully with ID: {StudentId}", user.Id);
         return user.Id;
     }
