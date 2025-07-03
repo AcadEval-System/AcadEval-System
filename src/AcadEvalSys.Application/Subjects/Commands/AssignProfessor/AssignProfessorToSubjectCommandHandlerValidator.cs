@@ -10,7 +10,6 @@ public class AssignProfessorToSubjectCommandHandlerValidator : AbstractValidator
             .NotEmpty().WithMessage("Subject ID cannot be empty.");
 
         RuleFor(command => command.ProfessorId)
-            .NotEmpty().WithMessage("Professor ID cannot be empty.")
-            .MaximumLength(450).WithMessage("Professor ID must not exceed 450 characters.");
+            .NotEmpty().WithMessage("Professor ID cannot be empty.");
     }
 }
