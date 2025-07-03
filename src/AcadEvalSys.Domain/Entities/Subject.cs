@@ -14,7 +14,7 @@ namespace AcadEvalSys.Domain.Entities
         public virtual TechnicalCareer? TechnicalCareer { get; set; }
         public virtual Professor? Professor { get; set; }
         public virtual ICollection<StudentSubject>? StudentSubjects { get; set; } = new List<StudentSubject>();
-        public virtual IEnumerable<StudentCompetencyEvaluationCalification>? StudentCompetencyEvaluations { get; set; } = new List<StudentCompetencyEvaluationCalification>();
+        public virtual ICollection<StudentCompetencyAssessment>? StudentCompetencyAssessments { get; set; } = new List<StudentCompetencyAssessment>();
         public virtual ICollection<ProfessorCompetencyAssignment>? ProfessorCompetencyAssignments { get; set; } = new List<ProfessorCompetencyAssignment>();
     }
 }

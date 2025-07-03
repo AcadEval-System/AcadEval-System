@@ -3,6 +3,7 @@ using System;
 using AcadEvalSys.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,16 +12,60 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcadEvalSys.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250702143900_ConfigureStudentSubjectRelations")]
+    partial class ConfigureStudentSubjectRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.17")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetenciesEvaluationInstance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("PeriodFrom")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("PeriodTo")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("CompetenciesEvaluationInstances");
+                });
 
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competency", b =>
                 {
@@ -61,48 +106,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.HasIndex("UpdatedByUserId");
 
                     b.ToTable("Competencies");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetencyEvaluationInstance", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedByUserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("PeriodFrom")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("PeriodTo")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedByUserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("UpdatedByUserId");
-
-                    b.ToTable("CompetencyEvaluationInstances");
                 });
 
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetencyLevelDescription", b =>
@@ -226,7 +229,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CompetencyEvaluationInstanceId")
+                    b.Property<Guid>("CompetenciesEvaluationInstanceId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CompetencyId")
@@ -258,7 +261,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompetencyEvaluationInstanceId");
+                    b.HasIndex("CompetenciesEvaluationInstanceId");
 
                     b.HasIndex("CompetencyId");
 
@@ -400,9 +403,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Property<Guid>("CompetenciesEvaluationInstanceId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CompetencyEvaluationInstanceId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -427,7 +427,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompetencyEvaluationInstanceId");
+                    b.HasIndex("CompetenciesEvaluationInstanceId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -435,7 +435,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedByUserId");
 
-                    b.ToTable("StudentEvaluationReports");
+                    b.ToTable("StudentEvaluationReport");
                 });
 
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentSubject", b =>
@@ -625,19 +625,19 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("CompetencyEvaluationInstanceTechnicalCareer", b =>
+            modelBuilder.Entity("CompetenciesEvaluationInstanceTechnicalCareer", b =>
                 {
-                    b.Property<Guid>("CompetencyEvaluationInstancesId")
+                    b.Property<Guid>("CompetenciesEvaluationInstancesId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("TechnicalCareersId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("CompetencyEvaluationInstancesId", "TechnicalCareersId");
+                    b.HasKey("CompetenciesEvaluationInstancesId", "TechnicalCareersId");
 
                     b.HasIndex("TechnicalCareersId");
 
-                    b.ToTable("CompetencyEvaluationInstanceTechnicalCareer");
+                    b.ToTable("CompetenciesEvaluationInstanceTechnicalCareer");
                 });
 
             modelBuilder.Entity("CompetencyTechnicalCareer", b =>
@@ -787,7 +787,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competency", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetenciesEvaluationInstance", b =>
                 {
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
@@ -802,7 +802,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetencyEvaluationInstance", b =>
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competency", b =>
                 {
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
@@ -891,9 +891,9 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.ProfessorCompetencyAssignment", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.CompetencyEvaluationInstance", "CompetencyEvaluationInstance")
+                    b.HasOne("AcadEvalSys.Domain.Entities.CompetenciesEvaluationInstance", "CompetenciesEvaluationInstance")
                         .WithMany("ProfessorCompetencyAssignments")
-                        .HasForeignKey("CompetencyEvaluationInstanceId")
+                        .HasForeignKey("CompetenciesEvaluationInstanceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -925,9 +925,9 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UpdatedByUserId");
 
-                    b.Navigation("Competency");
+                    b.Navigation("CompetenciesEvaluationInstance");
 
-                    b.Navigation("CompetencyEvaluationInstance");
+                    b.Navigation("Competency");
 
                     b.Navigation("CreatedByUser");
 
@@ -1012,9 +1012,11 @@ namespace AcadEvalSys.Infrastructure.Migrations
 
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.StudentEvaluationReport", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.CompetencyEvaluationInstance", "CompetencyEvaluationInstance")
+                    b.HasOne("AcadEvalSys.Domain.Entities.CompetenciesEvaluationInstance", "CompetenciesEvaluationInstance")
                         .WithMany("StudentEvaluationReports")
-                        .HasForeignKey("CompetencyEvaluationInstanceId");
+                        .HasForeignKey("CompetenciesEvaluationInstanceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AcadEvalSys.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
@@ -1030,7 +1032,7 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UpdatedByUserId");
 
-                    b.Navigation("CompetencyEvaluationInstance");
+                    b.Navigation("CompetenciesEvaluationInstance");
 
                     b.Navigation("CreatedByUser");
 
@@ -1110,11 +1112,11 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("CompetencyEvaluationInstanceTechnicalCareer", b =>
+            modelBuilder.Entity("CompetenciesEvaluationInstanceTechnicalCareer", b =>
                 {
-                    b.HasOne("AcadEvalSys.Domain.Entities.CompetencyEvaluationInstance", null)
+                    b.HasOne("AcadEvalSys.Domain.Entities.CompetenciesEvaluationInstance", null)
                         .WithMany()
-                        .HasForeignKey("CompetencyEvaluationInstancesId")
+                        .HasForeignKey("CompetenciesEvaluationInstancesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1191,6 +1193,13 @@ namespace AcadEvalSys.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetenciesEvaluationInstance", b =>
+                {
+                    b.Navigation("ProfessorCompetencyAssignments");
+
+                    b.Navigation("StudentEvaluationReports");
+                });
+
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.Competency", b =>
                 {
                     b.Navigation("FormQuestions");
@@ -1198,13 +1207,6 @@ namespace AcadEvalSys.Infrastructure.Migrations
                     b.Navigation("LevelDescriptions");
 
                     b.Navigation("ProfessorCompetencyAssignments");
-                });
-
-            modelBuilder.Entity("AcadEvalSys.Domain.Entities.CompetencyEvaluationInstance", b =>
-                {
-                    b.Navigation("ProfessorCompetencyAssignments");
-
-                    b.Navigation("StudentEvaluationReports");
                 });
 
             modelBuilder.Entity("AcadEvalSys.Domain.Entities.FormQuestion", b =>

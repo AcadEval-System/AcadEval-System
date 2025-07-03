@@ -8,5 +8,5 @@ public interface IProfessorCompetencyAssignmentRepository
     Task CreateMultipleAsync(IEnumerable<ProfessorCompetencyAssignment> assignments);
     Task UpdateAsync(ProfessorCompetencyAssignment assignment);
     Task DeleteAsync(Guid id);
-    Task DeleteByEvaluationPeriodIdAsync(Guid evaluationPeriodId);
+    Task DeleteByCompetenciesEvaluationInstanceIdAsync(Guid competenciesEvaluationInstanceId);
 } 
