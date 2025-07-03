@@ -96,7 +96,13 @@ public class SubjectRepository(ApplicationDbContext dbContext) : ISubjectReposit
 
     public async Task DeleteSubjectAsync(Subject subject)
     {
-
+        var existingSubject = await dbContext.Subjects.FirstOrDefaultAsync(s => s.Id == subject.Id && s.IsActive);
+        if (existingSubject != null)
+        {
+            existingSubject.IsActive = false;
+            existingSubject.UpdatedAt = DateTime.UtcNow;
+            await dbContext.SaveChangesAsync();
+        }
     }
 
     public async Task<bool> ExistsByNameAndCareerAsync(string name, Guid technicalCareerId)
