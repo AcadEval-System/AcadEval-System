@@ -29,21 +29,21 @@ try
 
     app.UseSerilogRequestLogging();
     app.UseMiddleware<ErrorHandlingMiddleware>();
-    
+
 
 
     // Ejecutar el seeder
     if (app.Environment.IsDevelopment())
     {
+        using (var scope = app.Services.CreateScope())
+        {
+            var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+            await seeder.Seed();
+            Log.Information("Database seeding completed in development environment");
+        }
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));   
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var dbSeed = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-                await dbSeed.Seed();
-            }
+        app.UseSwagger();
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));
     }
 
     app.UseHttpsRedirection();

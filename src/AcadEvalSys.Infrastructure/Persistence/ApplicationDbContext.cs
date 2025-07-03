@@ -6,6 +6,13 @@ namespace AcadEvalSys.Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+    {
+
+    }
+
     public DbSet<Student> Students { get; set; }
     public DbSet<Professor> Professors { get; set; }
     public DbSet<Coordinator> Coordinators { get; set; }
@@ -22,11 +29,6 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<ProfessorCompetencyAssignment> ProfessorCompetencyAssignments { get; set; }
     public DbSet<StudentCompetencyAssessment> StudentCompetencyAssessments { get; set; }
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-
-    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
