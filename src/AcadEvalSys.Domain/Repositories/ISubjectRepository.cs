@@ -13,15 +13,7 @@ public interface ISubjectRepository
     Task DeleteSubjectAsync(Subject subject);
     Task<bool> ExistsByNameAndCareerAsync(string name, Guid technicalCareerId);
     Task<bool> TechnicalCareerExistsAsync(Guid technicalCareerId);
-    Task<bool> ProfessorExistsAsync(string professorId);
     Task<bool> ExistsByIdAsync(Guid id);
-
-
-    Task<bool> StudentExistsAsync(string studentId, Guid technicalCareerId);
-    Task<bool> IsStudentEnrolledInSubjectAsync(string studentId, Guid subjectId);
-    Task EnrollStudentInSubjectAsync(string studentId, Guid subjectId);
-    Task UnenrollStudentFromSubjectAsync(string studentId, Guid subjectId);
-    Task<IEnumerable<Student>> GetStudentsInSubjectAsync(Guid subjectId);
 
     // Métodos para profesores
     Task AssignProfessorToSubjectAsync(Guid subjectId, string professorId);
