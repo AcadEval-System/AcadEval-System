@@ -33,7 +33,7 @@ try
 
 
     // Ejecutar el seeder
-    if (app.Environment.IsDevelopment())
+    if (app.Environment.IsDevelopment() && !IsTestingEnvironment())
     {
         using (var scope = app.Services.CreateScope())
         {
@@ -42,6 +42,12 @@ try
             Log.Information("Database seeding completed in development environment");
         }
 
+        app.UseSwagger();
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));
+    }
+    else if (app.Environment.IsDevelopment())
+    {
+        // Solo Swagger en tests
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));
     }
@@ -83,6 +89,13 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
+}
+
+static bool IsTestingEnvironment()
+{
+    // Detecta si estamos en un contexto de testing
+    return AppDomain.CurrentDomain.GetAssemblies()
+        .Any(assembly => assembly.FullName?.Contains("Microsoft.AspNetCore.Mvc.Testing") == true);
 }
 
 public partial class Program { }
