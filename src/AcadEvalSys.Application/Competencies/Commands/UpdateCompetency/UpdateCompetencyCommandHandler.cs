@@ -39,8 +39,8 @@ public class UpdateCompetencyCommandHandler(ILogger<UpdateCompetencyCommandHandl
         }
 
         mapper.Map(request, existingCompetency);
-        existingCompetency.UpdatedAt = DateTime.UtcNow;
         
+        existingCompetency.UpdatedAt = DateTime.UtcNow;
         existingCompetency.UpdatedByUserId = user.Id ?? String.Empty;
 
         await competencyRepository.UpdateCompetencyAsync(existingCompetency);

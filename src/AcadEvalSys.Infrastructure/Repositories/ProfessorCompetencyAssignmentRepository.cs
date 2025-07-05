@@ -20,8 +20,6 @@ public class ProfessorCompetencyAssignmentRepository(ApplicationDbContext dbCont
         await dbContext.SaveChangesAsync();
     }
 
-    
-
     public async Task UpdateAsync(ProfessorCompetencyAssignment assignment)
     {
         dbContext.ProfessorCompetencyAssignments.Update(assignment);
@@ -43,11 +41,11 @@ public class ProfessorCompetencyAssignmentRepository(ApplicationDbContext dbCont
         var assignments = await dbContext.ProfessorCompetencyAssignments
             .Where(pca => pca.CompetencyEvaluationInstanceId == competenciesEvaluationInstanceId)
             .ToListAsync();
-        
+
         if (assignments.Any())
         {
             dbContext.ProfessorCompetencyAssignments.RemoveRange(assignments);
             await dbContext.SaveChangesAsync();
         }
     }
-} 
+}

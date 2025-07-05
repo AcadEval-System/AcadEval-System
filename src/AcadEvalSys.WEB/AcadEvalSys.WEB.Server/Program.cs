@@ -3,11 +3,12 @@ using AcadEvalSys.Domain.Entities;
 using AcadEvalSys.Infrastructure.Extensions;
 using AcadEvalSys.WEB.Server.Extensions;
 using AcadEvalSys.WEB.Server.Middlewares;
-using AcadEvalSys.Infrastructure.Seeders;
 using Serilog;
 
 try
 {
+    // SEED
+    
     var builder = WebApplication.CreateBuilder(args);
 
     builder.AddPresentation();
@@ -31,23 +32,8 @@ try
     app.UseMiddleware<ErrorHandlingMiddleware>();
 
 
-
-    // Ejecutar el seeder
-    if (app.Environment.IsDevelopment() && !IsTestingEnvironment())
+    if (app.Environment.IsDevelopment())
     {
-        using (var scope = app.Services.CreateScope())
-        {
-            var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-            await seeder.Seed();
-            Log.Information("Database seeding completed in development environment");
-        }
-
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));
-    }
-    else if (app.Environment.IsDevelopment())
-    {
-        // Solo Swagger en tests
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcadEval API v1"));
     }
@@ -89,13 +75,6 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
-}
-
-static bool IsTestingEnvironment()
-{
-    // Detecta si estamos en un contexto de testing
-    return AppDomain.CurrentDomain.GetAssemblies()
-        .Any(assembly => assembly.FullName?.Contains("Microsoft.AspNetCore.Mvc.Testing") == true);
 }
 
 public partial class Program { }

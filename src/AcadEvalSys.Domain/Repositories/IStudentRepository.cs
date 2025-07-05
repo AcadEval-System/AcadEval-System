@@ -4,6 +4,15 @@ namespace AcadEvalSys.Domain.Repositories;
 
 public interface IStudentRepository
 {
-    Task EnrollStudentInCareerAsync(Student student);
-    Task <IEnumerable<Student>> GetStudents();
+    Task<IEnumerable<Student>> GetStudents();
+    Task<Student?> GetStudentByIdAsync(string studentId);
+    Task<bool> ExistsAsync(string studentId);
+    Task CreateStudentAsync(Student student);
+
+    Task<bool> ExistsInCareerAsync(string studentId, Guid technicalCareerId);
+    Task<bool> IsEnrolledInSubjectAsync(string studentId, Guid subjectId);
+    Task EnrollInSubjectAsync(string studentId, Guid subjectId);
+    Task UnenrollFromSubjectAsync(string studentId, Guid subjectId);
+    Task<IEnumerable<Student>> GetStudentsInSubjectAsync(Guid subjectId);
+    Task<IEnumerable<Subject>> GetSubjectsByStudentAsync(string studentId);
 }
